@@ -32,8 +32,9 @@ router.get("/dashboard", isAuthenticated, (req: Request, res: Response) => {
   const user = req.user  // fully typed as IUser ✓
   res.send(`
     <h1>Dashboard</h1>
-    <p>Welcome, ${user?.firstname}</p>
-    <p>email,${user?.email}
+    <p>Welcome, ${user?.name}</p>
+    <p>email,${user?.email}</p>
+    <p>google id ${user?.googleId}
     <br><a href="/logout">Logout</a>
   `)
 })

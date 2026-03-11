@@ -1,8 +1,9 @@
 export interface IUser {
-  id: string
-  firstname: string
-  lastname?:string
+  id?: number
   email: string
+  name: string | null
+  googleId: string | null
+  password?: string | null
 }
 declare module "express-session" {
   interface SessionData {
