@@ -31,22 +31,31 @@ passport.use(
       done: VerifyCallback
     ) => {
       try{
-        const user = await prisma.user.findUnique({
+        let user = await prisma.user.findUnique({
           where:{googleId : profile.id}
         })
         if(user){
           return done(null, user)
         }
         const email = profile.emails?.[0].value ?? ""
-        const name= profile.displayName
-        const newuser = await prisma.user.create({
-          data:{
-              email,
-              name,
-              googleId:profile.id
-            }
+        const existingUser = await prisma.user.findUnique({ where: { email } })
+
+        if (existingUser) {
+            user = await prisma.user.update({
+            where: { email },
+            data: { googleId: profile.id }
+          })
+          return done(null, user)
+        }
+
+        const newUser = await prisma.user.create({
+          data: {
+            googleId: profile.id,
+            email,
+            name: profile.displayName,
+          }
         })
-        return done(null, newuser)
+        return done(null, newUser)
       }
       catch(err){
           return done(err as Error)
@@ -54,5 +63,41 @@ passport.use(
     }
   )
 )
+passport.use(
+  new LocalStrategy(
+    { usernameField: "email" },  
+    async (email: string, password: string, done) => {
+      try {
+        const user = await prisma.user.findUnique({ where: { email } })
+        
+        if (!user) {
+          console.log("No user with that email");
+          return done(null, false, { message: "No user with that email" })
+          
+          
+        }
 
+        if (!user.password) {
+          console.log("Please login with Google" );
+          return done(null, false, { message: "Please login with Google" })
+          
+          
+        }
+
+        const isMatch = await bcrypt.compare(password, user.password)
+        if (!isMatch) {
+          console.log("Incorrect password");
+          return done(null, false, { message: "Incorrect password" })
+          
+          
+        }
+
+        return done(null, user)
+
+      } catch (err) {
+        return done(err)
+      }
+    }
+  )
+)
 export default passport

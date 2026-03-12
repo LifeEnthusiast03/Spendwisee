@@ -2,7 +2,7 @@ export interface IUser {
   id?: number
   email: string
   name: string | null
-  googleId: string | null
+  googleId?: string | null
   password?: string | null
 }
 declare module "express-session" {
