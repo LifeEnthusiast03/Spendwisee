@@ -74,9 +74,7 @@ passport.use(
           console.log("No user with that email");
           return done(null, false, { message: "No user with that email" })
           
-          
         }
-
         if (!user.password) {
           console.log("Please login with Google" );
           return done(null, false, { message: "Please login with Google" })
