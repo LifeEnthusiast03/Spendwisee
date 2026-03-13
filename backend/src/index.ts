@@ -4,6 +4,8 @@ import cors from "cors";
 import session from "express-session";
 import passport from "./config/passport.js";
 import router  from "./routes/auth_route.js";
+import incomerouter  from "./routes/income_route.js"
+import expenserouter  from "./routes/expense_route.js";
 const app:Application = express();
 const PORT = 3000;
 
@@ -28,9 +30,11 @@ app.use(
   })
 )
 
-app.use(passport.initialize())
-app.use(passport.session())
-app.use(router)
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(router);
+app.use(incomerouter);
+app.use(expenserouter);
 
 app.listen(PORT, () => {
   console.log(`🚀 Server running on http://localhost:${PORT}`);

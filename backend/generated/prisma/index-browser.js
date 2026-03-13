@@ -128,6 +128,28 @@ exports.Prisma.UserScalarFieldEnum = {
   password: 'password'
 };
 
+exports.Prisma.IncomeScalarFieldEnum = {
+  id: 'id',
+  amount: 'amount',
+  category: 'category',
+  note: 'note',
+  date: 'date',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  userId: 'userId'
+};
+
+exports.Prisma.ExpenseScalarFieldEnum = {
+  id: 'id',
+  amount: 'amount',
+  category: 'category',
+  note: 'note',
+  date: 'date',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  userId: 'userId'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -142,10 +164,29 @@ exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
 };
+exports.IncomeCategory = exports.$Enums.IncomeCategory = {
+  SALARY: 'SALARY',
+  FREELANCE: 'FREELANCE',
+  BUSINESS: 'BUSINESS',
+  INVESTMENT: 'INVESTMENT',
+  GIFT: 'GIFT',
+  OTHER: 'OTHER'
+};
 
+exports.ExpenseCategory = exports.$Enums.ExpenseCategory = {
+  FOOD: 'FOOD',
+  TRANSPORT: 'TRANSPORT',
+  RENT: 'RENT',
+  SHOPPING: 'SHOPPING',
+  ENTERTAINMENT: 'ENTERTAINMENT',
+  BILLS: 'BILLS',
+  OTHER: 'OTHER'
+};
 
 exports.Prisma.ModelName = {
-  User: 'User'
+  User: 'User',
+  Income: 'Income',
+  Expense: 'Expense'
 };
 
 /**

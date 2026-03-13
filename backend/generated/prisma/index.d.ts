@@ -18,6 +18,54 @@ export type PrismaPromise<T> = $Public.PrismaPromise<T>
  * 
  */
 export type User = $Result.DefaultSelection<Prisma.$UserPayload>
+/**
+ * Model Income
+ * 
+ */
+export type Income = $Result.DefaultSelection<Prisma.$IncomePayload>
+/**
+ * Model Expense
+ * 
+ */
+export type Expense = $Result.DefaultSelection<Prisma.$ExpensePayload>
+
+/**
+ * Enums
+ */
+export namespace $Enums {
+  export const IncomeCategory: {
+  SALARY: 'SALARY',
+  FREELANCE: 'FREELANCE',
+  BUSINESS: 'BUSINESS',
+  INVESTMENT: 'INVESTMENT',
+  GIFT: 'GIFT',
+  OTHER: 'OTHER'
+};
+
+export type IncomeCategory = (typeof IncomeCategory)[keyof typeof IncomeCategory]
+
+
+export const ExpenseCategory: {
+  FOOD: 'FOOD',
+  TRANSPORT: 'TRANSPORT',
+  RENT: 'RENT',
+  SHOPPING: 'SHOPPING',
+  ENTERTAINMENT: 'ENTERTAINMENT',
+  BILLS: 'BILLS',
+  OTHER: 'OTHER'
+};
+
+export type ExpenseCategory = (typeof ExpenseCategory)[keyof typeof ExpenseCategory]
+
+}
+
+export type IncomeCategory = $Enums.IncomeCategory
+
+export const IncomeCategory: typeof $Enums.IncomeCategory
+
+export type ExpenseCategory = $Enums.ExpenseCategory
+
+export const ExpenseCategory: typeof $Enums.ExpenseCategory
 
 /**
  * ##  Prisma Client ʲˢ
@@ -149,6 +197,26 @@ export class PrismaClient<
     * ```
     */
   get user(): Prisma.UserDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.income`: Exposes CRUD operations for the **Income** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Incomes
+    * const incomes = await prisma.income.findMany()
+    * ```
+    */
+  get income(): Prisma.IncomeDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.expense`: Exposes CRUD operations for the **Expense** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Expenses
+    * const expenses = await prisma.expense.findMany()
+    * ```
+    */
+  get expense(): Prisma.ExpenseDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -583,7 +651,9 @@ export namespace Prisma {
 
 
   export const ModelName: {
-    User: 'User'
+    User: 'User',
+    Income: 'Income',
+    Expense: 'Expense'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -599,7 +669,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user"
+      modelProps: "user" | "income" | "expense"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -674,6 +744,154 @@ export namespace Prisma {
           count: {
             args: Prisma.UserCountArgs<ExtArgs>
             result: $Utils.Optional<UserCountAggregateOutputType> | number
+          }
+        }
+      }
+      Income: {
+        payload: Prisma.$IncomePayload<ExtArgs>
+        fields: Prisma.IncomeFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.IncomeFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IncomePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.IncomeFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IncomePayload>
+          }
+          findFirst: {
+            args: Prisma.IncomeFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IncomePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.IncomeFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IncomePayload>
+          }
+          findMany: {
+            args: Prisma.IncomeFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IncomePayload>[]
+          }
+          create: {
+            args: Prisma.IncomeCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IncomePayload>
+          }
+          createMany: {
+            args: Prisma.IncomeCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.IncomeCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IncomePayload>[]
+          }
+          delete: {
+            args: Prisma.IncomeDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IncomePayload>
+          }
+          update: {
+            args: Prisma.IncomeUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IncomePayload>
+          }
+          deleteMany: {
+            args: Prisma.IncomeDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.IncomeUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.IncomeUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IncomePayload>[]
+          }
+          upsert: {
+            args: Prisma.IncomeUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IncomePayload>
+          }
+          aggregate: {
+            args: Prisma.IncomeAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateIncome>
+          }
+          groupBy: {
+            args: Prisma.IncomeGroupByArgs<ExtArgs>
+            result: $Utils.Optional<IncomeGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.IncomeCountArgs<ExtArgs>
+            result: $Utils.Optional<IncomeCountAggregateOutputType> | number
+          }
+        }
+      }
+      Expense: {
+        payload: Prisma.$ExpensePayload<ExtArgs>
+        fields: Prisma.ExpenseFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ExpenseFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ExpensePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ExpenseFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ExpensePayload>
+          }
+          findFirst: {
+            args: Prisma.ExpenseFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ExpensePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ExpenseFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ExpensePayload>
+          }
+          findMany: {
+            args: Prisma.ExpenseFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ExpensePayload>[]
+          }
+          create: {
+            args: Prisma.ExpenseCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ExpensePayload>
+          }
+          createMany: {
+            args: Prisma.ExpenseCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ExpenseCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ExpensePayload>[]
+          }
+          delete: {
+            args: Prisma.ExpenseDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ExpensePayload>
+          }
+          update: {
+            args: Prisma.ExpenseUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ExpensePayload>
+          }
+          deleteMany: {
+            args: Prisma.ExpenseDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ExpenseUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ExpenseUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ExpensePayload>[]
+          }
+          upsert: {
+            args: Prisma.ExpenseUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ExpensePayload>
+          }
+          aggregate: {
+            args: Prisma.ExpenseAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateExpense>
+          }
+          groupBy: {
+            args: Prisma.ExpenseGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ExpenseGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ExpenseCountArgs<ExtArgs>
+            result: $Utils.Optional<ExpenseCountAggregateOutputType> | number
           }
         }
       }
@@ -786,6 +1004,8 @@ export namespace Prisma {
   }
   export type GlobalOmitConfig = {
     user?: UserOmit
+    income?: IncomeOmit
+    expense?: ExpenseOmit
   }
 
   /* Types for Logging */
@@ -860,6 +1080,45 @@ export namespace Prisma {
    * Count Types
    */
 
+
+  /**
+   * Count Type UserCountOutputType
+   */
+
+  export type UserCountOutputType = {
+    incomes: number
+    expenses: number
+  }
+
+  export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    incomes?: boolean | UserCountOutputTypeCountIncomesArgs
+    expenses?: boolean | UserCountOutputTypeCountExpensesArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserCountOutputType
+     */
+    select?: UserCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountIncomesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: IncomeWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountExpensesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ExpenseWhereInput
+  }
 
 
   /**
@@ -1064,6 +1323,9 @@ export namespace Prisma {
     name?: boolean
     googleId?: boolean
     password?: boolean
+    incomes?: boolean | User$incomesArgs<ExtArgs>
+    expenses?: boolean | User$expensesArgs<ExtArgs>
+    _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -1091,10 +1353,20 @@ export namespace Prisma {
   }
 
   export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "name" | "googleId" | "password", ExtArgs["result"]["user"]>
+  export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    incomes?: boolean | User$incomesArgs<ExtArgs>
+    expenses?: boolean | User$expensesArgs<ExtArgs>
+    _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type UserIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
 
   export type $UserPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "User"
-    objects: {}
+    objects: {
+      incomes: Prisma.$IncomePayload<ExtArgs>[]
+      expenses: Prisma.$ExpensePayload<ExtArgs>[]
+    }
     scalars: $Extensions.GetPayloadResult<{
       id: number
       email: string
@@ -1495,6 +1767,8 @@ export namespace Prisma {
    */
   export interface Prisma__UserClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    incomes<T extends User$incomesArgs<ExtArgs> = {}>(args?: Subset<T, User$incomesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$IncomePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    expenses<T extends User$expensesArgs<ExtArgs> = {}>(args?: Subset<T, User$expensesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ExpensePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1546,6 +1820,10 @@ export namespace Prisma {
      */
     omit?: UserOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    /**
      * Filter, which User to fetch.
      */
     where: UserWhereUniqueInput
@@ -1564,6 +1842,10 @@ export namespace Prisma {
      */
     omit?: UserOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    /**
      * Filter, which User to fetch.
      */
     where: UserWhereUniqueInput
@@ -1581,6 +1863,10 @@ export namespace Prisma {
      * Omit specific fields from the User
      */
     omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
     /**
      * Filter, which User to fetch.
      */
@@ -1630,6 +1916,10 @@ export namespace Prisma {
      */
     omit?: UserOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    /**
      * Filter, which User to fetch.
      */
     where?: UserWhereInput
@@ -1678,6 +1968,10 @@ export namespace Prisma {
      */
     omit?: UserOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    /**
      * Filter, which Users to fetch.
      */
     where?: UserWhereInput
@@ -1720,6 +2014,10 @@ export namespace Prisma {
      * Omit specific fields from the User
      */
     omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
     /**
      * The data needed to create a User.
      */
@@ -1768,6 +2066,10 @@ export namespace Prisma {
      * Omit specific fields from the User
      */
     omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
     /**
      * The data needed to update a User.
      */
@@ -1835,6 +2137,10 @@ export namespace Prisma {
      */
     omit?: UserOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    /**
      * The filter to search for the User to update in case it exists.
      */
     where: UserWhereUniqueInput
@@ -1861,6 +2167,10 @@ export namespace Prisma {
      */
     omit?: UserOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    /**
      * Filter which User to delete.
      */
     where: UserWhereUniqueInput
@@ -1881,6 +2191,54 @@ export namespace Prisma {
   }
 
   /**
+   * User.incomes
+   */
+  export type User$incomesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Income
+     */
+    select?: IncomeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Income
+     */
+    omit?: IncomeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IncomeInclude<ExtArgs> | null
+    where?: IncomeWhereInput
+    orderBy?: IncomeOrderByWithRelationInput | IncomeOrderByWithRelationInput[]
+    cursor?: IncomeWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: IncomeScalarFieldEnum | IncomeScalarFieldEnum[]
+  }
+
+  /**
+   * User.expenses
+   */
+  export type User$expensesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Expense
+     */
+    select?: ExpenseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Expense
+     */
+    omit?: ExpenseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ExpenseInclude<ExtArgs> | null
+    where?: ExpenseWhereInput
+    orderBy?: ExpenseOrderByWithRelationInput | ExpenseOrderByWithRelationInput[]
+    cursor?: ExpenseWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ExpenseScalarFieldEnum | ExpenseScalarFieldEnum[]
+  }
+
+  /**
    * User without action
    */
   export type UserDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -1892,6 +2250,2288 @@ export namespace Prisma {
      * Omit specific fields from the User
      */
     omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model Income
+   */
+
+  export type AggregateIncome = {
+    _count: IncomeCountAggregateOutputType | null
+    _avg: IncomeAvgAggregateOutputType | null
+    _sum: IncomeSumAggregateOutputType | null
+    _min: IncomeMinAggregateOutputType | null
+    _max: IncomeMaxAggregateOutputType | null
+  }
+
+  export type IncomeAvgAggregateOutputType = {
+    id: number | null
+    amount: number | null
+    userId: number | null
+  }
+
+  export type IncomeSumAggregateOutputType = {
+    id: number | null
+    amount: number | null
+    userId: number | null
+  }
+
+  export type IncomeMinAggregateOutputType = {
+    id: number | null
+    amount: number | null
+    category: $Enums.IncomeCategory | null
+    note: string | null
+    date: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    userId: number | null
+  }
+
+  export type IncomeMaxAggregateOutputType = {
+    id: number | null
+    amount: number | null
+    category: $Enums.IncomeCategory | null
+    note: string | null
+    date: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    userId: number | null
+  }
+
+  export type IncomeCountAggregateOutputType = {
+    id: number
+    amount: number
+    category: number
+    note: number
+    date: number
+    createdAt: number
+    updatedAt: number
+    userId: number
+    _all: number
+  }
+
+
+  export type IncomeAvgAggregateInputType = {
+    id?: true
+    amount?: true
+    userId?: true
+  }
+
+  export type IncomeSumAggregateInputType = {
+    id?: true
+    amount?: true
+    userId?: true
+  }
+
+  export type IncomeMinAggregateInputType = {
+    id?: true
+    amount?: true
+    category?: true
+    note?: true
+    date?: true
+    createdAt?: true
+    updatedAt?: true
+    userId?: true
+  }
+
+  export type IncomeMaxAggregateInputType = {
+    id?: true
+    amount?: true
+    category?: true
+    note?: true
+    date?: true
+    createdAt?: true
+    updatedAt?: true
+    userId?: true
+  }
+
+  export type IncomeCountAggregateInputType = {
+    id?: true
+    amount?: true
+    category?: true
+    note?: true
+    date?: true
+    createdAt?: true
+    updatedAt?: true
+    userId?: true
+    _all?: true
+  }
+
+  export type IncomeAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Income to aggregate.
+     */
+    where?: IncomeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Incomes to fetch.
+     */
+    orderBy?: IncomeOrderByWithRelationInput | IncomeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: IncomeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Incomes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Incomes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Incomes
+    **/
+    _count?: true | IncomeCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: IncomeAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: IncomeSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: IncomeMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: IncomeMaxAggregateInputType
+  }
+
+  export type GetIncomeAggregateType<T extends IncomeAggregateArgs> = {
+        [P in keyof T & keyof AggregateIncome]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateIncome[P]>
+      : GetScalarType<T[P], AggregateIncome[P]>
+  }
+
+
+
+
+  export type IncomeGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: IncomeWhereInput
+    orderBy?: IncomeOrderByWithAggregationInput | IncomeOrderByWithAggregationInput[]
+    by: IncomeScalarFieldEnum[] | IncomeScalarFieldEnum
+    having?: IncomeScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: IncomeCountAggregateInputType | true
+    _avg?: IncomeAvgAggregateInputType
+    _sum?: IncomeSumAggregateInputType
+    _min?: IncomeMinAggregateInputType
+    _max?: IncomeMaxAggregateInputType
+  }
+
+  export type IncomeGroupByOutputType = {
+    id: number
+    amount: number
+    category: $Enums.IncomeCategory
+    note: string | null
+    date: Date
+    createdAt: Date
+    updatedAt: Date
+    userId: number
+    _count: IncomeCountAggregateOutputType | null
+    _avg: IncomeAvgAggregateOutputType | null
+    _sum: IncomeSumAggregateOutputType | null
+    _min: IncomeMinAggregateOutputType | null
+    _max: IncomeMaxAggregateOutputType | null
+  }
+
+  type GetIncomeGroupByPayload<T extends IncomeGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<IncomeGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof IncomeGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], IncomeGroupByOutputType[P]>
+            : GetScalarType<T[P], IncomeGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type IncomeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    amount?: boolean
+    category?: boolean
+    note?: boolean
+    date?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    userId?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["income"]>
+
+  export type IncomeSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    amount?: boolean
+    category?: boolean
+    note?: boolean
+    date?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    userId?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["income"]>
+
+  export type IncomeSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    amount?: boolean
+    category?: boolean
+    note?: boolean
+    date?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    userId?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["income"]>
+
+  export type IncomeSelectScalar = {
+    id?: boolean
+    amount?: boolean
+    category?: boolean
+    note?: boolean
+    date?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    userId?: boolean
+  }
+
+  export type IncomeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "amount" | "category" | "note" | "date" | "createdAt" | "updatedAt" | "userId", ExtArgs["result"]["income"]>
+  export type IncomeInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type IncomeIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type IncomeIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $IncomePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Income"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      amount: number
+      category: $Enums.IncomeCategory
+      note: string | null
+      date: Date
+      createdAt: Date
+      updatedAt: Date
+      userId: number
+    }, ExtArgs["result"]["income"]>
+    composites: {}
+  }
+
+  type IncomeGetPayload<S extends boolean | null | undefined | IncomeDefaultArgs> = $Result.GetResult<Prisma.$IncomePayload, S>
+
+  type IncomeCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<IncomeFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: IncomeCountAggregateInputType | true
+    }
+
+  export interface IncomeDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Income'], meta: { name: 'Income' } }
+    /**
+     * Find zero or one Income that matches the filter.
+     * @param {IncomeFindUniqueArgs} args - Arguments to find a Income
+     * @example
+     * // Get one Income
+     * const income = await prisma.income.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends IncomeFindUniqueArgs>(args: SelectSubset<T, IncomeFindUniqueArgs<ExtArgs>>): Prisma__IncomeClient<$Result.GetResult<Prisma.$IncomePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Income that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {IncomeFindUniqueOrThrowArgs} args - Arguments to find a Income
+     * @example
+     * // Get one Income
+     * const income = await prisma.income.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends IncomeFindUniqueOrThrowArgs>(args: SelectSubset<T, IncomeFindUniqueOrThrowArgs<ExtArgs>>): Prisma__IncomeClient<$Result.GetResult<Prisma.$IncomePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Income that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {IncomeFindFirstArgs} args - Arguments to find a Income
+     * @example
+     * // Get one Income
+     * const income = await prisma.income.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends IncomeFindFirstArgs>(args?: SelectSubset<T, IncomeFindFirstArgs<ExtArgs>>): Prisma__IncomeClient<$Result.GetResult<Prisma.$IncomePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Income that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {IncomeFindFirstOrThrowArgs} args - Arguments to find a Income
+     * @example
+     * // Get one Income
+     * const income = await prisma.income.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends IncomeFindFirstOrThrowArgs>(args?: SelectSubset<T, IncomeFindFirstOrThrowArgs<ExtArgs>>): Prisma__IncomeClient<$Result.GetResult<Prisma.$IncomePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Incomes that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {IncomeFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Incomes
+     * const incomes = await prisma.income.findMany()
+     * 
+     * // Get first 10 Incomes
+     * const incomes = await prisma.income.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const incomeWithIdOnly = await prisma.income.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends IncomeFindManyArgs>(args?: SelectSubset<T, IncomeFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$IncomePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Income.
+     * @param {IncomeCreateArgs} args - Arguments to create a Income.
+     * @example
+     * // Create one Income
+     * const Income = await prisma.income.create({
+     *   data: {
+     *     // ... data to create a Income
+     *   }
+     * })
+     * 
+     */
+    create<T extends IncomeCreateArgs>(args: SelectSubset<T, IncomeCreateArgs<ExtArgs>>): Prisma__IncomeClient<$Result.GetResult<Prisma.$IncomePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Incomes.
+     * @param {IncomeCreateManyArgs} args - Arguments to create many Incomes.
+     * @example
+     * // Create many Incomes
+     * const income = await prisma.income.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends IncomeCreateManyArgs>(args?: SelectSubset<T, IncomeCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Incomes and returns the data saved in the database.
+     * @param {IncomeCreateManyAndReturnArgs} args - Arguments to create many Incomes.
+     * @example
+     * // Create many Incomes
+     * const income = await prisma.income.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Incomes and only return the `id`
+     * const incomeWithIdOnly = await prisma.income.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends IncomeCreateManyAndReturnArgs>(args?: SelectSubset<T, IncomeCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$IncomePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Income.
+     * @param {IncomeDeleteArgs} args - Arguments to delete one Income.
+     * @example
+     * // Delete one Income
+     * const Income = await prisma.income.delete({
+     *   where: {
+     *     // ... filter to delete one Income
+     *   }
+     * })
+     * 
+     */
+    delete<T extends IncomeDeleteArgs>(args: SelectSubset<T, IncomeDeleteArgs<ExtArgs>>): Prisma__IncomeClient<$Result.GetResult<Prisma.$IncomePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Income.
+     * @param {IncomeUpdateArgs} args - Arguments to update one Income.
+     * @example
+     * // Update one Income
+     * const income = await prisma.income.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends IncomeUpdateArgs>(args: SelectSubset<T, IncomeUpdateArgs<ExtArgs>>): Prisma__IncomeClient<$Result.GetResult<Prisma.$IncomePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Incomes.
+     * @param {IncomeDeleteManyArgs} args - Arguments to filter Incomes to delete.
+     * @example
+     * // Delete a few Incomes
+     * const { count } = await prisma.income.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends IncomeDeleteManyArgs>(args?: SelectSubset<T, IncomeDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Incomes.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {IncomeUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Incomes
+     * const income = await prisma.income.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends IncomeUpdateManyArgs>(args: SelectSubset<T, IncomeUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Incomes and returns the data updated in the database.
+     * @param {IncomeUpdateManyAndReturnArgs} args - Arguments to update many Incomes.
+     * @example
+     * // Update many Incomes
+     * const income = await prisma.income.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Incomes and only return the `id`
+     * const incomeWithIdOnly = await prisma.income.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends IncomeUpdateManyAndReturnArgs>(args: SelectSubset<T, IncomeUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$IncomePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Income.
+     * @param {IncomeUpsertArgs} args - Arguments to update or create a Income.
+     * @example
+     * // Update or create a Income
+     * const income = await prisma.income.upsert({
+     *   create: {
+     *     // ... data to create a Income
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Income we want to update
+     *   }
+     * })
+     */
+    upsert<T extends IncomeUpsertArgs>(args: SelectSubset<T, IncomeUpsertArgs<ExtArgs>>): Prisma__IncomeClient<$Result.GetResult<Prisma.$IncomePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Incomes.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {IncomeCountArgs} args - Arguments to filter Incomes to count.
+     * @example
+     * // Count the number of Incomes
+     * const count = await prisma.income.count({
+     *   where: {
+     *     // ... the filter for the Incomes we want to count
+     *   }
+     * })
+    **/
+    count<T extends IncomeCountArgs>(
+      args?: Subset<T, IncomeCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], IncomeCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Income.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {IncomeAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends IncomeAggregateArgs>(args: Subset<T, IncomeAggregateArgs>): Prisma.PrismaPromise<GetIncomeAggregateType<T>>
+
+    /**
+     * Group by Income.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {IncomeGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends IncomeGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: IncomeGroupByArgs['orderBy'] }
+        : { orderBy?: IncomeGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, IncomeGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetIncomeGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Income model
+   */
+  readonly fields: IncomeFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Income.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__IncomeClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Income model
+   */
+  interface IncomeFieldRefs {
+    readonly id: FieldRef<"Income", 'Int'>
+    readonly amount: FieldRef<"Income", 'Int'>
+    readonly category: FieldRef<"Income", 'IncomeCategory'>
+    readonly note: FieldRef<"Income", 'String'>
+    readonly date: FieldRef<"Income", 'DateTime'>
+    readonly createdAt: FieldRef<"Income", 'DateTime'>
+    readonly updatedAt: FieldRef<"Income", 'DateTime'>
+    readonly userId: FieldRef<"Income", 'Int'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Income findUnique
+   */
+  export type IncomeFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Income
+     */
+    select?: IncomeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Income
+     */
+    omit?: IncomeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IncomeInclude<ExtArgs> | null
+    /**
+     * Filter, which Income to fetch.
+     */
+    where: IncomeWhereUniqueInput
+  }
+
+  /**
+   * Income findUniqueOrThrow
+   */
+  export type IncomeFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Income
+     */
+    select?: IncomeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Income
+     */
+    omit?: IncomeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IncomeInclude<ExtArgs> | null
+    /**
+     * Filter, which Income to fetch.
+     */
+    where: IncomeWhereUniqueInput
+  }
+
+  /**
+   * Income findFirst
+   */
+  export type IncomeFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Income
+     */
+    select?: IncomeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Income
+     */
+    omit?: IncomeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IncomeInclude<ExtArgs> | null
+    /**
+     * Filter, which Income to fetch.
+     */
+    where?: IncomeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Incomes to fetch.
+     */
+    orderBy?: IncomeOrderByWithRelationInput | IncomeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Incomes.
+     */
+    cursor?: IncomeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Incomes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Incomes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Incomes.
+     */
+    distinct?: IncomeScalarFieldEnum | IncomeScalarFieldEnum[]
+  }
+
+  /**
+   * Income findFirstOrThrow
+   */
+  export type IncomeFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Income
+     */
+    select?: IncomeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Income
+     */
+    omit?: IncomeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IncomeInclude<ExtArgs> | null
+    /**
+     * Filter, which Income to fetch.
+     */
+    where?: IncomeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Incomes to fetch.
+     */
+    orderBy?: IncomeOrderByWithRelationInput | IncomeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Incomes.
+     */
+    cursor?: IncomeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Incomes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Incomes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Incomes.
+     */
+    distinct?: IncomeScalarFieldEnum | IncomeScalarFieldEnum[]
+  }
+
+  /**
+   * Income findMany
+   */
+  export type IncomeFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Income
+     */
+    select?: IncomeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Income
+     */
+    omit?: IncomeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IncomeInclude<ExtArgs> | null
+    /**
+     * Filter, which Incomes to fetch.
+     */
+    where?: IncomeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Incomes to fetch.
+     */
+    orderBy?: IncomeOrderByWithRelationInput | IncomeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Incomes.
+     */
+    cursor?: IncomeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Incomes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Incomes.
+     */
+    skip?: number
+    distinct?: IncomeScalarFieldEnum | IncomeScalarFieldEnum[]
+  }
+
+  /**
+   * Income create
+   */
+  export type IncomeCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Income
+     */
+    select?: IncomeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Income
+     */
+    omit?: IncomeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IncomeInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Income.
+     */
+    data: XOR<IncomeCreateInput, IncomeUncheckedCreateInput>
+  }
+
+  /**
+   * Income createMany
+   */
+  export type IncomeCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Incomes.
+     */
+    data: IncomeCreateManyInput | IncomeCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Income createManyAndReturn
+   */
+  export type IncomeCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Income
+     */
+    select?: IncomeSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Income
+     */
+    omit?: IncomeOmit<ExtArgs> | null
+    /**
+     * The data used to create many Incomes.
+     */
+    data: IncomeCreateManyInput | IncomeCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IncomeIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Income update
+   */
+  export type IncomeUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Income
+     */
+    select?: IncomeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Income
+     */
+    omit?: IncomeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IncomeInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Income.
+     */
+    data: XOR<IncomeUpdateInput, IncomeUncheckedUpdateInput>
+    /**
+     * Choose, which Income to update.
+     */
+    where: IncomeWhereUniqueInput
+  }
+
+  /**
+   * Income updateMany
+   */
+  export type IncomeUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Incomes.
+     */
+    data: XOR<IncomeUpdateManyMutationInput, IncomeUncheckedUpdateManyInput>
+    /**
+     * Filter which Incomes to update
+     */
+    where?: IncomeWhereInput
+    /**
+     * Limit how many Incomes to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Income updateManyAndReturn
+   */
+  export type IncomeUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Income
+     */
+    select?: IncomeSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Income
+     */
+    omit?: IncomeOmit<ExtArgs> | null
+    /**
+     * The data used to update Incomes.
+     */
+    data: XOR<IncomeUpdateManyMutationInput, IncomeUncheckedUpdateManyInput>
+    /**
+     * Filter which Incomes to update
+     */
+    where?: IncomeWhereInput
+    /**
+     * Limit how many Incomes to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IncomeIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Income upsert
+   */
+  export type IncomeUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Income
+     */
+    select?: IncomeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Income
+     */
+    omit?: IncomeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IncomeInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Income to update in case it exists.
+     */
+    where: IncomeWhereUniqueInput
+    /**
+     * In case the Income found by the `where` argument doesn't exist, create a new Income with this data.
+     */
+    create: XOR<IncomeCreateInput, IncomeUncheckedCreateInput>
+    /**
+     * In case the Income was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<IncomeUpdateInput, IncomeUncheckedUpdateInput>
+  }
+
+  /**
+   * Income delete
+   */
+  export type IncomeDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Income
+     */
+    select?: IncomeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Income
+     */
+    omit?: IncomeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IncomeInclude<ExtArgs> | null
+    /**
+     * Filter which Income to delete.
+     */
+    where: IncomeWhereUniqueInput
+  }
+
+  /**
+   * Income deleteMany
+   */
+  export type IncomeDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Incomes to delete
+     */
+    where?: IncomeWhereInput
+    /**
+     * Limit how many Incomes to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Income without action
+   */
+  export type IncomeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Income
+     */
+    select?: IncomeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Income
+     */
+    omit?: IncomeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IncomeInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model Expense
+   */
+
+  export type AggregateExpense = {
+    _count: ExpenseCountAggregateOutputType | null
+    _avg: ExpenseAvgAggregateOutputType | null
+    _sum: ExpenseSumAggregateOutputType | null
+    _min: ExpenseMinAggregateOutputType | null
+    _max: ExpenseMaxAggregateOutputType | null
+  }
+
+  export type ExpenseAvgAggregateOutputType = {
+    id: number | null
+    amount: number | null
+    userId: number | null
+  }
+
+  export type ExpenseSumAggregateOutputType = {
+    id: number | null
+    amount: number | null
+    userId: number | null
+  }
+
+  export type ExpenseMinAggregateOutputType = {
+    id: number | null
+    amount: number | null
+    category: $Enums.ExpenseCategory | null
+    note: string | null
+    date: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    userId: number | null
+  }
+
+  export type ExpenseMaxAggregateOutputType = {
+    id: number | null
+    amount: number | null
+    category: $Enums.ExpenseCategory | null
+    note: string | null
+    date: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    userId: number | null
+  }
+
+  export type ExpenseCountAggregateOutputType = {
+    id: number
+    amount: number
+    category: number
+    note: number
+    date: number
+    createdAt: number
+    updatedAt: number
+    userId: number
+    _all: number
+  }
+
+
+  export type ExpenseAvgAggregateInputType = {
+    id?: true
+    amount?: true
+    userId?: true
+  }
+
+  export type ExpenseSumAggregateInputType = {
+    id?: true
+    amount?: true
+    userId?: true
+  }
+
+  export type ExpenseMinAggregateInputType = {
+    id?: true
+    amount?: true
+    category?: true
+    note?: true
+    date?: true
+    createdAt?: true
+    updatedAt?: true
+    userId?: true
+  }
+
+  export type ExpenseMaxAggregateInputType = {
+    id?: true
+    amount?: true
+    category?: true
+    note?: true
+    date?: true
+    createdAt?: true
+    updatedAt?: true
+    userId?: true
+  }
+
+  export type ExpenseCountAggregateInputType = {
+    id?: true
+    amount?: true
+    category?: true
+    note?: true
+    date?: true
+    createdAt?: true
+    updatedAt?: true
+    userId?: true
+    _all?: true
+  }
+
+  export type ExpenseAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Expense to aggregate.
+     */
+    where?: ExpenseWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Expenses to fetch.
+     */
+    orderBy?: ExpenseOrderByWithRelationInput | ExpenseOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ExpenseWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Expenses from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Expenses.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Expenses
+    **/
+    _count?: true | ExpenseCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: ExpenseAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: ExpenseSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ExpenseMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ExpenseMaxAggregateInputType
+  }
+
+  export type GetExpenseAggregateType<T extends ExpenseAggregateArgs> = {
+        [P in keyof T & keyof AggregateExpense]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateExpense[P]>
+      : GetScalarType<T[P], AggregateExpense[P]>
+  }
+
+
+
+
+  export type ExpenseGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ExpenseWhereInput
+    orderBy?: ExpenseOrderByWithAggregationInput | ExpenseOrderByWithAggregationInput[]
+    by: ExpenseScalarFieldEnum[] | ExpenseScalarFieldEnum
+    having?: ExpenseScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ExpenseCountAggregateInputType | true
+    _avg?: ExpenseAvgAggregateInputType
+    _sum?: ExpenseSumAggregateInputType
+    _min?: ExpenseMinAggregateInputType
+    _max?: ExpenseMaxAggregateInputType
+  }
+
+  export type ExpenseGroupByOutputType = {
+    id: number
+    amount: number
+    category: $Enums.ExpenseCategory
+    note: string | null
+    date: Date
+    createdAt: Date
+    updatedAt: Date
+    userId: number
+    _count: ExpenseCountAggregateOutputType | null
+    _avg: ExpenseAvgAggregateOutputType | null
+    _sum: ExpenseSumAggregateOutputType | null
+    _min: ExpenseMinAggregateOutputType | null
+    _max: ExpenseMaxAggregateOutputType | null
+  }
+
+  type GetExpenseGroupByPayload<T extends ExpenseGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ExpenseGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ExpenseGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ExpenseGroupByOutputType[P]>
+            : GetScalarType<T[P], ExpenseGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ExpenseSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    amount?: boolean
+    category?: boolean
+    note?: boolean
+    date?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    userId?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["expense"]>
+
+  export type ExpenseSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    amount?: boolean
+    category?: boolean
+    note?: boolean
+    date?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    userId?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["expense"]>
+
+  export type ExpenseSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    amount?: boolean
+    category?: boolean
+    note?: boolean
+    date?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    userId?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["expense"]>
+
+  export type ExpenseSelectScalar = {
+    id?: boolean
+    amount?: boolean
+    category?: boolean
+    note?: boolean
+    date?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    userId?: boolean
+  }
+
+  export type ExpenseOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "amount" | "category" | "note" | "date" | "createdAt" | "updatedAt" | "userId", ExtArgs["result"]["expense"]>
+  export type ExpenseInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type ExpenseIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type ExpenseIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $ExpensePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Expense"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      amount: number
+      category: $Enums.ExpenseCategory
+      note: string | null
+      date: Date
+      createdAt: Date
+      updatedAt: Date
+      userId: number
+    }, ExtArgs["result"]["expense"]>
+    composites: {}
+  }
+
+  type ExpenseGetPayload<S extends boolean | null | undefined | ExpenseDefaultArgs> = $Result.GetResult<Prisma.$ExpensePayload, S>
+
+  type ExpenseCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ExpenseFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ExpenseCountAggregateInputType | true
+    }
+
+  export interface ExpenseDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Expense'], meta: { name: 'Expense' } }
+    /**
+     * Find zero or one Expense that matches the filter.
+     * @param {ExpenseFindUniqueArgs} args - Arguments to find a Expense
+     * @example
+     * // Get one Expense
+     * const expense = await prisma.expense.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ExpenseFindUniqueArgs>(args: SelectSubset<T, ExpenseFindUniqueArgs<ExtArgs>>): Prisma__ExpenseClient<$Result.GetResult<Prisma.$ExpensePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Expense that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ExpenseFindUniqueOrThrowArgs} args - Arguments to find a Expense
+     * @example
+     * // Get one Expense
+     * const expense = await prisma.expense.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ExpenseFindUniqueOrThrowArgs>(args: SelectSubset<T, ExpenseFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ExpenseClient<$Result.GetResult<Prisma.$ExpensePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Expense that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ExpenseFindFirstArgs} args - Arguments to find a Expense
+     * @example
+     * // Get one Expense
+     * const expense = await prisma.expense.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ExpenseFindFirstArgs>(args?: SelectSubset<T, ExpenseFindFirstArgs<ExtArgs>>): Prisma__ExpenseClient<$Result.GetResult<Prisma.$ExpensePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Expense that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ExpenseFindFirstOrThrowArgs} args - Arguments to find a Expense
+     * @example
+     * // Get one Expense
+     * const expense = await prisma.expense.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ExpenseFindFirstOrThrowArgs>(args?: SelectSubset<T, ExpenseFindFirstOrThrowArgs<ExtArgs>>): Prisma__ExpenseClient<$Result.GetResult<Prisma.$ExpensePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Expenses that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ExpenseFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Expenses
+     * const expenses = await prisma.expense.findMany()
+     * 
+     * // Get first 10 Expenses
+     * const expenses = await prisma.expense.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const expenseWithIdOnly = await prisma.expense.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ExpenseFindManyArgs>(args?: SelectSubset<T, ExpenseFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ExpensePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Expense.
+     * @param {ExpenseCreateArgs} args - Arguments to create a Expense.
+     * @example
+     * // Create one Expense
+     * const Expense = await prisma.expense.create({
+     *   data: {
+     *     // ... data to create a Expense
+     *   }
+     * })
+     * 
+     */
+    create<T extends ExpenseCreateArgs>(args: SelectSubset<T, ExpenseCreateArgs<ExtArgs>>): Prisma__ExpenseClient<$Result.GetResult<Prisma.$ExpensePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Expenses.
+     * @param {ExpenseCreateManyArgs} args - Arguments to create many Expenses.
+     * @example
+     * // Create many Expenses
+     * const expense = await prisma.expense.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ExpenseCreateManyArgs>(args?: SelectSubset<T, ExpenseCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Expenses and returns the data saved in the database.
+     * @param {ExpenseCreateManyAndReturnArgs} args - Arguments to create many Expenses.
+     * @example
+     * // Create many Expenses
+     * const expense = await prisma.expense.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Expenses and only return the `id`
+     * const expenseWithIdOnly = await prisma.expense.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ExpenseCreateManyAndReturnArgs>(args?: SelectSubset<T, ExpenseCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ExpensePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Expense.
+     * @param {ExpenseDeleteArgs} args - Arguments to delete one Expense.
+     * @example
+     * // Delete one Expense
+     * const Expense = await prisma.expense.delete({
+     *   where: {
+     *     // ... filter to delete one Expense
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ExpenseDeleteArgs>(args: SelectSubset<T, ExpenseDeleteArgs<ExtArgs>>): Prisma__ExpenseClient<$Result.GetResult<Prisma.$ExpensePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Expense.
+     * @param {ExpenseUpdateArgs} args - Arguments to update one Expense.
+     * @example
+     * // Update one Expense
+     * const expense = await prisma.expense.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ExpenseUpdateArgs>(args: SelectSubset<T, ExpenseUpdateArgs<ExtArgs>>): Prisma__ExpenseClient<$Result.GetResult<Prisma.$ExpensePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Expenses.
+     * @param {ExpenseDeleteManyArgs} args - Arguments to filter Expenses to delete.
+     * @example
+     * // Delete a few Expenses
+     * const { count } = await prisma.expense.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ExpenseDeleteManyArgs>(args?: SelectSubset<T, ExpenseDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Expenses.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ExpenseUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Expenses
+     * const expense = await prisma.expense.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ExpenseUpdateManyArgs>(args: SelectSubset<T, ExpenseUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Expenses and returns the data updated in the database.
+     * @param {ExpenseUpdateManyAndReturnArgs} args - Arguments to update many Expenses.
+     * @example
+     * // Update many Expenses
+     * const expense = await prisma.expense.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Expenses and only return the `id`
+     * const expenseWithIdOnly = await prisma.expense.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ExpenseUpdateManyAndReturnArgs>(args: SelectSubset<T, ExpenseUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ExpensePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Expense.
+     * @param {ExpenseUpsertArgs} args - Arguments to update or create a Expense.
+     * @example
+     * // Update or create a Expense
+     * const expense = await prisma.expense.upsert({
+     *   create: {
+     *     // ... data to create a Expense
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Expense we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ExpenseUpsertArgs>(args: SelectSubset<T, ExpenseUpsertArgs<ExtArgs>>): Prisma__ExpenseClient<$Result.GetResult<Prisma.$ExpensePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Expenses.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ExpenseCountArgs} args - Arguments to filter Expenses to count.
+     * @example
+     * // Count the number of Expenses
+     * const count = await prisma.expense.count({
+     *   where: {
+     *     // ... the filter for the Expenses we want to count
+     *   }
+     * })
+    **/
+    count<T extends ExpenseCountArgs>(
+      args?: Subset<T, ExpenseCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ExpenseCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Expense.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ExpenseAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ExpenseAggregateArgs>(args: Subset<T, ExpenseAggregateArgs>): Prisma.PrismaPromise<GetExpenseAggregateType<T>>
+
+    /**
+     * Group by Expense.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ExpenseGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ExpenseGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ExpenseGroupByArgs['orderBy'] }
+        : { orderBy?: ExpenseGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ExpenseGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetExpenseGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Expense model
+   */
+  readonly fields: ExpenseFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Expense.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ExpenseClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Expense model
+   */
+  interface ExpenseFieldRefs {
+    readonly id: FieldRef<"Expense", 'Int'>
+    readonly amount: FieldRef<"Expense", 'Int'>
+    readonly category: FieldRef<"Expense", 'ExpenseCategory'>
+    readonly note: FieldRef<"Expense", 'String'>
+    readonly date: FieldRef<"Expense", 'DateTime'>
+    readonly createdAt: FieldRef<"Expense", 'DateTime'>
+    readonly updatedAt: FieldRef<"Expense", 'DateTime'>
+    readonly userId: FieldRef<"Expense", 'Int'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Expense findUnique
+   */
+  export type ExpenseFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Expense
+     */
+    select?: ExpenseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Expense
+     */
+    omit?: ExpenseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ExpenseInclude<ExtArgs> | null
+    /**
+     * Filter, which Expense to fetch.
+     */
+    where: ExpenseWhereUniqueInput
+  }
+
+  /**
+   * Expense findUniqueOrThrow
+   */
+  export type ExpenseFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Expense
+     */
+    select?: ExpenseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Expense
+     */
+    omit?: ExpenseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ExpenseInclude<ExtArgs> | null
+    /**
+     * Filter, which Expense to fetch.
+     */
+    where: ExpenseWhereUniqueInput
+  }
+
+  /**
+   * Expense findFirst
+   */
+  export type ExpenseFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Expense
+     */
+    select?: ExpenseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Expense
+     */
+    omit?: ExpenseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ExpenseInclude<ExtArgs> | null
+    /**
+     * Filter, which Expense to fetch.
+     */
+    where?: ExpenseWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Expenses to fetch.
+     */
+    orderBy?: ExpenseOrderByWithRelationInput | ExpenseOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Expenses.
+     */
+    cursor?: ExpenseWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Expenses from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Expenses.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Expenses.
+     */
+    distinct?: ExpenseScalarFieldEnum | ExpenseScalarFieldEnum[]
+  }
+
+  /**
+   * Expense findFirstOrThrow
+   */
+  export type ExpenseFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Expense
+     */
+    select?: ExpenseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Expense
+     */
+    omit?: ExpenseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ExpenseInclude<ExtArgs> | null
+    /**
+     * Filter, which Expense to fetch.
+     */
+    where?: ExpenseWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Expenses to fetch.
+     */
+    orderBy?: ExpenseOrderByWithRelationInput | ExpenseOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Expenses.
+     */
+    cursor?: ExpenseWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Expenses from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Expenses.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Expenses.
+     */
+    distinct?: ExpenseScalarFieldEnum | ExpenseScalarFieldEnum[]
+  }
+
+  /**
+   * Expense findMany
+   */
+  export type ExpenseFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Expense
+     */
+    select?: ExpenseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Expense
+     */
+    omit?: ExpenseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ExpenseInclude<ExtArgs> | null
+    /**
+     * Filter, which Expenses to fetch.
+     */
+    where?: ExpenseWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Expenses to fetch.
+     */
+    orderBy?: ExpenseOrderByWithRelationInput | ExpenseOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Expenses.
+     */
+    cursor?: ExpenseWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Expenses from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Expenses.
+     */
+    skip?: number
+    distinct?: ExpenseScalarFieldEnum | ExpenseScalarFieldEnum[]
+  }
+
+  /**
+   * Expense create
+   */
+  export type ExpenseCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Expense
+     */
+    select?: ExpenseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Expense
+     */
+    omit?: ExpenseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ExpenseInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Expense.
+     */
+    data: XOR<ExpenseCreateInput, ExpenseUncheckedCreateInput>
+  }
+
+  /**
+   * Expense createMany
+   */
+  export type ExpenseCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Expenses.
+     */
+    data: ExpenseCreateManyInput | ExpenseCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Expense createManyAndReturn
+   */
+  export type ExpenseCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Expense
+     */
+    select?: ExpenseSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Expense
+     */
+    omit?: ExpenseOmit<ExtArgs> | null
+    /**
+     * The data used to create many Expenses.
+     */
+    data: ExpenseCreateManyInput | ExpenseCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ExpenseIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Expense update
+   */
+  export type ExpenseUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Expense
+     */
+    select?: ExpenseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Expense
+     */
+    omit?: ExpenseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ExpenseInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Expense.
+     */
+    data: XOR<ExpenseUpdateInput, ExpenseUncheckedUpdateInput>
+    /**
+     * Choose, which Expense to update.
+     */
+    where: ExpenseWhereUniqueInput
+  }
+
+  /**
+   * Expense updateMany
+   */
+  export type ExpenseUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Expenses.
+     */
+    data: XOR<ExpenseUpdateManyMutationInput, ExpenseUncheckedUpdateManyInput>
+    /**
+     * Filter which Expenses to update
+     */
+    where?: ExpenseWhereInput
+    /**
+     * Limit how many Expenses to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Expense updateManyAndReturn
+   */
+  export type ExpenseUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Expense
+     */
+    select?: ExpenseSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Expense
+     */
+    omit?: ExpenseOmit<ExtArgs> | null
+    /**
+     * The data used to update Expenses.
+     */
+    data: XOR<ExpenseUpdateManyMutationInput, ExpenseUncheckedUpdateManyInput>
+    /**
+     * Filter which Expenses to update
+     */
+    where?: ExpenseWhereInput
+    /**
+     * Limit how many Expenses to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ExpenseIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Expense upsert
+   */
+  export type ExpenseUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Expense
+     */
+    select?: ExpenseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Expense
+     */
+    omit?: ExpenseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ExpenseInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Expense to update in case it exists.
+     */
+    where: ExpenseWhereUniqueInput
+    /**
+     * In case the Expense found by the `where` argument doesn't exist, create a new Expense with this data.
+     */
+    create: XOR<ExpenseCreateInput, ExpenseUncheckedCreateInput>
+    /**
+     * In case the Expense was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ExpenseUpdateInput, ExpenseUncheckedUpdateInput>
+  }
+
+  /**
+   * Expense delete
+   */
+  export type ExpenseDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Expense
+     */
+    select?: ExpenseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Expense
+     */
+    omit?: ExpenseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ExpenseInclude<ExtArgs> | null
+    /**
+     * Filter which Expense to delete.
+     */
+    where: ExpenseWhereUniqueInput
+  }
+
+  /**
+   * Expense deleteMany
+   */
+  export type ExpenseDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Expenses to delete
+     */
+    where?: ExpenseWhereInput
+    /**
+     * Limit how many Expenses to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Expense without action
+   */
+  export type ExpenseDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Expense
+     */
+    select?: ExpenseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Expense
+     */
+    omit?: ExpenseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ExpenseInclude<ExtArgs> | null
   }
 
 
@@ -1918,6 +4558,34 @@ export namespace Prisma {
   };
 
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+
+
+  export const IncomeScalarFieldEnum: {
+    id: 'id',
+    amount: 'amount',
+    category: 'category',
+    note: 'note',
+    date: 'date',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
+    userId: 'userId'
+  };
+
+  export type IncomeScalarFieldEnum = (typeof IncomeScalarFieldEnum)[keyof typeof IncomeScalarFieldEnum]
+
+
+  export const ExpenseScalarFieldEnum: {
+    id: 'id',
+    amount: 'amount',
+    category: 'category',
+    note: 'note',
+    date: 'date',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
+    userId: 'userId'
+  };
+
+  export type ExpenseScalarFieldEnum = (typeof ExpenseScalarFieldEnum)[keyof typeof ExpenseScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -1978,6 +4646,48 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'IncomeCategory'
+   */
+  export type EnumIncomeCategoryFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'IncomeCategory'>
+    
+
+
+  /**
+   * Reference to a field of type 'IncomeCategory[]'
+   */
+  export type ListEnumIncomeCategoryFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'IncomeCategory[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'DateTime'
+   */
+  export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
+    
+
+
+  /**
+   * Reference to a field of type 'DateTime[]'
+   */
+  export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'ExpenseCategory'
+   */
+  export type EnumExpenseCategoryFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ExpenseCategory'>
+    
+
+
+  /**
+   * Reference to a field of type 'ExpenseCategory[]'
+   */
+  export type ListEnumExpenseCategoryFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ExpenseCategory[]'>
+    
+
+
+  /**
    * Reference to a field of type 'Float'
    */
   export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -2003,6 +4713,8 @@ export namespace Prisma {
     name?: StringNullableFilter<"User"> | string | null
     googleId?: StringNullableFilter<"User"> | string | null
     password?: StringNullableFilter<"User"> | string | null
+    incomes?: IncomeListRelationFilter
+    expenses?: ExpenseListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -2011,6 +4723,8 @@ export namespace Prisma {
     name?: SortOrderInput | SortOrder
     googleId?: SortOrderInput | SortOrder
     password?: SortOrderInput | SortOrder
+    incomes?: IncomeOrderByRelationAggregateInput
+    expenses?: ExpenseOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -2022,6 +4736,8 @@ export namespace Prisma {
     NOT?: UserWhereInput | UserWhereInput[]
     name?: StringNullableFilter<"User"> | string | null
     password?: StringNullableFilter<"User"> | string | null
+    incomes?: IncomeListRelationFilter
+    expenses?: ExpenseListRelationFilter
   }, "id" | "email" | "googleId">
 
   export type UserOrderByWithAggregationInput = {
@@ -2048,11 +4764,157 @@ export namespace Prisma {
     password?: StringNullableWithAggregatesFilter<"User"> | string | null
   }
 
+  export type IncomeWhereInput = {
+    AND?: IncomeWhereInput | IncomeWhereInput[]
+    OR?: IncomeWhereInput[]
+    NOT?: IncomeWhereInput | IncomeWhereInput[]
+    id?: IntFilter<"Income"> | number
+    amount?: IntFilter<"Income"> | number
+    category?: EnumIncomeCategoryFilter<"Income"> | $Enums.IncomeCategory
+    note?: StringNullableFilter<"Income"> | string | null
+    date?: DateTimeFilter<"Income"> | Date | string
+    createdAt?: DateTimeFilter<"Income"> | Date | string
+    updatedAt?: DateTimeFilter<"Income"> | Date | string
+    userId?: IntFilter<"Income"> | number
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type IncomeOrderByWithRelationInput = {
+    id?: SortOrder
+    amount?: SortOrder
+    category?: SortOrder
+    note?: SortOrderInput | SortOrder
+    date?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    userId?: SortOrder
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type IncomeWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    AND?: IncomeWhereInput | IncomeWhereInput[]
+    OR?: IncomeWhereInput[]
+    NOT?: IncomeWhereInput | IncomeWhereInput[]
+    amount?: IntFilter<"Income"> | number
+    category?: EnumIncomeCategoryFilter<"Income"> | $Enums.IncomeCategory
+    note?: StringNullableFilter<"Income"> | string | null
+    date?: DateTimeFilter<"Income"> | Date | string
+    createdAt?: DateTimeFilter<"Income"> | Date | string
+    updatedAt?: DateTimeFilter<"Income"> | Date | string
+    userId?: IntFilter<"Income"> | number
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id">
+
+  export type IncomeOrderByWithAggregationInput = {
+    id?: SortOrder
+    amount?: SortOrder
+    category?: SortOrder
+    note?: SortOrderInput | SortOrder
+    date?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    userId?: SortOrder
+    _count?: IncomeCountOrderByAggregateInput
+    _avg?: IncomeAvgOrderByAggregateInput
+    _max?: IncomeMaxOrderByAggregateInput
+    _min?: IncomeMinOrderByAggregateInput
+    _sum?: IncomeSumOrderByAggregateInput
+  }
+
+  export type IncomeScalarWhereWithAggregatesInput = {
+    AND?: IncomeScalarWhereWithAggregatesInput | IncomeScalarWhereWithAggregatesInput[]
+    OR?: IncomeScalarWhereWithAggregatesInput[]
+    NOT?: IncomeScalarWhereWithAggregatesInput | IncomeScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"Income"> | number
+    amount?: IntWithAggregatesFilter<"Income"> | number
+    category?: EnumIncomeCategoryWithAggregatesFilter<"Income"> | $Enums.IncomeCategory
+    note?: StringNullableWithAggregatesFilter<"Income"> | string | null
+    date?: DateTimeWithAggregatesFilter<"Income"> | Date | string
+    createdAt?: DateTimeWithAggregatesFilter<"Income"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Income"> | Date | string
+    userId?: IntWithAggregatesFilter<"Income"> | number
+  }
+
+  export type ExpenseWhereInput = {
+    AND?: ExpenseWhereInput | ExpenseWhereInput[]
+    OR?: ExpenseWhereInput[]
+    NOT?: ExpenseWhereInput | ExpenseWhereInput[]
+    id?: IntFilter<"Expense"> | number
+    amount?: IntFilter<"Expense"> | number
+    category?: EnumExpenseCategoryFilter<"Expense"> | $Enums.ExpenseCategory
+    note?: StringNullableFilter<"Expense"> | string | null
+    date?: DateTimeFilter<"Expense"> | Date | string
+    createdAt?: DateTimeFilter<"Expense"> | Date | string
+    updatedAt?: DateTimeFilter<"Expense"> | Date | string
+    userId?: IntFilter<"Expense"> | number
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type ExpenseOrderByWithRelationInput = {
+    id?: SortOrder
+    amount?: SortOrder
+    category?: SortOrder
+    note?: SortOrderInput | SortOrder
+    date?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    userId?: SortOrder
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type ExpenseWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    AND?: ExpenseWhereInput | ExpenseWhereInput[]
+    OR?: ExpenseWhereInput[]
+    NOT?: ExpenseWhereInput | ExpenseWhereInput[]
+    amount?: IntFilter<"Expense"> | number
+    category?: EnumExpenseCategoryFilter<"Expense"> | $Enums.ExpenseCategory
+    note?: StringNullableFilter<"Expense"> | string | null
+    date?: DateTimeFilter<"Expense"> | Date | string
+    createdAt?: DateTimeFilter<"Expense"> | Date | string
+    updatedAt?: DateTimeFilter<"Expense"> | Date | string
+    userId?: IntFilter<"Expense"> | number
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id">
+
+  export type ExpenseOrderByWithAggregationInput = {
+    id?: SortOrder
+    amount?: SortOrder
+    category?: SortOrder
+    note?: SortOrderInput | SortOrder
+    date?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    userId?: SortOrder
+    _count?: ExpenseCountOrderByAggregateInput
+    _avg?: ExpenseAvgOrderByAggregateInput
+    _max?: ExpenseMaxOrderByAggregateInput
+    _min?: ExpenseMinOrderByAggregateInput
+    _sum?: ExpenseSumOrderByAggregateInput
+  }
+
+  export type ExpenseScalarWhereWithAggregatesInput = {
+    AND?: ExpenseScalarWhereWithAggregatesInput | ExpenseScalarWhereWithAggregatesInput[]
+    OR?: ExpenseScalarWhereWithAggregatesInput[]
+    NOT?: ExpenseScalarWhereWithAggregatesInput | ExpenseScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"Expense"> | number
+    amount?: IntWithAggregatesFilter<"Expense"> | number
+    category?: EnumExpenseCategoryWithAggregatesFilter<"Expense"> | $Enums.ExpenseCategory
+    note?: StringNullableWithAggregatesFilter<"Expense"> | string | null
+    date?: DateTimeWithAggregatesFilter<"Expense"> | Date | string
+    createdAt?: DateTimeWithAggregatesFilter<"Expense"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Expense"> | Date | string
+    userId?: IntWithAggregatesFilter<"Expense"> | number
+  }
+
   export type UserCreateInput = {
     email: string
     name?: string | null
     googleId?: string | null
     password?: string | null
+    incomes?: IncomeCreateNestedManyWithoutUserInput
+    expenses?: ExpenseCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -2061,6 +4923,8 @@ export namespace Prisma {
     name?: string | null
     googleId?: string | null
     password?: string | null
+    incomes?: IncomeUncheckedCreateNestedManyWithoutUserInput
+    expenses?: ExpenseUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -2068,6 +4932,8 @@ export namespace Prisma {
     name?: NullableStringFieldUpdateOperationsInput | string | null
     googleId?: NullableStringFieldUpdateOperationsInput | string | null
     password?: NullableStringFieldUpdateOperationsInput | string | null
+    incomes?: IncomeUpdateManyWithoutUserNestedInput
+    expenses?: ExpenseUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -2076,6 +4942,8 @@ export namespace Prisma {
     name?: NullableStringFieldUpdateOperationsInput | string | null
     googleId?: NullableStringFieldUpdateOperationsInput | string | null
     password?: NullableStringFieldUpdateOperationsInput | string | null
+    incomes?: IncomeUncheckedUpdateManyWithoutUserNestedInput
+    expenses?: ExpenseUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -2099,6 +4967,152 @@ export namespace Prisma {
     name?: NullableStringFieldUpdateOperationsInput | string | null
     googleId?: NullableStringFieldUpdateOperationsInput | string | null
     password?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type IncomeCreateInput = {
+    amount?: number
+    category?: $Enums.IncomeCategory
+    note?: string | null
+    date?: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutIncomesInput
+  }
+
+  export type IncomeUncheckedCreateInput = {
+    id?: number
+    amount?: number
+    category?: $Enums.IncomeCategory
+    note?: string | null
+    date?: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    userId: number
+  }
+
+  export type IncomeUpdateInput = {
+    amount?: IntFieldUpdateOperationsInput | number
+    category?: EnumIncomeCategoryFieldUpdateOperationsInput | $Enums.IncomeCategory
+    note?: NullableStringFieldUpdateOperationsInput | string | null
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutIncomesNestedInput
+  }
+
+  export type IncomeUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    amount?: IntFieldUpdateOperationsInput | number
+    category?: EnumIncomeCategoryFieldUpdateOperationsInput | $Enums.IncomeCategory
+    note?: NullableStringFieldUpdateOperationsInput | string | null
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type IncomeCreateManyInput = {
+    id?: number
+    amount?: number
+    category?: $Enums.IncomeCategory
+    note?: string | null
+    date?: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    userId: number
+  }
+
+  export type IncomeUpdateManyMutationInput = {
+    amount?: IntFieldUpdateOperationsInput | number
+    category?: EnumIncomeCategoryFieldUpdateOperationsInput | $Enums.IncomeCategory
+    note?: NullableStringFieldUpdateOperationsInput | string | null
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type IncomeUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    amount?: IntFieldUpdateOperationsInput | number
+    category?: EnumIncomeCategoryFieldUpdateOperationsInput | $Enums.IncomeCategory
+    note?: NullableStringFieldUpdateOperationsInput | string | null
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type ExpenseCreateInput = {
+    amount?: number
+    category?: $Enums.ExpenseCategory
+    note?: string | null
+    date?: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutExpensesInput
+  }
+
+  export type ExpenseUncheckedCreateInput = {
+    id?: number
+    amount?: number
+    category?: $Enums.ExpenseCategory
+    note?: string | null
+    date?: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    userId: number
+  }
+
+  export type ExpenseUpdateInput = {
+    amount?: IntFieldUpdateOperationsInput | number
+    category?: EnumExpenseCategoryFieldUpdateOperationsInput | $Enums.ExpenseCategory
+    note?: NullableStringFieldUpdateOperationsInput | string | null
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutExpensesNestedInput
+  }
+
+  export type ExpenseUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    amount?: IntFieldUpdateOperationsInput | number
+    category?: EnumExpenseCategoryFieldUpdateOperationsInput | $Enums.ExpenseCategory
+    note?: NullableStringFieldUpdateOperationsInput | string | null
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type ExpenseCreateManyInput = {
+    id?: number
+    amount?: number
+    category?: $Enums.ExpenseCategory
+    note?: string | null
+    date?: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    userId: number
+  }
+
+  export type ExpenseUpdateManyMutationInput = {
+    amount?: IntFieldUpdateOperationsInput | number
+    category?: EnumExpenseCategoryFieldUpdateOperationsInput | $Enums.ExpenseCategory
+    note?: NullableStringFieldUpdateOperationsInput | string | null
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ExpenseUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    amount?: IntFieldUpdateOperationsInput | number
+    category?: EnumExpenseCategoryFieldUpdateOperationsInput | $Enums.ExpenseCategory
+    note?: NullableStringFieldUpdateOperationsInput | string | null
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: IntFieldUpdateOperationsInput | number
   }
 
   export type IntFilter<$PrismaModel = never> = {
@@ -2142,9 +5156,29 @@ export namespace Prisma {
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
+  export type IncomeListRelationFilter = {
+    every?: IncomeWhereInput
+    some?: IncomeWhereInput
+    none?: IncomeWhereInput
+  }
+
+  export type ExpenseListRelationFilter = {
+    every?: ExpenseWhereInput
+    some?: ExpenseWhereInput
+    none?: ExpenseWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
+  }
+
+  export type IncomeOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ExpenseOrderByRelationAggregateInput = {
+    _count?: SortOrder
   }
 
   export type UserCountOrderByAggregateInput = {
@@ -2231,6 +5265,188 @@ export namespace Prisma {
     _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
+  export type EnumIncomeCategoryFilter<$PrismaModel = never> = {
+    equals?: $Enums.IncomeCategory | EnumIncomeCategoryFieldRefInput<$PrismaModel>
+    in?: $Enums.IncomeCategory[] | ListEnumIncomeCategoryFieldRefInput<$PrismaModel>
+    notIn?: $Enums.IncomeCategory[] | ListEnumIncomeCategoryFieldRefInput<$PrismaModel>
+    not?: NestedEnumIncomeCategoryFilter<$PrismaModel> | $Enums.IncomeCategory
+  }
+
+  export type DateTimeFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeFilter<$PrismaModel> | Date | string
+  }
+
+  export type UserScalarRelationFilter = {
+    is?: UserWhereInput
+    isNot?: UserWhereInput
+  }
+
+  export type IncomeCountOrderByAggregateInput = {
+    id?: SortOrder
+    amount?: SortOrder
+    category?: SortOrder
+    note?: SortOrder
+    date?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    userId?: SortOrder
+  }
+
+  export type IncomeAvgOrderByAggregateInput = {
+    id?: SortOrder
+    amount?: SortOrder
+    userId?: SortOrder
+  }
+
+  export type IncomeMaxOrderByAggregateInput = {
+    id?: SortOrder
+    amount?: SortOrder
+    category?: SortOrder
+    note?: SortOrder
+    date?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    userId?: SortOrder
+  }
+
+  export type IncomeMinOrderByAggregateInput = {
+    id?: SortOrder
+    amount?: SortOrder
+    category?: SortOrder
+    note?: SortOrder
+    date?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    userId?: SortOrder
+  }
+
+  export type IncomeSumOrderByAggregateInput = {
+    id?: SortOrder
+    amount?: SortOrder
+    userId?: SortOrder
+  }
+
+  export type EnumIncomeCategoryWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.IncomeCategory | EnumIncomeCategoryFieldRefInput<$PrismaModel>
+    in?: $Enums.IncomeCategory[] | ListEnumIncomeCategoryFieldRefInput<$PrismaModel>
+    notIn?: $Enums.IncomeCategory[] | ListEnumIncomeCategoryFieldRefInput<$PrismaModel>
+    not?: NestedEnumIncomeCategoryWithAggregatesFilter<$PrismaModel> | $Enums.IncomeCategory
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumIncomeCategoryFilter<$PrismaModel>
+    _max?: NestedEnumIncomeCategoryFilter<$PrismaModel>
+  }
+
+  export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedDateTimeFilter<$PrismaModel>
+    _max?: NestedDateTimeFilter<$PrismaModel>
+  }
+
+  export type EnumExpenseCategoryFilter<$PrismaModel = never> = {
+    equals?: $Enums.ExpenseCategory | EnumExpenseCategoryFieldRefInput<$PrismaModel>
+    in?: $Enums.ExpenseCategory[] | ListEnumExpenseCategoryFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ExpenseCategory[] | ListEnumExpenseCategoryFieldRefInput<$PrismaModel>
+    not?: NestedEnumExpenseCategoryFilter<$PrismaModel> | $Enums.ExpenseCategory
+  }
+
+  export type ExpenseCountOrderByAggregateInput = {
+    id?: SortOrder
+    amount?: SortOrder
+    category?: SortOrder
+    note?: SortOrder
+    date?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    userId?: SortOrder
+  }
+
+  export type ExpenseAvgOrderByAggregateInput = {
+    id?: SortOrder
+    amount?: SortOrder
+    userId?: SortOrder
+  }
+
+  export type ExpenseMaxOrderByAggregateInput = {
+    id?: SortOrder
+    amount?: SortOrder
+    category?: SortOrder
+    note?: SortOrder
+    date?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    userId?: SortOrder
+  }
+
+  export type ExpenseMinOrderByAggregateInput = {
+    id?: SortOrder
+    amount?: SortOrder
+    category?: SortOrder
+    note?: SortOrder
+    date?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    userId?: SortOrder
+  }
+
+  export type ExpenseSumOrderByAggregateInput = {
+    id?: SortOrder
+    amount?: SortOrder
+    userId?: SortOrder
+  }
+
+  export type EnumExpenseCategoryWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ExpenseCategory | EnumExpenseCategoryFieldRefInput<$PrismaModel>
+    in?: $Enums.ExpenseCategory[] | ListEnumExpenseCategoryFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ExpenseCategory[] | ListEnumExpenseCategoryFieldRefInput<$PrismaModel>
+    not?: NestedEnumExpenseCategoryWithAggregatesFilter<$PrismaModel> | $Enums.ExpenseCategory
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumExpenseCategoryFilter<$PrismaModel>
+    _max?: NestedEnumExpenseCategoryFilter<$PrismaModel>
+  }
+
+  export type IncomeCreateNestedManyWithoutUserInput = {
+    create?: XOR<IncomeCreateWithoutUserInput, IncomeUncheckedCreateWithoutUserInput> | IncomeCreateWithoutUserInput[] | IncomeUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: IncomeCreateOrConnectWithoutUserInput | IncomeCreateOrConnectWithoutUserInput[]
+    createMany?: IncomeCreateManyUserInputEnvelope
+    connect?: IncomeWhereUniqueInput | IncomeWhereUniqueInput[]
+  }
+
+  export type ExpenseCreateNestedManyWithoutUserInput = {
+    create?: XOR<ExpenseCreateWithoutUserInput, ExpenseUncheckedCreateWithoutUserInput> | ExpenseCreateWithoutUserInput[] | ExpenseUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ExpenseCreateOrConnectWithoutUserInput | ExpenseCreateOrConnectWithoutUserInput[]
+    createMany?: ExpenseCreateManyUserInputEnvelope
+    connect?: ExpenseWhereUniqueInput | ExpenseWhereUniqueInput[]
+  }
+
+  export type IncomeUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<IncomeCreateWithoutUserInput, IncomeUncheckedCreateWithoutUserInput> | IncomeCreateWithoutUserInput[] | IncomeUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: IncomeCreateOrConnectWithoutUserInput | IncomeCreateOrConnectWithoutUserInput[]
+    createMany?: IncomeCreateManyUserInputEnvelope
+    connect?: IncomeWhereUniqueInput | IncomeWhereUniqueInput[]
+  }
+
+  export type ExpenseUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<ExpenseCreateWithoutUserInput, ExpenseUncheckedCreateWithoutUserInput> | ExpenseCreateWithoutUserInput[] | ExpenseUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ExpenseCreateOrConnectWithoutUserInput | ExpenseCreateOrConnectWithoutUserInput[]
+    createMany?: ExpenseCreateManyUserInputEnvelope
+    connect?: ExpenseWhereUniqueInput | ExpenseWhereUniqueInput[]
+  }
+
   export type StringFieldUpdateOperationsInput = {
     set?: string
   }
@@ -2239,12 +5455,108 @@ export namespace Prisma {
     set?: string | null
   }
 
+  export type IncomeUpdateManyWithoutUserNestedInput = {
+    create?: XOR<IncomeCreateWithoutUserInput, IncomeUncheckedCreateWithoutUserInput> | IncomeCreateWithoutUserInput[] | IncomeUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: IncomeCreateOrConnectWithoutUserInput | IncomeCreateOrConnectWithoutUserInput[]
+    upsert?: IncomeUpsertWithWhereUniqueWithoutUserInput | IncomeUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: IncomeCreateManyUserInputEnvelope
+    set?: IncomeWhereUniqueInput | IncomeWhereUniqueInput[]
+    disconnect?: IncomeWhereUniqueInput | IncomeWhereUniqueInput[]
+    delete?: IncomeWhereUniqueInput | IncomeWhereUniqueInput[]
+    connect?: IncomeWhereUniqueInput | IncomeWhereUniqueInput[]
+    update?: IncomeUpdateWithWhereUniqueWithoutUserInput | IncomeUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: IncomeUpdateManyWithWhereWithoutUserInput | IncomeUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: IncomeScalarWhereInput | IncomeScalarWhereInput[]
+  }
+
+  export type ExpenseUpdateManyWithoutUserNestedInput = {
+    create?: XOR<ExpenseCreateWithoutUserInput, ExpenseUncheckedCreateWithoutUserInput> | ExpenseCreateWithoutUserInput[] | ExpenseUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ExpenseCreateOrConnectWithoutUserInput | ExpenseCreateOrConnectWithoutUserInput[]
+    upsert?: ExpenseUpsertWithWhereUniqueWithoutUserInput | ExpenseUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: ExpenseCreateManyUserInputEnvelope
+    set?: ExpenseWhereUniqueInput | ExpenseWhereUniqueInput[]
+    disconnect?: ExpenseWhereUniqueInput | ExpenseWhereUniqueInput[]
+    delete?: ExpenseWhereUniqueInput | ExpenseWhereUniqueInput[]
+    connect?: ExpenseWhereUniqueInput | ExpenseWhereUniqueInput[]
+    update?: ExpenseUpdateWithWhereUniqueWithoutUserInput | ExpenseUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: ExpenseUpdateManyWithWhereWithoutUserInput | ExpenseUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: ExpenseScalarWhereInput | ExpenseScalarWhereInput[]
+  }
+
   export type IntFieldUpdateOperationsInput = {
     set?: number
     increment?: number
     decrement?: number
     multiply?: number
     divide?: number
+  }
+
+  export type IncomeUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<IncomeCreateWithoutUserInput, IncomeUncheckedCreateWithoutUserInput> | IncomeCreateWithoutUserInput[] | IncomeUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: IncomeCreateOrConnectWithoutUserInput | IncomeCreateOrConnectWithoutUserInput[]
+    upsert?: IncomeUpsertWithWhereUniqueWithoutUserInput | IncomeUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: IncomeCreateManyUserInputEnvelope
+    set?: IncomeWhereUniqueInput | IncomeWhereUniqueInput[]
+    disconnect?: IncomeWhereUniqueInput | IncomeWhereUniqueInput[]
+    delete?: IncomeWhereUniqueInput | IncomeWhereUniqueInput[]
+    connect?: IncomeWhereUniqueInput | IncomeWhereUniqueInput[]
+    update?: IncomeUpdateWithWhereUniqueWithoutUserInput | IncomeUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: IncomeUpdateManyWithWhereWithoutUserInput | IncomeUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: IncomeScalarWhereInput | IncomeScalarWhereInput[]
+  }
+
+  export type ExpenseUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<ExpenseCreateWithoutUserInput, ExpenseUncheckedCreateWithoutUserInput> | ExpenseCreateWithoutUserInput[] | ExpenseUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ExpenseCreateOrConnectWithoutUserInput | ExpenseCreateOrConnectWithoutUserInput[]
+    upsert?: ExpenseUpsertWithWhereUniqueWithoutUserInput | ExpenseUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: ExpenseCreateManyUserInputEnvelope
+    set?: ExpenseWhereUniqueInput | ExpenseWhereUniqueInput[]
+    disconnect?: ExpenseWhereUniqueInput | ExpenseWhereUniqueInput[]
+    delete?: ExpenseWhereUniqueInput | ExpenseWhereUniqueInput[]
+    connect?: ExpenseWhereUniqueInput | ExpenseWhereUniqueInput[]
+    update?: ExpenseUpdateWithWhereUniqueWithoutUserInput | ExpenseUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: ExpenseUpdateManyWithWhereWithoutUserInput | ExpenseUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: ExpenseScalarWhereInput | ExpenseScalarWhereInput[]
+  }
+
+  export type UserCreateNestedOneWithoutIncomesInput = {
+    create?: XOR<UserCreateWithoutIncomesInput, UserUncheckedCreateWithoutIncomesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutIncomesInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type EnumIncomeCategoryFieldUpdateOperationsInput = {
+    set?: $Enums.IncomeCategory
+  }
+
+  export type DateTimeFieldUpdateOperationsInput = {
+    set?: Date | string
+  }
+
+  export type UserUpdateOneRequiredWithoutIncomesNestedInput = {
+    create?: XOR<UserCreateWithoutIncomesInput, UserUncheckedCreateWithoutIncomesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutIncomesInput
+    upsert?: UserUpsertWithoutIncomesInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutIncomesInput, UserUpdateWithoutIncomesInput>, UserUncheckedUpdateWithoutIncomesInput>
+  }
+
+  export type UserCreateNestedOneWithoutExpensesInput = {
+    create?: XOR<UserCreateWithoutExpensesInput, UserUncheckedCreateWithoutExpensesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutExpensesInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type EnumExpenseCategoryFieldUpdateOperationsInput = {
+    set?: $Enums.ExpenseCategory
+  }
+
+  export type UserUpdateOneRequiredWithoutExpensesNestedInput = {
+    create?: XOR<UserCreateWithoutExpensesInput, UserUncheckedCreateWithoutExpensesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutExpensesInput
+    upsert?: UserUpsertWithoutExpensesInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutExpensesInput, UserUpdateWithoutExpensesInput>, UserUncheckedUpdateWithoutExpensesInput>
   }
 
   export type NestedIntFilter<$PrismaModel = never> = {
@@ -2356,6 +5668,361 @@ export namespace Prisma {
     gt?: number | IntFieldRefInput<$PrismaModel>
     gte?: number | IntFieldRefInput<$PrismaModel>
     not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type NestedEnumIncomeCategoryFilter<$PrismaModel = never> = {
+    equals?: $Enums.IncomeCategory | EnumIncomeCategoryFieldRefInput<$PrismaModel>
+    in?: $Enums.IncomeCategory[] | ListEnumIncomeCategoryFieldRefInput<$PrismaModel>
+    notIn?: $Enums.IncomeCategory[] | ListEnumIncomeCategoryFieldRefInput<$PrismaModel>
+    not?: NestedEnumIncomeCategoryFilter<$PrismaModel> | $Enums.IncomeCategory
+  }
+
+  export type NestedDateTimeFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeFilter<$PrismaModel> | Date | string
+  }
+
+  export type NestedEnumIncomeCategoryWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.IncomeCategory | EnumIncomeCategoryFieldRefInput<$PrismaModel>
+    in?: $Enums.IncomeCategory[] | ListEnumIncomeCategoryFieldRefInput<$PrismaModel>
+    notIn?: $Enums.IncomeCategory[] | ListEnumIncomeCategoryFieldRefInput<$PrismaModel>
+    not?: NestedEnumIncomeCategoryWithAggregatesFilter<$PrismaModel> | $Enums.IncomeCategory
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumIncomeCategoryFilter<$PrismaModel>
+    _max?: NestedEnumIncomeCategoryFilter<$PrismaModel>
+  }
+
+  export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedDateTimeFilter<$PrismaModel>
+    _max?: NestedDateTimeFilter<$PrismaModel>
+  }
+
+  export type NestedEnumExpenseCategoryFilter<$PrismaModel = never> = {
+    equals?: $Enums.ExpenseCategory | EnumExpenseCategoryFieldRefInput<$PrismaModel>
+    in?: $Enums.ExpenseCategory[] | ListEnumExpenseCategoryFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ExpenseCategory[] | ListEnumExpenseCategoryFieldRefInput<$PrismaModel>
+    not?: NestedEnumExpenseCategoryFilter<$PrismaModel> | $Enums.ExpenseCategory
+  }
+
+  export type NestedEnumExpenseCategoryWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ExpenseCategory | EnumExpenseCategoryFieldRefInput<$PrismaModel>
+    in?: $Enums.ExpenseCategory[] | ListEnumExpenseCategoryFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ExpenseCategory[] | ListEnumExpenseCategoryFieldRefInput<$PrismaModel>
+    not?: NestedEnumExpenseCategoryWithAggregatesFilter<$PrismaModel> | $Enums.ExpenseCategory
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumExpenseCategoryFilter<$PrismaModel>
+    _max?: NestedEnumExpenseCategoryFilter<$PrismaModel>
+  }
+
+  export type IncomeCreateWithoutUserInput = {
+    amount?: number
+    category?: $Enums.IncomeCategory
+    note?: string | null
+    date?: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type IncomeUncheckedCreateWithoutUserInput = {
+    id?: number
+    amount?: number
+    category?: $Enums.IncomeCategory
+    note?: string | null
+    date?: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type IncomeCreateOrConnectWithoutUserInput = {
+    where: IncomeWhereUniqueInput
+    create: XOR<IncomeCreateWithoutUserInput, IncomeUncheckedCreateWithoutUserInput>
+  }
+
+  export type IncomeCreateManyUserInputEnvelope = {
+    data: IncomeCreateManyUserInput | IncomeCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ExpenseCreateWithoutUserInput = {
+    amount?: number
+    category?: $Enums.ExpenseCategory
+    note?: string | null
+    date?: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ExpenseUncheckedCreateWithoutUserInput = {
+    id?: number
+    amount?: number
+    category?: $Enums.ExpenseCategory
+    note?: string | null
+    date?: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ExpenseCreateOrConnectWithoutUserInput = {
+    where: ExpenseWhereUniqueInput
+    create: XOR<ExpenseCreateWithoutUserInput, ExpenseUncheckedCreateWithoutUserInput>
+  }
+
+  export type ExpenseCreateManyUserInputEnvelope = {
+    data: ExpenseCreateManyUserInput | ExpenseCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type IncomeUpsertWithWhereUniqueWithoutUserInput = {
+    where: IncomeWhereUniqueInput
+    update: XOR<IncomeUpdateWithoutUserInput, IncomeUncheckedUpdateWithoutUserInput>
+    create: XOR<IncomeCreateWithoutUserInput, IncomeUncheckedCreateWithoutUserInput>
+  }
+
+  export type IncomeUpdateWithWhereUniqueWithoutUserInput = {
+    where: IncomeWhereUniqueInput
+    data: XOR<IncomeUpdateWithoutUserInput, IncomeUncheckedUpdateWithoutUserInput>
+  }
+
+  export type IncomeUpdateManyWithWhereWithoutUserInput = {
+    where: IncomeScalarWhereInput
+    data: XOR<IncomeUpdateManyMutationInput, IncomeUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type IncomeScalarWhereInput = {
+    AND?: IncomeScalarWhereInput | IncomeScalarWhereInput[]
+    OR?: IncomeScalarWhereInput[]
+    NOT?: IncomeScalarWhereInput | IncomeScalarWhereInput[]
+    id?: IntFilter<"Income"> | number
+    amount?: IntFilter<"Income"> | number
+    category?: EnumIncomeCategoryFilter<"Income"> | $Enums.IncomeCategory
+    note?: StringNullableFilter<"Income"> | string | null
+    date?: DateTimeFilter<"Income"> | Date | string
+    createdAt?: DateTimeFilter<"Income"> | Date | string
+    updatedAt?: DateTimeFilter<"Income"> | Date | string
+    userId?: IntFilter<"Income"> | number
+  }
+
+  export type ExpenseUpsertWithWhereUniqueWithoutUserInput = {
+    where: ExpenseWhereUniqueInput
+    update: XOR<ExpenseUpdateWithoutUserInput, ExpenseUncheckedUpdateWithoutUserInput>
+    create: XOR<ExpenseCreateWithoutUserInput, ExpenseUncheckedCreateWithoutUserInput>
+  }
+
+  export type ExpenseUpdateWithWhereUniqueWithoutUserInput = {
+    where: ExpenseWhereUniqueInput
+    data: XOR<ExpenseUpdateWithoutUserInput, ExpenseUncheckedUpdateWithoutUserInput>
+  }
+
+  export type ExpenseUpdateManyWithWhereWithoutUserInput = {
+    where: ExpenseScalarWhereInput
+    data: XOR<ExpenseUpdateManyMutationInput, ExpenseUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type ExpenseScalarWhereInput = {
+    AND?: ExpenseScalarWhereInput | ExpenseScalarWhereInput[]
+    OR?: ExpenseScalarWhereInput[]
+    NOT?: ExpenseScalarWhereInput | ExpenseScalarWhereInput[]
+    id?: IntFilter<"Expense"> | number
+    amount?: IntFilter<"Expense"> | number
+    category?: EnumExpenseCategoryFilter<"Expense"> | $Enums.ExpenseCategory
+    note?: StringNullableFilter<"Expense"> | string | null
+    date?: DateTimeFilter<"Expense"> | Date | string
+    createdAt?: DateTimeFilter<"Expense"> | Date | string
+    updatedAt?: DateTimeFilter<"Expense"> | Date | string
+    userId?: IntFilter<"Expense"> | number
+  }
+
+  export type UserCreateWithoutIncomesInput = {
+    email: string
+    name?: string | null
+    googleId?: string | null
+    password?: string | null
+    expenses?: ExpenseCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutIncomesInput = {
+    id?: number
+    email: string
+    name?: string | null
+    googleId?: string | null
+    password?: string | null
+    expenses?: ExpenseUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutIncomesInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutIncomesInput, UserUncheckedCreateWithoutIncomesInput>
+  }
+
+  export type UserUpsertWithoutIncomesInput = {
+    update: XOR<UserUpdateWithoutIncomesInput, UserUncheckedUpdateWithoutIncomesInput>
+    create: XOR<UserCreateWithoutIncomesInput, UserUncheckedCreateWithoutIncomesInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutIncomesInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutIncomesInput, UserUncheckedUpdateWithoutIncomesInput>
+  }
+
+  export type UserUpdateWithoutIncomesInput = {
+    email?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    googleId?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    expenses?: ExpenseUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutIncomesInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    email?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    googleId?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    expenses?: ExpenseUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserCreateWithoutExpensesInput = {
+    email: string
+    name?: string | null
+    googleId?: string | null
+    password?: string | null
+    incomes?: IncomeCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutExpensesInput = {
+    id?: number
+    email: string
+    name?: string | null
+    googleId?: string | null
+    password?: string | null
+    incomes?: IncomeUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutExpensesInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutExpensesInput, UserUncheckedCreateWithoutExpensesInput>
+  }
+
+  export type UserUpsertWithoutExpensesInput = {
+    update: XOR<UserUpdateWithoutExpensesInput, UserUncheckedUpdateWithoutExpensesInput>
+    create: XOR<UserCreateWithoutExpensesInput, UserUncheckedCreateWithoutExpensesInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutExpensesInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutExpensesInput, UserUncheckedUpdateWithoutExpensesInput>
+  }
+
+  export type UserUpdateWithoutExpensesInput = {
+    email?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    googleId?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    incomes?: IncomeUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutExpensesInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    email?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    googleId?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    incomes?: IncomeUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type IncomeCreateManyUserInput = {
+    id?: number
+    amount?: number
+    category?: $Enums.IncomeCategory
+    note?: string | null
+    date?: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ExpenseCreateManyUserInput = {
+    id?: number
+    amount?: number
+    category?: $Enums.ExpenseCategory
+    note?: string | null
+    date?: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type IncomeUpdateWithoutUserInput = {
+    amount?: IntFieldUpdateOperationsInput | number
+    category?: EnumIncomeCategoryFieldUpdateOperationsInput | $Enums.IncomeCategory
+    note?: NullableStringFieldUpdateOperationsInput | string | null
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type IncomeUncheckedUpdateWithoutUserInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    amount?: IntFieldUpdateOperationsInput | number
+    category?: EnumIncomeCategoryFieldUpdateOperationsInput | $Enums.IncomeCategory
+    note?: NullableStringFieldUpdateOperationsInput | string | null
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type IncomeUncheckedUpdateManyWithoutUserInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    amount?: IntFieldUpdateOperationsInput | number
+    category?: EnumIncomeCategoryFieldUpdateOperationsInput | $Enums.IncomeCategory
+    note?: NullableStringFieldUpdateOperationsInput | string | null
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ExpenseUpdateWithoutUserInput = {
+    amount?: IntFieldUpdateOperationsInput | number
+    category?: EnumExpenseCategoryFieldUpdateOperationsInput | $Enums.ExpenseCategory
+    note?: NullableStringFieldUpdateOperationsInput | string | null
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ExpenseUncheckedUpdateWithoutUserInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    amount?: IntFieldUpdateOperationsInput | number
+    category?: EnumExpenseCategoryFieldUpdateOperationsInput | $Enums.ExpenseCategory
+    note?: NullableStringFieldUpdateOperationsInput | string | null
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ExpenseUncheckedUpdateManyWithoutUserInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    amount?: IntFieldUpdateOperationsInput | number
+    category?: EnumExpenseCategoryFieldUpdateOperationsInput | $Enums.ExpenseCategory
+    note?: NullableStringFieldUpdateOperationsInput | string | null
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
 

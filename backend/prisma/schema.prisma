@@ -13,10 +13,59 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
 model User { 
   id    Int     @id @default(autoincrement()) 
   email String  @unique
   name  String?
   googleId   String?  @unique
   password   String?
+  incomes  Income[]
+  expenses Expense[]
 } 
+
+enum IncomeCategory {
+  SALARY
+  FREELANCE
+  BUSINESS
+  INVESTMENT
+  GIFT
+  OTHER
+}
+
+enum ExpenseCategory {
+  FOOD
+  TRANSPORT
+  RENT
+  SHOPPING
+  ENTERTAINMENT
+  BILLS
+  OTHER
+}
+
+model Income {
+  id       Int     @id @default(autoincrement()) 
+  amount   Int     @default(0)
+  category IncomeCategory @default(OTHER)
+  note     String?
+  date     DateTime @default(now())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId    Int
+  user      User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, date])
+}
+model Expense {
+  id       Int     @id @default(autoincrement()) 
+  amount   Int     @default(0)
+  category ExpenseCategory @default(OTHER)
+  note     String?
+  date     DateTime @default(now())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId    Int
+  user      User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, date])
+}

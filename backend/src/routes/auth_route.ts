@@ -66,7 +66,7 @@ router.get(
 router.get(
   "/auth/google/callback",
   passport.authenticate("google", {
-    successRedirect: "/dashboard",
+    successRedirect: "http://localhost:5173/entry",
     failureRedirect: "/login",
   })
 )
