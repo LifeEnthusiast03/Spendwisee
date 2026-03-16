@@ -16,26 +16,38 @@ export default function LoginPage() {
 
   return (
     <main className="auth-shell">
-      <section className="auth-hero">
+      <section className="auth-hero auth-hero-image">
         <p className="auth-eyebrow">Spendwise</p>
-        <h1>Track spending with one clean sign-in flow.</h1>
+        <h1>Manage income and expenses with a dashboard built for clarity.</h1>
         <p className="auth-copy">
-          Use Google for one-click access or continue with email and password.
+          Spendwise gives you real-time visibility into your financial activity with category insights, totals, and
+          a smooth workflow from data entry to analysis.
         </p>
-        <div className="auth-points">
-          <div>
-            <strong>Fast onboarding</strong>
-            <span>Create an account in a few seconds.</span>
+        <div className="auth-stat-grid">
+          <div className="auth-stat">
+            <strong>Unified View</strong>
+            <span>Income, expense, and balance in one place.</span>
           </div>
-          <div>
-            <strong>Local + Google auth</strong>
-            <span>Pick the sign-in method that fits your workflow.</span>
-          </div>
-          <div>
-            <strong>Backend ready</strong>
-            <span>Requests are wired to your Express auth endpoints.</span>
+          <div className="auth-stat">
+            <strong>Smart Insights</strong>
+            <span>Category breakdowns with quick visual charts.</span>
           </div>
         </div>
+        <div className="auth-points">
+          <div>
+            <strong>Instant start</strong>
+            <span>Sign in with Google or continue with your email.</span>
+          </div>
+          <div>
+            <strong>Clean dashboard flow</strong>
+            <span>Move from overview to form pages without friction.</span>
+          </div>
+          <div>
+            <strong>Secure session handling</strong>
+            <span>Authenticated routes keep your financial data private.</span>
+          </div>
+        </div>
+        <p className="auth-trust-row">Built for focused personal finance tracking and daily review habits.</p>
       </section>
 
       <section className="auth-panel">
@@ -50,7 +62,7 @@ export default function LoginPage() {
 
         <div className="auth-panel-head">
           <h2>Welcome back</h2>
-          <p>Login with your email and password.</p>
+          <p>Login to continue tracking your financial progress.</p>
         </div>
 
         <button className="google-button" onClick={handleGoogleLogin} type="button">

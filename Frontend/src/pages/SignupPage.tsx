@@ -48,26 +48,38 @@ export default function SignupPage() {
 
   return (
     <main className="auth-shell">
-      <section className="auth-hero">
+      <section className="auth-hero auth-hero-image">
         <p className="auth-eyebrow">Spendwise</p>
-        <h1>Track spending with one clean sign-in flow.</h1>
+        <h1>Start building smarter money habits from your first entry.</h1>
         <p className="auth-copy">
-          Use Google for one-click access or continue with email and password.
+          Create your Spendwise account to unlock a professional dashboard for tracking, comparing, and understanding
+          your day-to-day financial activity.
         </p>
-        <div className="auth-points">
-          <div>
-            <strong>Fast onboarding</strong>
-            <span>Create an account in a few seconds.</span>
+        <div className="auth-stat-grid">
+          <div className="auth-stat">
+            <strong>Simple Setup</strong>
+            <span>Register in less than a minute.</span>
           </div>
-          <div>
-            <strong>Local + Google auth</strong>
-            <span>Pick the sign-in method that fits your workflow.</span>
-          </div>
-          <div>
-            <strong>Backend ready</strong>
-            <span>Requests are wired to your Express auth endpoints.</span>
+          <div className="auth-stat">
+            <strong>Actionable Data</strong>
+            <span>Convert entries into meaningful visual insights.</span>
           </div>
         </div>
+        <div className="auth-points">
+          <div>
+            <strong>Personalized profile</strong>
+            <span>Use your name and account identity across the app.</span>
+          </div>
+          <div>
+            <strong>Local + Google authentication</strong>
+            <span>Choose the sign-up method that matches your workflow.</span>
+          </div>
+          <div>
+            <strong>Category-first analytics</strong>
+            <span>Visualize top earning and spending areas right from home.</span>
+          </div>
+        </div>
+        <p className="auth-trust-row">Designed for people who want clarity, consistency, and confidence with money.</p>
       </section>
 
       <section className="auth-panel">
@@ -82,7 +94,7 @@ export default function SignupPage() {
 
         <div className="auth-panel-head">
           <h2>Create your account</h2>
-          <p>Sign up with your name, email, and password.</p>
+          <p>Sign up with your name, email, and password to get started.</p>
         </div>
 
         <button className="google-button" onClick={handleGoogleLogin} type="button">
