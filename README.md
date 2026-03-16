@@ -1,84 +1,143 @@
-# Spendwise
+# SpendWise
 
-A full-stack expense tracker application with local and Google OAuth authentication.
+SpendWise is a full-stack personal finance tracker with session-based authentication, category-wise analytics, and a modern multi-page dashboard UI.
+
+## Current Project Status
+
+Implemented and working:
+- Local auth (`register`, `login`) and Google OAuth login
+- Session-based protected routes (Passport + `express-session`)
+- Logout endpoint that destroys session and clears cookie
+- Income and Expense CRUD entry flows (add + list)
+- Category-wise totals for income and expense
+- Dashboard sections split into dedicated pages:
+  - Home
+  - Analytics
+  - Budget
+  - Profile
+- Separate Income Form and Expense Form pages
+- Premium dark-themed UI with chart visualizations
 
 ---
 
 ## Tech Stack
 
-| Layer | Technology |
-|-------|------------|
-| Frontend | React 19, TypeScript, Vite, React Router v7, Axios, Tailwind CSS |
-| Backend | Node.js, Express, TypeScript, Passport.js |
-| Database | PostgreSQL (via Docker) |
+| Layer | Tech |
+|---|---|
+| Frontend | React 19, TypeScript, Vite, React Router v7, Tailwind v4 |
+| Backend | Node.js, Express, TypeScript |
+| Auth | Passport Local + Passport Google OAuth + express-session |
 | ORM | Prisma |
-| Auth | Passport Local + Passport Google OAuth 2.0, express-session |
+| Database | PostgreSQL (Docker) |
 
 ---
 
 ## Project Structure
 
-```
+```txt
 Spendwisee/
-├── backend/
-│   ├── src/
-│   │   ├── index.ts               # Express app entry point
-│   │   ├── config/
-│   │   │   └── passport.ts        # Local & Google Passport strategies
-│   │   ├── routes/
-│   │   │   └── auth_route.ts      # /auth/register, /auth/login, /auth/google, /dashboard
-│   │   ├── middleware/
-│   │   │   └── auth_middleware.ts # isAuthenticated guard
-│   │   ├── lib/
-│   │   │   └── prisma.ts          # Prisma client singleton
-│   │   └── types/
-│   │       └── type.ts            # IUser interface
-│   ├── prisma/
-│   │   └── schema.prisma          # User model
-│   ├── docker-compose.yml         # PostgreSQL container
-│   └── package.json
-└── Frontend/
-    ├── src/
-    │   ├── App.tsx                # Route definitions
-    │   ├── pages/
-    │   │   ├── LoginPage.tsx      # Login form → native POST to backend
-    │   │   └── SignupPage.tsx     # Signup form → axios POST
-    │   ├── App.css
-    │   └── main.tsx
-    └── package.json
+├─ backend/
+│  ├─ src/
+│  │  ├─ index.ts
+│  │  ├─ config/passport.ts
+│  │  ├─ routes/
+│  │  │  ├─ auth_route.ts
+│  │  │  ├─ income_route.ts
+│  │  │  └─ expense_route.ts
+│  │  ├─ controllers/
+│  │  ├─ middleware/
+│  │  └─ lib/prisma.ts
+│  ├─ prisma/schema.prisma
+│  └─ docker-compose.yml
+└─ Frontend/
+   ├─ src/
+   │  ├─ App.tsx
+   │  ├─ components/
+   │  ├─ hooks/useDashboardData.ts
+   │  └─ pages/
+   │     ├─ LoginPage.tsx
+   │     ├─ SignupPage.tsx
+   │     ├─ HomePage.tsx
+   │     ├─ AnalyticsPage.tsx
+   │     ├─ BudgetPage.tsx
+   │     ├─ ProfilePage.tsx
+   │     ├─ IncomeFormPage.tsx
+   │     └─ ExpenseFormPage.tsx
+   └─ vite.config.ts
 ```
 
 ---
 
-## Database Schema
+## Database Models (Prisma)
 
-```prisma
-model User {
-  id       Int     @id @default(autoincrement())
-  email    String  @unique
-  name     String?
-  googleId String? @unique
-  password String?
-}
-```
+Main models currently used:
+- `User`
+- `Income` (with `IncomeCategory` enum)
+- `Expense` (with `ExpenseCategory` enum)
+
+Category enums are defined in `backend/prisma/schema.prisma`.
 
 ---
 
-## Getting Started
+## Backend API (Current)
 
-### Prerequisites
+Base URL: `http://localhost:3000`
 
-- Node.js 18+
-- Docker Desktop
+### Auth
+- `POST /auth/register` - Register user
+- `POST /auth/login` - Login user (creates session)
+- `GET /auth/google` - Start Google OAuth
+- `GET /auth/google/callback` - Google callback
+- `GET /auth/user` - Get current authenticated user profile
+- `POST /auth/logout` - Logout + destroy session + clear cookie
+- `GET /dashboard` - Protected session check route
 
-### 1. Start the database
+### Income
+- `GET /income` - Get user income entries
+- `POST /addincome` - Add income entry
+- `GET /income/total` - Income totals by category
+- `GET /income/catagory` - Category-wise income listing/aggregation endpoint
+
+### Expense
+- `GET /expense` - Get user expense entries
+- `POST /addexpense` - Add expense entry
+- `GET /expense/total` - Expense totals by category
+- `GET /expense/catagory` - Category-wise expense listing/aggregation endpoint
+
+> Note: Endpoint uses `catagory` spelling in path because current backend code uses that naming.
+
+---
+
+## Frontend Routes (Current)
+
+Base URL: `http://localhost:5173`
+
+Public routes:
+- `/login`
+- `/signup`
+
+Protected routes:
+- `/home` (default app landing)
+- `/analytics`
+- `/budget`
+- `/profile`
+- `/income-form`
+- `/expense-form`
+
+`/` redirects to `/home`.
+
+---
+
+## Setup Instructions
+
+## 1) Start database
 
 ```bash
 cd backend
-docker-compose up -d
+docker compose up -d
 ```
 
-### 2. Configure environment variables
+## 2) Configure backend environment
 
 Create `backend/.env`:
 
@@ -91,25 +150,24 @@ FRONTEND_URL="http://localhost:5173"
 NODE_ENV="development"
 ```
 
-### 3. Run database migrations
+## 3) Run migrations
 
 ```bash
 cd backend
 npx prisma migrate dev
 ```
 
-### 4. Start the backend
+## 4) Start backend
 
 ```bash
 cd backend
-npm run dev      # development (nodemon + ts-node)
-# or
-npm run build && npm start   # production
+npm install
+npm run dev
 ```
 
-Backend runs on **http://localhost:3000**
+Backend runs on `http://localhost:3000`.
 
-### 5. Start the frontend
+## 5) Start frontend
 
 ```bash
 cd Frontend
@@ -117,58 +175,27 @@ npm install
 npm run dev
 ```
 
-Frontend runs on **http://localhost:5173**
-
----
-
-## Auth Flow
-
-### Email / Password
-
-| Step | Description |
-|------|-------------|
-| Register | `POST /auth/register` — hashes password with bcrypt, stores user in DB |
-| Login | Native form `POST /auth/login` — Passport Local verifies credentials, creates session, redirects to `/dashboard` |
-| Failure | Redirects back to `/login?error=<reason>` — error shown on the page |
-
-### Google OAuth
-
-| Step | Description |
-|------|-------------|
-| Initiate | `GET /auth/google` — redirects to Google consent screen |
-| Callback | `GET /auth/google/callback` — Passport creates or links user, creates session |
-| Success | Redirects to `/dashboard` |
-
----
-
-## API Endpoints
-
-| Method | Path | Auth | Description |
-|--------|------|------|-------------|
-| `POST` | `/auth/register` | Public | Register with name, email, password |
-| `POST` | `/auth/login` | Public | Login with email, password |
-| `GET` | `/auth/google` | Public | Start Google OAuth flow |
-| `GET` | `/auth/google/callback` | Public | Google OAuth callback |
-| `GET` | `/dashboard` | Protected | View logged-in user info |
+Frontend runs on `http://localhost:5173`.
 
 ---
 
 ## Scripts
 
 ### Backend
-
-```bash
-npm run dev      # Start with nodemon (ts-node)
-npm run build    # Compile TypeScript
-npm start        # Run compiled output
-```
+- `npm run dev` - Start backend in dev mode
+- `npm run build` - Compile TypeScript
+- `npm start` - Run compiled backend
 
 ### Frontend
+- `npm run dev` - Start Vite dev server
+- `npm run build` - Build production bundle
+- `npm run preview` - Preview build
+- `npm run lint` - Run ESLint
 
-```bash
-npm run dev      # Start Vite dev server
-npm run build    # Production build
-npm run preview  # Preview production build
-npm run lint     # ESLint
-```
+---
 
+## Notes
+
+- Auth depends on browser cookies + `credentials: 'include'` requests.
+- Session cookie key is `connect.sid`.
+- If login/logout behavior seems inconsistent, clear browser cookies for `localhost` and re-login.
