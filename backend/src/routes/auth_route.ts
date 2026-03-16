@@ -51,7 +51,8 @@ router.post("/auth/login", (req: Request, res: Response, next) => {
           return next(loginError)
         }
         console.log("[login] success, redirecting to dashboard")
-        res.redirect("/dashboard")
+        const reason = encodeURIComponent(info?.message ?? 'Login failed')
+        res.redirect(`http://localhost:5173/login?error=${reason}`)
       })
     }
   )(req, res, next)
@@ -75,9 +76,9 @@ router.get("/", (req: Request, res: Response) => {
   res.send('<h1>Home</h1><a href="/auth/google">Login with Google</a>')
 })
 
-router.get("/login", (req: Request, res: Response) => {
-  res.send('<h1>Login</h1><a href="/auth/google">Login with Google</a>')
-})
+// router.get("/login", (req: Request, res: Response) => {
+//   res.send('<h1>Login</h1><a href="/auth/google">Login with Google</a>')
+// })
 
 // Protected route
 router.get("/dashboard", isAuthenticated, (req: Request, res: Response) => {
@@ -90,5 +91,50 @@ router.get("/dashboard", isAuthenticated, (req: Request, res: Response) => {
     <br><a href="/logout">Logout</a>
   `)
 })
+
+router.get("/auth/user", async (req: Request, res: Response) => {
+  try {
+    const userId = req.user?.id
+    if (!userId) {
+      return res.status(401).json({ message: "Unauthorized" })
+    }
+
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      select: {
+        id: true,
+        email: true,
+        name: true,
+        googleId: true,
+      },
+    })
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" })
+    }
+
+    return res.status(200).json(user)
+  } catch (err) {
+    return res.status(500).json({ message: "Failed to fetch user" })
+  }
+})
+
+router.post("/auth/logout", (req: Request, res: Response) => {
+  req.logout((logoutError) => {
+    if (logoutError) {
+      return res.status(500).json({ message: "Failed to logout" })
+    }
+
+    req.session.destroy((sessionError) => {
+      if (sessionError) {
+        return res.status(500).json({ message: "Failed to destroy session" })
+      }
+
+      res.clearCookie("connect.sid")
+      return res.status(200).json({ message: "Logged out successfully" })
+    })
+  })
+})
+
 
 export default router

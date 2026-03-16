@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
 import { prisma } from "../lib/prisma.js";
+import { ExpenseCategory } from "../types/type.js";
 import { validExpenseCatagory } from "../utils/cheakcatgory.js";
+import { catagorywisedata } from "../utils/catagorywisedata.js";
 
 export const getExpense = async (req: Request, res: Response) => {
   try {
@@ -49,5 +51,55 @@ export const addExpense = async (req: Request, res: Response) => {
     return res.status(201).json(newexpense);
   } catch (err) {
     return res.status(500).json({ message: "Failed to add expense" });
+  }
+};
+
+export const getTotalExpense = async (req: Request, res: Response) => {
+  try {
+    const userid = req.user?.id;
+    if (!userid) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    const expenses = await prisma.expense.findMany({
+      where: { userId: userid },
+    });
+    const data = catagorywisedata(expenses);
+
+    return res.status(200).json(data);
+  } catch (err) {
+    return res.status(500).json({ message: "Failed to fetch expense" });
+  }
+};
+
+export const getcatagoryExpense = async (req: Request, res: Response) => {
+  try {
+    const userid = req.user?.id;
+    if (!userid) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    const categoryQuery = req.query.catagory;
+    if (typeof categoryQuery !== "string") {
+      return res.status(400).json({ message: "Category query is required" });
+    }
+
+    const normalizedCategory = categoryQuery.trim().toUpperCase();
+    if (!validExpenseCatagory(normalizedCategory)) {
+      return res.status(400).json({ message: "Invalid expense category" });
+    }
+    const expenseCategory = normalizedCategory as ExpenseCategory;
+
+    const expenses = await prisma.expense.findMany({
+      where: {
+        userId: userid,
+        category: expenseCategory,
+      },
+    });
+    const data = catagorywisedata(expenses);
+
+    return res.status(200).json(data);
+  } catch (err) {
+    return res.status(500).json({ message: "Failed to fetch expense" });
   }
 };

@@ -1,7 +1,8 @@
 import { Request, Response } from "express";
 import { prisma } from "../lib/prisma.js";
+import { IncomeCategory } from "../types/type.js";
 import { validIncomeCatagory } from "../utils/cheakcatgory.js";
-
+import { catagorywisedata } from "../utils/catagorywisedata.js";
 export const getIncome = async (req: Request, res: Response) => {
   try {
     const userid = req.user?.id;
@@ -51,3 +52,51 @@ export const addIncome = async (req: Request, res: Response) => {
     return res.status(500).json({ message: "Failed to add income" });
   }
 };
+
+export const getTotalIncome = async(req:Request,res:Response)=>{
+   try {
+    const userid = req.user?.id;
+    if (!userid) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    const incomes = await prisma.income.findMany({
+      where: { userId: userid }
+    });
+    const data = catagorywisedata(incomes)
+
+    return res.status(200).json(data);
+  } catch (err) {
+    return res.status(500).json({ message: "Failed to fetch income" });
+  }
+}
+export const getcatagoryIncome = async(req:Request,res:Response)=>{
+   try {
+    const userid = req.user?.id;
+    if (!userid) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    const categoryQuery = req.query.catagory;
+    if (typeof categoryQuery !== "string") {
+      return res.status(400).json({ message: "Category query is required" });
+    }
+
+    const normalizedCategory = categoryQuery.trim().toUpperCase();
+    if (!validIncomeCatagory(normalizedCategory)) {
+      return res.status(400).json({ message: "Invalid income category" });
+    }
+    const incomeCategory = normalizedCategory as IncomeCategory;
+
+    const incomes = await prisma.income.findMany({
+      where: { userId: userid,
+              category: incomeCategory
+       }
+    });
+    const data = catagorywisedata(incomes)
+
+    return res.status(200).json(data);
+  } catch (err) {
+    return res.status(500).json({ message: "Failed to fetch income" });
+  }
+}
