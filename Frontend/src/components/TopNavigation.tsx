@@ -37,6 +37,16 @@ function BudgetIcon() {
   )
 }
 
+function GoalsIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <circle cx="12" cy="12" r="7.5" fill="none" stroke="currentColor" strokeWidth="1.8" />
+      <circle cx="12" cy="12" r="4.5" fill="none" stroke="currentColor" strokeWidth="1.8" />
+      <circle cx="12" cy="12" r="1.5" fill="currentColor" />
+    </svg>
+  )
+}
+
 function ProfileIcon() {
   return (
     <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
@@ -122,6 +132,18 @@ export default function TopNavigation() {
           </div>
         ) : null}
       </div>
+      <Link className={`top-nav-item ${location.pathname === '/income-goals' ? 'active' : ''}`} to="/income-goals">
+        <span className="nav-icon">
+          <GoalsIcon />
+        </span>
+        <small>Goals</small>
+      </Link>
+      <Link className={`top-nav-item ${location.pathname === '/expense-budget' ? 'active' : ''}`} to="/expense-budget">
+        <span className="nav-icon">
+          <BudgetIcon />
+        </span>
+        <small>Limits</small>
+      </Link>
       <Link className={`top-nav-item ${location.pathname === '/budget' ? 'active' : ''}`} to="/budget">
         <span className="nav-icon">
           <BudgetIcon />

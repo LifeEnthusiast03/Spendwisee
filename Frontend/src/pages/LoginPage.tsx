@@ -18,36 +18,35 @@ export default function LoginPage() {
     <main className="auth-shell">
       <section className="auth-hero auth-hero-image">
         <p className="auth-eyebrow">Spendwise</p>
-        <h1>Manage income and expenses with a dashboard built for clarity.</h1>
+        <h1>Financial clarity, one entry at a time.</h1>
         <p className="auth-copy">
-          Spendwise gives you real-time visibility into your financial activity with category insights, totals, and
-          a smooth workflow from data entry to analysis.
+          Track every rupee. Visualize your spending patterns. Make smarter financial decisions with real-time dashboards, category insights, and powerful analytics.
         </p>
         <div className="auth-stat-grid">
           <div className="auth-stat">
-            <strong>Unified View</strong>
-            <span>Income, expense, and balance in one place.</span>
+            <strong>Real-time Dashboard</strong>
+            <span>View income, expenses, and balance instantly.</span>
           </div>
           <div className="auth-stat">
-            <strong>Smart Insights</strong>
-            <span>Category breakdowns with quick visual charts.</span>
+            <strong>Smart Analytics</strong>
+            <span>Category breakdowns, trends, and weekly insights.</span>
           </div>
         </div>
         <div className="auth-points">
           <div>
-            <strong>Instant start</strong>
-            <span>Sign in with Google or continue with your email.</span>
+            <strong>📊 Visual Insights</strong>
+            <span>Interactive pie charts and spending trend graphs to understand your money flow at a glance.</span>
           </div>
           <div>
-            <strong>Clean dashboard flow</strong>
-            <span>Move from overview to form pages without friction.</span>
+            <strong>🎯 Smart Filtering</strong>
+            <span>Filter transactions by type, category, date range, and search to find exactly what you need.</span>
           </div>
           <div>
-            <strong>Secure session handling</strong>
-            <span>Authenticated routes keep your financial data private.</span>
+            <strong>🔒 Secure & Private</strong>
+            <span>Your financial data is encrypted and protected with secure authentication.</span>
           </div>
         </div>
-        <p className="auth-trust-row">Built for focused personal finance tracking and daily review habits.</p>
+        <p className="auth-trust-row">✨ Join thousands of users managing their finances with confidence and clarity.</p>
       </section>
 
       <section className="auth-panel">

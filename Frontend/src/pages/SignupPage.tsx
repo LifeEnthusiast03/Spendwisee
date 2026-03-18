@@ -50,36 +50,35 @@ export default function SignupPage() {
     <main className="auth-shell">
       <section className="auth-hero auth-hero-image">
         <p className="auth-eyebrow">Spendwise</p>
-        <h1>Start building smarter money habits from your first entry.</h1>
+        <h1>Start your financial journey with confidence.</h1>
         <p className="auth-copy">
-          Create your Spendwise account to unlock a professional dashboard for tracking, comparing, and understanding
-          your day-to-day financial activity.
+          Create your account to unlock a professional personal finance dashboard. Track income, analyze expenses, and build smarter money habits starting today.
         </p>
         <div className="auth-stat-grid">
           <div className="auth-stat">
             <strong>Simple Setup</strong>
-            <span>Register in less than a minute.</span>
+            <span>Create your account in less than a minute.</span>
           </div>
           <div className="auth-stat">
-            <strong>Actionable Data</strong>
-            <span>Convert entries into meaningful visual insights.</span>
+            <strong>Powerful Analytics</strong>
+            <span>Convert every entry into actionable financial insights.</span>
           </div>
         </div>
         <div className="auth-points">
           <div>
-            <strong>Personalized profile</strong>
-            <span>Use your name and account identity across the app.</span>
+            <strong>💰 Complete Control</strong>
+            <span>Add, edit, and delete transactions with full control over your financial records.</span>
           </div>
           <div>
-            <strong>Local + Google authentication</strong>
-            <span>Choose the sign-up method that matches your workflow.</span>
+            <strong>📈 Weekly & Monthly Reports</strong>
+            <span>Track spending trends, average daily expenses, and income patterns at multiple time scales.</span>
           </div>
           <div>
-            <strong>Category-first analytics</strong>
-            <span>Visualize top earning and spending areas right from home.</span>
+            <strong>⚡ Quick Insights</strong>
+            <span>Spend-to-income ratio, top expenses, transaction counts, and more at your fingertips.</span>
           </div>
         </div>
-        <p className="auth-trust-row">Designed for people who want clarity, consistency, and confidence with money.</p>
+        <p className="auth-trust-row">✨ Get started today and take control of your financial story with Spendwise.</p>
       </section>
 
       <section className="auth-panel">

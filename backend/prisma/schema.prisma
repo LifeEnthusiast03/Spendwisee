@@ -20,8 +20,10 @@ model User {
   name  String?
   googleId   String?  @unique
   password   String?
-  incomes  Income[]
-  expenses Expense[]
+  incomes       Income[]
+  expenses      Expense[]
+  incomeGoals   IncomeGoal[]
+  expenseBudgets ExpenseBudget[]
 } 
 
 enum IncomeCategory {
@@ -41,6 +43,12 @@ enum ExpenseCategory {
   ENTERTAINMENT
   BILLS
   OTHER
+}
+
+enum BudgetType {
+  WEEKLY
+  MONTHLY
+  YEARLY
 }
 
 model Income {
@@ -68,4 +76,31 @@ model Expense {
   user      User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId, date])
+}
+
+
+model IncomeGoal {
+  id        Int        @id @default(autoincrement()) 
+  amount    Int        @default(0)
+  type      BudgetType @default(MONTHLY)
+  date      DateTime   @default(now())
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  userId    Int
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, type])
+}
+
+model ExpenseBudget {
+  id        Int        @id @default(autoincrement()) 
+  amount    Int        @default(0)
+  type      BudgetType @default(MONTHLY)
+  date      DateTime   @default(now())
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  userId    Int
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, type])
 }

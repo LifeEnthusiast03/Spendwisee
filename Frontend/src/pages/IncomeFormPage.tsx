@@ -11,6 +11,7 @@ export default function IncomeFormPage() {
   const { totalIncome, totalExpense, netBalance } = useDashboardData()
   const [amount, setAmount] = useState('')
   const [catagory, setCatagory] = useState<string>(incomeCategories[0])
+  const [date, setDate] = useState('')
   const [note, setNote] = useState('')
   const [message, setMessage] = useState('')
   const [error, setError] = useState('')
@@ -38,6 +39,7 @@ export default function IncomeFormPage() {
           amount: parsedAmount,
           catagory,
           note: note.trim() || null,
+          ...(date ? { date } : {}),
         }),
       })
 
@@ -48,6 +50,7 @@ export default function IncomeFormPage() {
       }
 
       setAmount('')
+      setDate('')
       setNote('')
       setMessage('Income added successfully.')
     } catch {
@@ -109,6 +112,11 @@ export default function IncomeFormPage() {
                   value={note}
                   onChange={(event) => setNote(event.target.value)}
                 />
+              </label>
+
+              <label>
+                <span>Date</span>
+                <input type="date" value={date} onChange={(event) => setDate(event.target.value)} />
               </label>
 
               {error ? <p className="entry-message error">{error}</p> : null}

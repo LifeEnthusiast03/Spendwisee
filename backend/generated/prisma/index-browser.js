@@ -150,6 +150,26 @@ exports.Prisma.ExpenseScalarFieldEnum = {
   userId: 'userId'
 };
 
+exports.Prisma.IncomeGoalScalarFieldEnum = {
+  id: 'id',
+  amount: 'amount',
+  type: 'type',
+  date: 'date',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  userId: 'userId'
+};
+
+exports.Prisma.ExpenseBudgetScalarFieldEnum = {
+  id: 'id',
+  amount: 'amount',
+  type: 'type',
+  date: 'date',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  userId: 'userId'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -183,10 +203,18 @@ exports.ExpenseCategory = exports.$Enums.ExpenseCategory = {
   OTHER: 'OTHER'
 };
 
+exports.BudgetType = exports.$Enums.BudgetType = {
+  WEEKLY: 'WEEKLY',
+  MONTHLY: 'MONTHLY',
+  YEARLY: 'YEARLY'
+};
+
 exports.Prisma.ModelName = {
   User: 'User',
   Income: 'Income',
-  Expense: 'Expense'
+  Expense: 'Expense',
+  IncomeGoal: 'IncomeGoal',
+  ExpenseBudget: 'ExpenseBudget'
 };
 
 /**

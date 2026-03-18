@@ -9,6 +9,8 @@ import ExpenseFormPage from './pages/ExpenseFormPage'
 import AnalyticsPage from './pages/AnalyticsPage'
 import BudgetPage from './pages/BudgetPage'
 import ProfilePage from './pages/ProfilePage'
+import IncomeGoalPage from './pages/IncomeGoalPage'
+import ExpenseBudgetPage from './pages/ExpenseBudgetPage'
 
 function App() {
   return (
@@ -61,6 +63,22 @@ function App() {
           </ProtectedRoute>
         )}
         path="/expense-form"
+      />
+      <Route
+        element={(
+          <ProtectedRoute>
+            <IncomeGoalPage />
+          </ProtectedRoute>
+        )}
+        path="/income-goals"
+      />
+      <Route
+        element={(
+          <ProtectedRoute>
+            <ExpenseBudgetPage />
+          </ProtectedRoute>
+        )}
+        path="/expense-budget"
       />
       <Route element={<LoginPage />} path="/login" />
       <Route element={<SignupPage />} path="/signup" />
