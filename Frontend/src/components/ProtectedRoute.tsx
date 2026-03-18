@@ -17,7 +17,7 @@ function ProtectedRoute({ children }: ProtectedRouteProps) {
 
     const checkAuth = async () => {
       try {
-        const response = await fetch(`${BACKEND_URL}/dashboard`, {
+        const response = await fetch(`${BACKEND_URL}/auth/user`, {
           method: 'GET',
           credentials: 'include',
         })

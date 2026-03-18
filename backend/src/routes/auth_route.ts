@@ -4,6 +4,7 @@ import bcrypt from "bcrypt"
 import type { IVerifyOptions } from "passport-local";
 import { isAuthenticated } from "../middleware/auth_middleware.js";
 import {prisma} from "../lib/prisma.js"
+import { log } from "node:console";
 
 const router = Router()
 
@@ -67,8 +68,8 @@ router.get(
 router.get(
   "/auth/google/callback",
   passport.authenticate("google", {
-    successRedirect: "http://localhost:5173/entry",
-    failureRedirect: "/login",
+    successRedirect: "http://localhost:5173",
+    failureRedirect: "http://localhost:5173/login",
   })
 )
 
@@ -76,21 +77,6 @@ router.get("/", (req: Request, res: Response) => {
   res.send('<h1>Home</h1><a href="/auth/google">Login with Google</a>')
 })
 
-// router.get("/login", (req: Request, res: Response) => {
-//   res.send('<h1>Login</h1><a href="/auth/google">Login with Google</a>')
-// })
-
-// Protected route
-router.get("/dashboard", isAuthenticated, (req: Request, res: Response) => {
-  const user = req.user  // fully typed as IUser ✓
-  res.send(`
-    <h1>Dashboard</h1>
-    <p>Welcome, ${user?.name}</p>
-    <p>email,${user?.email}</p>
-    <p>google id ${user?.googleId}
-    <br><a href="/logout">Logout</a>
-  `)
-})
 
 router.get("/auth/user", async (req: Request, res: Response) => {
   try {

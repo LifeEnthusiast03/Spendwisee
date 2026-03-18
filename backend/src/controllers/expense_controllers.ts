@@ -4,6 +4,14 @@ import { ExpenseCategory } from "../types/type.js";
 import { validExpenseCatagory } from "../utils/cheakcatgory.js";
 import { catagorywisedata } from "../utils/catagorywisedata.js";
 
+type PrismaKnownError = {
+  code?: string;
+};
+
+const isPrismaKnownError = (err: unknown): err is PrismaKnownError => {
+  return typeof err === "object" && err !== null && "code" in err;
+};
+
 export const getExpense = async (req: Request, res: Response) => {
   try {
     const userid = req.user?.id;
@@ -101,5 +109,45 @@ export const getcatagoryExpense = async (req: Request, res: Response) => {
     return res.status(200).json(data);
   } catch (err) {
     return res.status(500).json({ message: "Failed to fetch expense" });
+  }
+};
+
+export const deleteExpense = async (req: Request, res: Response) => {
+  try {
+    const userid = req.user?.id;
+    if (!userid) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    const expenseid = Number(req.params.expenseid);
+    if (!Number.isInteger(expenseid) || expenseid <= 0) {
+      return res.status(400).json({ message: "Invalid expense id" });
+    }
+
+    const expense = await prisma.expense.findFirst({
+      where: {
+        id: expenseid,
+        userId: userid,
+      },
+      select: { id: true },
+    });
+
+    if (!expense) {
+      return res.status(404).json({ message: "Expense not found" });
+    }
+
+    await prisma.expense.delete({
+      where: {
+        id: expenseid,
+      },
+    });
+
+    return res.status(200).json({ message: "Expense deleted successfully" });
+  } catch (err) {
+    if (isPrismaKnownError(err) && err.code === "P2025") {
+      return res.status(404).json({ message: "Expense not found" });
+    }
+
+    return res.status(500).json({ message: "Failed to delete expense" });
   }
 };

@@ -3,6 +3,14 @@ import { prisma } from "../lib/prisma.js";
 import { IncomeCategory } from "../types/type.js";
 import { validIncomeCatagory } from "../utils/cheakcatgory.js";
 import { catagorywisedata } from "../utils/catagorywisedata.js";
+
+type PrismaKnownError = {
+  code?: string;
+};
+
+const isPrismaKnownError = (err: unknown): err is PrismaKnownError => {
+  return typeof err === "object" && err !== null && "code" in err;
+};
 export const getIncome = async (req: Request, res: Response) => {
   try {
     const userid = req.user?.id;
@@ -20,7 +28,6 @@ export const getIncome = async (req: Request, res: Response) => {
     return res.status(500).json({ message: "Failed to fetch income" });
   }
 };
-
 export const addIncome = async (req: Request, res: Response) => {
   try {
     const { amount, catagory, note } = req.body;
@@ -52,7 +59,6 @@ export const addIncome = async (req: Request, res: Response) => {
     return res.status(500).json({ message: "Failed to add income" });
   }
 };
-
 export const getTotalIncome = async(req:Request,res:Response)=>{
    try {
     const userid = req.user?.id;
@@ -100,3 +106,43 @@ export const getcatagoryIncome = async(req:Request,res:Response)=>{
     return res.status(500).json({ message: "Failed to fetch income" });
   }
 }
+
+export const deleteIncome = async (req: Request, res: Response) => {
+  try {
+    const userid = req.user?.id;
+    if (!userid) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    const incomeid = Number(req.params.incomeid);
+    if (!Number.isInteger(incomeid) || incomeid <= 0) {
+      return res.status(400).json({ message: "Invalid income id" });
+    }
+
+    const income = await prisma.income.findFirst({
+      where: {
+        id: incomeid,
+        userId: userid,
+      },
+      select: { id: true },
+    });
+
+    if (!income) {
+      return res.status(404).json({ message: "Income not found" });
+    }
+
+    await prisma.income.delete({
+      where: {
+        id: incomeid,
+      },
+    });
+
+    return res.status(200).json({ message: "Income deleted successfully" });
+  } catch (err) {
+    if (isPrismaKnownError(err) && err.code === "P2025") {
+      return res.status(404).json({ message: "Income not found" });
+    }
+
+    return res.status(500).json({ message: "Failed to delete income" });
+  }
+};
