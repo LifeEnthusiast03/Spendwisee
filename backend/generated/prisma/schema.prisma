@@ -80,27 +80,29 @@ model Expense {
 }
 
 model IncomeGoal {
-  id        Int        @id @default(autoincrement())
-  amount    Int        @default(0)
-  type      BudgetType @default(MONTHLY)
-  date      DateTime   @default(now())
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
+  id        Int            @id @default(autoincrement())
+  category  IncomeCategory @default(OTHER)
+  amount    Int            @default(0)
+  type      BudgetType     @default(MONTHLY)
+  date      DateTime       @default(now())
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
   userId    Int
-  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user      User           @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId, type])
 }
 
 model ExpenseBudget {
-  id        Int        @id @default(autoincrement())
-  amount    Int        @default(0)
-  type      BudgetType @default(MONTHLY)
-  date      DateTime   @default(now())
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
+  id        Int             @id @default(autoincrement())
+  category  ExpenseCategory @default(OTHER)
+  amount    Int             @default(0)
+  type      BudgetType      @default(MONTHLY)
+  date      DateTime        @default(now())
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
   userId    Int
-  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user      User            @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId, type])
 }

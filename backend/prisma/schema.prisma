@@ -81,6 +81,7 @@ model Expense {
 
 model IncomeGoal {
   id        Int        @id @default(autoincrement()) 
+  category IncomeCategory @default(OTHER)
   amount    Int        @default(0)
   type      BudgetType @default(MONTHLY)
   date      DateTime   @default(now())
@@ -94,6 +95,7 @@ model IncomeGoal {
 
 model ExpenseBudget {
   id        Int        @id @default(autoincrement()) 
+  category ExpenseCategory @default(OTHER)
   amount    Int        @default(0)
   type      BudgetType @default(MONTHLY)
   date      DateTime   @default(now())

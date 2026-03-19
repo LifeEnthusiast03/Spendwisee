@@ -8,7 +8,7 @@ import {
   getcatagoryIncome,
   addIncomeGoal,
   getIncomeGoals,
-  getIncomeGoalByType,
+  getIncomeGoalByCategory,
   updateIncomeGoal,
   deleteIncomeGoal,
 } from "../controllers/income_controllers.js";
@@ -25,7 +25,7 @@ router.get("/income/total", isAuthenticated, getTotalIncome);
 // ===================== INCOME GOAL ROUTES =====================
 router.post("/incomegoal", isAuthenticated, addIncomeGoal);
 router.get("/incomegoal", isAuthenticated, getIncomeGoals);
-router.get("/incomegoal/:type", isAuthenticated, getIncomeGoalByType);
+router.get("/incomegoal/category/:category", isAuthenticated, getIncomeGoalByCategory);
 router.put("/incomegoal/:goalid", isAuthenticated, updateIncomeGoal);
 router.delete("/incomegoal/:goalid", isAuthenticated, deleteIncomeGoal);
 

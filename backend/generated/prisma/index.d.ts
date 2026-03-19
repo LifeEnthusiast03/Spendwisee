@@ -4830,6 +4830,7 @@ export namespace Prisma {
 
   export type IncomeGoalMinAggregateOutputType = {
     id: number | null
+    category: $Enums.IncomeCategory | null
     amount: number | null
     type: $Enums.BudgetType | null
     date: Date | null
@@ -4840,6 +4841,7 @@ export namespace Prisma {
 
   export type IncomeGoalMaxAggregateOutputType = {
     id: number | null
+    category: $Enums.IncomeCategory | null
     amount: number | null
     type: $Enums.BudgetType | null
     date: Date | null
@@ -4850,6 +4852,7 @@ export namespace Prisma {
 
   export type IncomeGoalCountAggregateOutputType = {
     id: number
+    category: number
     amount: number
     type: number
     date: number
@@ -4874,6 +4877,7 @@ export namespace Prisma {
 
   export type IncomeGoalMinAggregateInputType = {
     id?: true
+    category?: true
     amount?: true
     type?: true
     date?: true
@@ -4884,6 +4888,7 @@ export namespace Prisma {
 
   export type IncomeGoalMaxAggregateInputType = {
     id?: true
+    category?: true
     amount?: true
     type?: true
     date?: true
@@ -4894,6 +4899,7 @@ export namespace Prisma {
 
   export type IncomeGoalCountAggregateInputType = {
     id?: true
+    category?: true
     amount?: true
     type?: true
     date?: true
@@ -4991,6 +4997,7 @@ export namespace Prisma {
 
   export type IncomeGoalGroupByOutputType = {
     id: number
+    category: $Enums.IncomeCategory
     amount: number
     type: $Enums.BudgetType
     date: Date
@@ -5020,6 +5027,7 @@ export namespace Prisma {
 
   export type IncomeGoalSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    category?: boolean
     amount?: boolean
     type?: boolean
     date?: boolean
@@ -5031,6 +5039,7 @@ export namespace Prisma {
 
   export type IncomeGoalSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    category?: boolean
     amount?: boolean
     type?: boolean
     date?: boolean
@@ -5042,6 +5051,7 @@ export namespace Prisma {
 
   export type IncomeGoalSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    category?: boolean
     amount?: boolean
     type?: boolean
     date?: boolean
@@ -5053,6 +5063,7 @@ export namespace Prisma {
 
   export type IncomeGoalSelectScalar = {
     id?: boolean
+    category?: boolean
     amount?: boolean
     type?: boolean
     date?: boolean
@@ -5061,7 +5072,7 @@ export namespace Prisma {
     userId?: boolean
   }
 
-  export type IncomeGoalOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "amount" | "type" | "date" | "createdAt" | "updatedAt" | "userId", ExtArgs["result"]["incomeGoal"]>
+  export type IncomeGoalOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "category" | "amount" | "type" | "date" | "createdAt" | "updatedAt" | "userId", ExtArgs["result"]["incomeGoal"]>
   export type IncomeGoalInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
@@ -5079,6 +5090,7 @@ export namespace Prisma {
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
+      category: $Enums.IncomeCategory
       amount: number
       type: $Enums.BudgetType
       date: Date
@@ -5510,6 +5522,7 @@ export namespace Prisma {
    */
   interface IncomeGoalFieldRefs {
     readonly id: FieldRef<"IncomeGoal", 'Int'>
+    readonly category: FieldRef<"IncomeGoal", 'IncomeCategory'>
     readonly amount: FieldRef<"IncomeGoal", 'Int'>
     readonly type: FieldRef<"IncomeGoal", 'BudgetType'>
     readonly date: FieldRef<"IncomeGoal", 'DateTime'>
@@ -5956,6 +5969,7 @@ export namespace Prisma {
 
   export type ExpenseBudgetMinAggregateOutputType = {
     id: number | null
+    category: $Enums.ExpenseCategory | null
     amount: number | null
     type: $Enums.BudgetType | null
     date: Date | null
@@ -5966,6 +5980,7 @@ export namespace Prisma {
 
   export type ExpenseBudgetMaxAggregateOutputType = {
     id: number | null
+    category: $Enums.ExpenseCategory | null
     amount: number | null
     type: $Enums.BudgetType | null
     date: Date | null
@@ -5976,6 +5991,7 @@ export namespace Prisma {
 
   export type ExpenseBudgetCountAggregateOutputType = {
     id: number
+    category: number
     amount: number
     type: number
     date: number
@@ -6000,6 +6016,7 @@ export namespace Prisma {
 
   export type ExpenseBudgetMinAggregateInputType = {
     id?: true
+    category?: true
     amount?: true
     type?: true
     date?: true
@@ -6010,6 +6027,7 @@ export namespace Prisma {
 
   export type ExpenseBudgetMaxAggregateInputType = {
     id?: true
+    category?: true
     amount?: true
     type?: true
     date?: true
@@ -6020,6 +6038,7 @@ export namespace Prisma {
 
   export type ExpenseBudgetCountAggregateInputType = {
     id?: true
+    category?: true
     amount?: true
     type?: true
     date?: true
@@ -6117,6 +6136,7 @@ export namespace Prisma {
 
   export type ExpenseBudgetGroupByOutputType = {
     id: number
+    category: $Enums.ExpenseCategory
     amount: number
     type: $Enums.BudgetType
     date: Date
@@ -6146,6 +6166,7 @@ export namespace Prisma {
 
   export type ExpenseBudgetSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    category?: boolean
     amount?: boolean
     type?: boolean
     date?: boolean
@@ -6157,6 +6178,7 @@ export namespace Prisma {
 
   export type ExpenseBudgetSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    category?: boolean
     amount?: boolean
     type?: boolean
     date?: boolean
@@ -6168,6 +6190,7 @@ export namespace Prisma {
 
   export type ExpenseBudgetSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    category?: boolean
     amount?: boolean
     type?: boolean
     date?: boolean
@@ -6179,6 +6202,7 @@ export namespace Prisma {
 
   export type ExpenseBudgetSelectScalar = {
     id?: boolean
+    category?: boolean
     amount?: boolean
     type?: boolean
     date?: boolean
@@ -6187,7 +6211,7 @@ export namespace Prisma {
     userId?: boolean
   }
 
-  export type ExpenseBudgetOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "amount" | "type" | "date" | "createdAt" | "updatedAt" | "userId", ExtArgs["result"]["expenseBudget"]>
+  export type ExpenseBudgetOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "category" | "amount" | "type" | "date" | "createdAt" | "updatedAt" | "userId", ExtArgs["result"]["expenseBudget"]>
   export type ExpenseBudgetInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
@@ -6205,6 +6229,7 @@ export namespace Prisma {
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
+      category: $Enums.ExpenseCategory
       amount: number
       type: $Enums.BudgetType
       date: Date
@@ -6636,6 +6661,7 @@ export namespace Prisma {
    */
   interface ExpenseBudgetFieldRefs {
     readonly id: FieldRef<"ExpenseBudget", 'Int'>
+    readonly category: FieldRef<"ExpenseBudget", 'ExpenseCategory'>
     readonly amount: FieldRef<"ExpenseBudget", 'Int'>
     readonly type: FieldRef<"ExpenseBudget", 'BudgetType'>
     readonly date: FieldRef<"ExpenseBudget", 'DateTime'>
@@ -7111,6 +7137,7 @@ export namespace Prisma {
 
   export const IncomeGoalScalarFieldEnum: {
     id: 'id',
+    category: 'category',
     amount: 'amount',
     type: 'type',
     date: 'date',
@@ -7124,6 +7151,7 @@ export namespace Prisma {
 
   export const ExpenseBudgetScalarFieldEnum: {
     id: 'id',
+    category: 'category',
     amount: 'amount',
     type: 'type',
     date: 'date',
@@ -7480,6 +7508,7 @@ export namespace Prisma {
     OR?: IncomeGoalWhereInput[]
     NOT?: IncomeGoalWhereInput | IncomeGoalWhereInput[]
     id?: IntFilter<"IncomeGoal"> | number
+    category?: EnumIncomeCategoryFilter<"IncomeGoal"> | $Enums.IncomeCategory
     amount?: IntFilter<"IncomeGoal"> | number
     type?: EnumBudgetTypeFilter<"IncomeGoal"> | $Enums.BudgetType
     date?: DateTimeFilter<"IncomeGoal"> | Date | string
@@ -7491,6 +7520,7 @@ export namespace Prisma {
 
   export type IncomeGoalOrderByWithRelationInput = {
     id?: SortOrder
+    category?: SortOrder
     amount?: SortOrder
     type?: SortOrder
     date?: SortOrder
@@ -7505,6 +7535,7 @@ export namespace Prisma {
     AND?: IncomeGoalWhereInput | IncomeGoalWhereInput[]
     OR?: IncomeGoalWhereInput[]
     NOT?: IncomeGoalWhereInput | IncomeGoalWhereInput[]
+    category?: EnumIncomeCategoryFilter<"IncomeGoal"> | $Enums.IncomeCategory
     amount?: IntFilter<"IncomeGoal"> | number
     type?: EnumBudgetTypeFilter<"IncomeGoal"> | $Enums.BudgetType
     date?: DateTimeFilter<"IncomeGoal"> | Date | string
@@ -7516,6 +7547,7 @@ export namespace Prisma {
 
   export type IncomeGoalOrderByWithAggregationInput = {
     id?: SortOrder
+    category?: SortOrder
     amount?: SortOrder
     type?: SortOrder
     date?: SortOrder
@@ -7534,6 +7566,7 @@ export namespace Prisma {
     OR?: IncomeGoalScalarWhereWithAggregatesInput[]
     NOT?: IncomeGoalScalarWhereWithAggregatesInput | IncomeGoalScalarWhereWithAggregatesInput[]
     id?: IntWithAggregatesFilter<"IncomeGoal"> | number
+    category?: EnumIncomeCategoryWithAggregatesFilter<"IncomeGoal"> | $Enums.IncomeCategory
     amount?: IntWithAggregatesFilter<"IncomeGoal"> | number
     type?: EnumBudgetTypeWithAggregatesFilter<"IncomeGoal"> | $Enums.BudgetType
     date?: DateTimeWithAggregatesFilter<"IncomeGoal"> | Date | string
@@ -7547,6 +7580,7 @@ export namespace Prisma {
     OR?: ExpenseBudgetWhereInput[]
     NOT?: ExpenseBudgetWhereInput | ExpenseBudgetWhereInput[]
     id?: IntFilter<"ExpenseBudget"> | number
+    category?: EnumExpenseCategoryFilter<"ExpenseBudget"> | $Enums.ExpenseCategory
     amount?: IntFilter<"ExpenseBudget"> | number
     type?: EnumBudgetTypeFilter<"ExpenseBudget"> | $Enums.BudgetType
     date?: DateTimeFilter<"ExpenseBudget"> | Date | string
@@ -7558,6 +7592,7 @@ export namespace Prisma {
 
   export type ExpenseBudgetOrderByWithRelationInput = {
     id?: SortOrder
+    category?: SortOrder
     amount?: SortOrder
     type?: SortOrder
     date?: SortOrder
@@ -7572,6 +7607,7 @@ export namespace Prisma {
     AND?: ExpenseBudgetWhereInput | ExpenseBudgetWhereInput[]
     OR?: ExpenseBudgetWhereInput[]
     NOT?: ExpenseBudgetWhereInput | ExpenseBudgetWhereInput[]
+    category?: EnumExpenseCategoryFilter<"ExpenseBudget"> | $Enums.ExpenseCategory
     amount?: IntFilter<"ExpenseBudget"> | number
     type?: EnumBudgetTypeFilter<"ExpenseBudget"> | $Enums.BudgetType
     date?: DateTimeFilter<"ExpenseBudget"> | Date | string
@@ -7583,6 +7619,7 @@ export namespace Prisma {
 
   export type ExpenseBudgetOrderByWithAggregationInput = {
     id?: SortOrder
+    category?: SortOrder
     amount?: SortOrder
     type?: SortOrder
     date?: SortOrder
@@ -7601,6 +7638,7 @@ export namespace Prisma {
     OR?: ExpenseBudgetScalarWhereWithAggregatesInput[]
     NOT?: ExpenseBudgetScalarWhereWithAggregatesInput | ExpenseBudgetScalarWhereWithAggregatesInput[]
     id?: IntWithAggregatesFilter<"ExpenseBudget"> | number
+    category?: EnumExpenseCategoryWithAggregatesFilter<"ExpenseBudget"> | $Enums.ExpenseCategory
     amount?: IntWithAggregatesFilter<"ExpenseBudget"> | number
     type?: EnumBudgetTypeWithAggregatesFilter<"ExpenseBudget"> | $Enums.BudgetType
     date?: DateTimeWithAggregatesFilter<"ExpenseBudget"> | Date | string
@@ -7825,6 +7863,7 @@ export namespace Prisma {
   }
 
   export type IncomeGoalCreateInput = {
+    category?: $Enums.IncomeCategory
     amount?: number
     type?: $Enums.BudgetType
     date?: Date | string
@@ -7835,6 +7874,7 @@ export namespace Prisma {
 
   export type IncomeGoalUncheckedCreateInput = {
     id?: number
+    category?: $Enums.IncomeCategory
     amount?: number
     type?: $Enums.BudgetType
     date?: Date | string
@@ -7844,6 +7884,7 @@ export namespace Prisma {
   }
 
   export type IncomeGoalUpdateInput = {
+    category?: EnumIncomeCategoryFieldUpdateOperationsInput | $Enums.IncomeCategory
     amount?: IntFieldUpdateOperationsInput | number
     type?: EnumBudgetTypeFieldUpdateOperationsInput | $Enums.BudgetType
     date?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -7854,6 +7895,7 @@ export namespace Prisma {
 
   export type IncomeGoalUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
+    category?: EnumIncomeCategoryFieldUpdateOperationsInput | $Enums.IncomeCategory
     amount?: IntFieldUpdateOperationsInput | number
     type?: EnumBudgetTypeFieldUpdateOperationsInput | $Enums.BudgetType
     date?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -7864,6 +7906,7 @@ export namespace Prisma {
 
   export type IncomeGoalCreateManyInput = {
     id?: number
+    category?: $Enums.IncomeCategory
     amount?: number
     type?: $Enums.BudgetType
     date?: Date | string
@@ -7873,6 +7916,7 @@ export namespace Prisma {
   }
 
   export type IncomeGoalUpdateManyMutationInput = {
+    category?: EnumIncomeCategoryFieldUpdateOperationsInput | $Enums.IncomeCategory
     amount?: IntFieldUpdateOperationsInput | number
     type?: EnumBudgetTypeFieldUpdateOperationsInput | $Enums.BudgetType
     date?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -7882,6 +7926,7 @@ export namespace Prisma {
 
   export type IncomeGoalUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
+    category?: EnumIncomeCategoryFieldUpdateOperationsInput | $Enums.IncomeCategory
     amount?: IntFieldUpdateOperationsInput | number
     type?: EnumBudgetTypeFieldUpdateOperationsInput | $Enums.BudgetType
     date?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -7891,6 +7936,7 @@ export namespace Prisma {
   }
 
   export type ExpenseBudgetCreateInput = {
+    category?: $Enums.ExpenseCategory
     amount?: number
     type?: $Enums.BudgetType
     date?: Date | string
@@ -7901,6 +7947,7 @@ export namespace Prisma {
 
   export type ExpenseBudgetUncheckedCreateInput = {
     id?: number
+    category?: $Enums.ExpenseCategory
     amount?: number
     type?: $Enums.BudgetType
     date?: Date | string
@@ -7910,6 +7957,7 @@ export namespace Prisma {
   }
 
   export type ExpenseBudgetUpdateInput = {
+    category?: EnumExpenseCategoryFieldUpdateOperationsInput | $Enums.ExpenseCategory
     amount?: IntFieldUpdateOperationsInput | number
     type?: EnumBudgetTypeFieldUpdateOperationsInput | $Enums.BudgetType
     date?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -7920,6 +7968,7 @@ export namespace Prisma {
 
   export type ExpenseBudgetUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
+    category?: EnumExpenseCategoryFieldUpdateOperationsInput | $Enums.ExpenseCategory
     amount?: IntFieldUpdateOperationsInput | number
     type?: EnumBudgetTypeFieldUpdateOperationsInput | $Enums.BudgetType
     date?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -7930,6 +7979,7 @@ export namespace Prisma {
 
   export type ExpenseBudgetCreateManyInput = {
     id?: number
+    category?: $Enums.ExpenseCategory
     amount?: number
     type?: $Enums.BudgetType
     date?: Date | string
@@ -7939,6 +7989,7 @@ export namespace Prisma {
   }
 
   export type ExpenseBudgetUpdateManyMutationInput = {
+    category?: EnumExpenseCategoryFieldUpdateOperationsInput | $Enums.ExpenseCategory
     amount?: IntFieldUpdateOperationsInput | number
     type?: EnumBudgetTypeFieldUpdateOperationsInput | $Enums.BudgetType
     date?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -7948,6 +7999,7 @@ export namespace Prisma {
 
   export type ExpenseBudgetUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
+    category?: EnumExpenseCategoryFieldUpdateOperationsInput | $Enums.ExpenseCategory
     amount?: IntFieldUpdateOperationsInput | number
     type?: EnumBudgetTypeFieldUpdateOperationsInput | $Enums.BudgetType
     date?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -8289,6 +8341,7 @@ export namespace Prisma {
 
   export type IncomeGoalCountOrderByAggregateInput = {
     id?: SortOrder
+    category?: SortOrder
     amount?: SortOrder
     type?: SortOrder
     date?: SortOrder
@@ -8305,6 +8358,7 @@ export namespace Prisma {
 
   export type IncomeGoalMaxOrderByAggregateInput = {
     id?: SortOrder
+    category?: SortOrder
     amount?: SortOrder
     type?: SortOrder
     date?: SortOrder
@@ -8315,6 +8369,7 @@ export namespace Prisma {
 
   export type IncomeGoalMinOrderByAggregateInput = {
     id?: SortOrder
+    category?: SortOrder
     amount?: SortOrder
     type?: SortOrder
     date?: SortOrder
@@ -8341,6 +8396,7 @@ export namespace Prisma {
 
   export type ExpenseBudgetCountOrderByAggregateInput = {
     id?: SortOrder
+    category?: SortOrder
     amount?: SortOrder
     type?: SortOrder
     date?: SortOrder
@@ -8357,6 +8413,7 @@ export namespace Prisma {
 
   export type ExpenseBudgetMaxOrderByAggregateInput = {
     id?: SortOrder
+    category?: SortOrder
     amount?: SortOrder
     type?: SortOrder
     date?: SortOrder
@@ -8367,6 +8424,7 @@ export namespace Prisma {
 
   export type ExpenseBudgetMinOrderByAggregateInput = {
     id?: SortOrder
+    category?: SortOrder
     amount?: SortOrder
     type?: SortOrder
     date?: SortOrder
@@ -8883,6 +8941,7 @@ export namespace Prisma {
   }
 
   export type IncomeGoalCreateWithoutUserInput = {
+    category?: $Enums.IncomeCategory
     amount?: number
     type?: $Enums.BudgetType
     date?: Date | string
@@ -8892,6 +8951,7 @@ export namespace Prisma {
 
   export type IncomeGoalUncheckedCreateWithoutUserInput = {
     id?: number
+    category?: $Enums.IncomeCategory
     amount?: number
     type?: $Enums.BudgetType
     date?: Date | string
@@ -8910,6 +8970,7 @@ export namespace Prisma {
   }
 
   export type ExpenseBudgetCreateWithoutUserInput = {
+    category?: $Enums.ExpenseCategory
     amount?: number
     type?: $Enums.BudgetType
     date?: Date | string
@@ -8919,6 +8980,7 @@ export namespace Prisma {
 
   export type ExpenseBudgetUncheckedCreateWithoutUserInput = {
     id?: number
+    category?: $Enums.ExpenseCategory
     amount?: number
     type?: $Enums.BudgetType
     date?: Date | string
@@ -9017,6 +9079,7 @@ export namespace Prisma {
     OR?: IncomeGoalScalarWhereInput[]
     NOT?: IncomeGoalScalarWhereInput | IncomeGoalScalarWhereInput[]
     id?: IntFilter<"IncomeGoal"> | number
+    category?: EnumIncomeCategoryFilter<"IncomeGoal"> | $Enums.IncomeCategory
     amount?: IntFilter<"IncomeGoal"> | number
     type?: EnumBudgetTypeFilter<"IncomeGoal"> | $Enums.BudgetType
     date?: DateTimeFilter<"IncomeGoal"> | Date | string
@@ -9046,6 +9109,7 @@ export namespace Prisma {
     OR?: ExpenseBudgetScalarWhereInput[]
     NOT?: ExpenseBudgetScalarWhereInput | ExpenseBudgetScalarWhereInput[]
     id?: IntFilter<"ExpenseBudget"> | number
+    category?: EnumExpenseCategoryFilter<"ExpenseBudget"> | $Enums.ExpenseCategory
     amount?: IntFilter<"ExpenseBudget"> | number
     type?: EnumBudgetTypeFilter<"ExpenseBudget"> | $Enums.BudgetType
     date?: DateTimeFilter<"ExpenseBudget"> | Date | string
@@ -9308,6 +9372,7 @@ export namespace Prisma {
 
   export type IncomeGoalCreateManyUserInput = {
     id?: number
+    category?: $Enums.IncomeCategory
     amount?: number
     type?: $Enums.BudgetType
     date?: Date | string
@@ -9317,6 +9382,7 @@ export namespace Prisma {
 
   export type ExpenseBudgetCreateManyUserInput = {
     id?: number
+    category?: $Enums.ExpenseCategory
     amount?: number
     type?: $Enums.BudgetType
     date?: Date | string
@@ -9383,6 +9449,7 @@ export namespace Prisma {
   }
 
   export type IncomeGoalUpdateWithoutUserInput = {
+    category?: EnumIncomeCategoryFieldUpdateOperationsInput | $Enums.IncomeCategory
     amount?: IntFieldUpdateOperationsInput | number
     type?: EnumBudgetTypeFieldUpdateOperationsInput | $Enums.BudgetType
     date?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -9392,6 +9459,7 @@ export namespace Prisma {
 
   export type IncomeGoalUncheckedUpdateWithoutUserInput = {
     id?: IntFieldUpdateOperationsInput | number
+    category?: EnumIncomeCategoryFieldUpdateOperationsInput | $Enums.IncomeCategory
     amount?: IntFieldUpdateOperationsInput | number
     type?: EnumBudgetTypeFieldUpdateOperationsInput | $Enums.BudgetType
     date?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -9401,6 +9469,7 @@ export namespace Prisma {
 
   export type IncomeGoalUncheckedUpdateManyWithoutUserInput = {
     id?: IntFieldUpdateOperationsInput | number
+    category?: EnumIncomeCategoryFieldUpdateOperationsInput | $Enums.IncomeCategory
     amount?: IntFieldUpdateOperationsInput | number
     type?: EnumBudgetTypeFieldUpdateOperationsInput | $Enums.BudgetType
     date?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -9409,6 +9478,7 @@ export namespace Prisma {
   }
 
   export type ExpenseBudgetUpdateWithoutUserInput = {
+    category?: EnumExpenseCategoryFieldUpdateOperationsInput | $Enums.ExpenseCategory
     amount?: IntFieldUpdateOperationsInput | number
     type?: EnumBudgetTypeFieldUpdateOperationsInput | $Enums.BudgetType
     date?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -9418,6 +9488,7 @@ export namespace Prisma {
 
   export type ExpenseBudgetUncheckedUpdateWithoutUserInput = {
     id?: IntFieldUpdateOperationsInput | number
+    category?: EnumExpenseCategoryFieldUpdateOperationsInput | $Enums.ExpenseCategory
     amount?: IntFieldUpdateOperationsInput | number
     type?: EnumBudgetTypeFieldUpdateOperationsInput | $Enums.BudgetType
     date?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -9427,6 +9498,7 @@ export namespace Prisma {
 
   export type ExpenseBudgetUncheckedUpdateManyWithoutUserInput = {
     id?: IntFieldUpdateOperationsInput | number
+    category?: EnumExpenseCategoryFieldUpdateOperationsInput | $Enums.ExpenseCategory
     amount?: IntFieldUpdateOperationsInput | number
     type?: EnumBudgetTypeFieldUpdateOperationsInput | $Enums.BudgetType
     date?: DateTimeFieldUpdateOperationsInput | Date | string

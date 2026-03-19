@@ -170,7 +170,7 @@ export const deleteExpense = async (req: Request, res: Response) => {
 
 export const addExpenseBudget = async (req: Request, res: Response) => {
   try {
-    const { amount, type } = req.body;
+    const { catagory,amount,type } = req.body;
     const userid = req.user?.id;
 
     if (!userid) {
@@ -184,22 +184,26 @@ export const addExpenseBudget = async (req: Request, res: Response) => {
     if (!validBudgetType(type)) {
       return res.status(400).json({ message: "Invalid budget type. Must be WEEKLY, MONTHLY, or YEARLY" });
     }
-
+    if (!validExpenseCatagory(catagory)) {
+      return res.status(400).json({ message: "Invalid expense category" });
+    }
     // Check if budget already exists for this type
     const existingBudget = await prisma.expenseBudget.findFirst({
       where: {
         userId: userid,
+        category:catagory.toUpperCase(),
         type: type,
       },
     });
 
     if (existingBudget) {
-      return res.status(400).json({ message: `${type} expense budget already exists` });
+      return res.status(400).json({ message: `${type} expense budget in this catagory already exists` });
     }
 
     const newBudget = await prisma.expenseBudget.create({
       data: {
         amount,
+        category:catagory.toUpperCase(),
         type: type,
         userId: userid,
       },
@@ -229,32 +233,33 @@ export const getExpenseBudgets = async (req: Request, res: Response) => {
   }
 };
 
-export const getExpenseBudgetByType = async (req: Request, res: Response) => {
+export const getExpenseBudgetByCategory = async (req: Request, res: Response) => {
   try {
     const userid = req.user?.id;
     if (!userid) {
       return res.status(401).json({ message: "Unauthorized" });
     }
 
-    const type = req.params.type?.toUpperCase();
-    if (!validBudgetType(type)) {
-      return res.status(400).json({ message: "Invalid budget type. Must be WEEKLY, MONTHLY, or YEARLY" });
+    const categoryQuery = req.params.category?.toUpperCase();
+    if (!validExpenseCatagory(categoryQuery)) {
+      return res.status(400).json({ message: "Invalid expense category" });
     }
 
-    const budget = await prisma.expenseBudget.findFirst({
+    const budgets = await prisma.expenseBudget.findMany({
       where: {
         userId: userid,
-        type: type,
+        category: categoryQuery as ExpenseCategory,
       },
+      orderBy: { type: "asc" },
     });
 
-    if (!budget) {
-      return res.status(404).json({ message: `${type} expense budget not found` });
+    if (budgets.length === 0) {
+      return res.status(404).json({ message: `No expense budgets found for ${categoryQuery} category` });
     }
 
-    return res.status(200).json(budget);
+    return res.status(200).json(budgets);
   } catch (err) {
-    return res.status(500).json({ message: "Failed to fetch expense budget" });
+    return res.status(500).json({ message: "Failed to fetch expense budgets" });
   }
 };
 
@@ -270,7 +275,7 @@ export const updateExpenseBudget = async (req: Request, res: Response) => {
       return res.status(400).json({ message: "Invalid budget id" });
     }
 
-    const { amount, type } = req.body;
+    const { catagory,amount, type } = req.body;
 
     // Verify budget ownership
     const existingBudget = await prisma.expenseBudget.findFirst({
@@ -285,7 +290,7 @@ export const updateExpenseBudget = async (req: Request, res: Response) => {
     }
 
     // Validate update fields
-    const updateData: { amount?: number; type?: "WEEKLY" | "MONTHLY" | "YEARLY" } = {};
+    const updateData: { amount?: number; type?: "WEEKLY" | "MONTHLY" | "YEARLY" ,category?:ExpenseCategory} = {};
 
     if (amount !== undefined) {
       if (typeof amount !== "number" || amount <= 0) {
@@ -293,28 +298,40 @@ export const updateExpenseBudget = async (req: Request, res: Response) => {
       }
       updateData.amount = amount;
     }
+    
+    if (catagory !== undefined) {
+      if (!validExpenseCatagory(catagory)) {
+        return res.status(400).json({ message: "Invalid expense category" });
+      }
+      updateData.category = catagory.toUpperCase() as ExpenseCategory;
+    }
 
     if (type !== undefined) {
       if (!validBudgetType(type)) {
         return res.status(400).json({ message: "Invalid budget type. Must be WEEKLY, MONTHLY, or YEARLY" });
       }
-
-      // Check if new type already exists for this user
-      if (type !== existingBudget.type) {
-        const conflictingBudget = await prisma.expenseBudget.findFirst({
-          where: {
-            userId: userid,
-            type: type,
-            NOT: { id: budgetid },
-          },
-        });
-
-        if (conflictingBudget) {
-          return res.status(400).json({ message: `${type} expense budget already exists` });
-        }
-      }
       updateData.type = type;
     }
+
+    // Check if category + type combination already exists (only if either is being updated)
+    if (catagory !== undefined || type !== undefined) {
+      const finalCategory = catagory !== undefined ? catagory.toUpperCase() : existingBudget.category;
+      const finalType = type || existingBudget.type;
+
+      const conflictingBudget = await prisma.expenseBudget.findFirst({
+        where: {
+          userId: userid,
+          category: finalCategory as ExpenseCategory,
+          type: finalType,
+          NOT: { id: budgetid },
+        },
+      });
+
+      if (conflictingBudget) {
+        return res.status(400).json({ message: `${finalType} expense budget for ${finalCategory} category already exists` });
+      }
+    }
+   
 
     const updatedBudget = await prisma.expenseBudget.update({
       where: { id: budgetid },

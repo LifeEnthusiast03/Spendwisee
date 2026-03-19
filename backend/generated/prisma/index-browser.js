@@ -152,6 +152,7 @@ exports.Prisma.ExpenseScalarFieldEnum = {
 
 exports.Prisma.IncomeGoalScalarFieldEnum = {
   id: 'id',
+  category: 'category',
   amount: 'amount',
   type: 'type',
   date: 'date',
@@ -162,6 +163,7 @@ exports.Prisma.IncomeGoalScalarFieldEnum = {
 
 exports.Prisma.ExpenseBudgetScalarFieldEnum = {
   id: 'id',
+  category: 'category',
   amount: 'amount',
   type: 'type',
   date: 'date',

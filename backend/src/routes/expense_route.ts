@@ -8,7 +8,7 @@ import {
 	getcatagoryExpense,
 	addExpenseBudget,
 	getExpenseBudgets,
-	getExpenseBudgetByType,
+	getExpenseBudgetByCategory,
 	updateExpenseBudget,
 	deleteExpenseBudget,
 } from "../controllers/expense_controllers.js";
@@ -24,7 +24,7 @@ router.get("/expense/total", isAuthenticated, getTotalExpense);
 // ============= Expense Budget Routes =============
 router.post("/expensebudget", isAuthenticated, addExpenseBudget);
 router.get("/expensebudget", isAuthenticated, getExpenseBudgets);
-router.get("/expensebudget/:type", isAuthenticated, getExpenseBudgetByType);
+router.get("/expensebudget/category/:category", isAuthenticated, getExpenseBudgetByCategory);
 router.put("/expensebudget/:budgetid", isAuthenticated, updateExpenseBudget);
 router.delete("/expensebudget/:budgetid", isAuthenticated, deleteExpenseBudget);
 
