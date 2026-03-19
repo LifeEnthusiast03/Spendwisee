@@ -10,10 +10,13 @@ type TypeFilter = 'all' | TransactionType
 type SortBy = 'date' | 'amount' | 'category'
 type SortOrder = 'asc' | 'desc'
 type BudgetType = 'WEEKLY' | 'MONTHLY' | 'YEARLY'
+type IncomeCategory = 'SALARY' | 'FREELANCE' | 'BUSINESS' | 'INVESTMENT' | 'GIFT' | 'OTHER'
+type ExpenseCategory = 'FOOD' | 'TRANSPORT' | 'RENT' | 'SHOPPING' | 'ENTERTAINMENT' | 'BILLS' | 'OTHER'
 
 interface IncomeGoal {
   id: number
   amount: number
+  category: IncomeCategory
   type: BudgetType
   createdAt: string
   userId: number
@@ -22,6 +25,7 @@ interface IncomeGoal {
 interface ExpenseBudget {
   id: number
   amount: number
+  category: ExpenseCategory
   type: BudgetType
   createdAt: string
   userId: number

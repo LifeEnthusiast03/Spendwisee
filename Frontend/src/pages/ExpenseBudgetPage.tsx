@@ -5,20 +5,24 @@ import TopNavigation from '../components/TopNavigation'
 const money = new Intl.NumberFormat('en-IN', { maximumFractionDigits: 0 })
 
 type BudgetType = 'WEEKLY' | 'MONTHLY' | 'YEARLY'
+type ExpenseCategory = 'FOOD' | 'TRANSPORT' | 'RENT' | 'SHOPPING' | 'ENTERTAINMENT' | 'BILLS' | 'OTHER'
 
 interface ExpenseBudget {
   id: number
   amount: number
+  category: ExpenseCategory
   type: BudgetType
   createdAt: string
   userId: number
 }
 
+const expenseCategories: ExpenseCategory[] = ['FOOD', 'TRANSPORT', 'RENT', 'SHOPPING', 'ENTERTAINMENT', 'BILLS', 'OTHER']
+
 export default function ExpenseBudgetPage() {
   const [budgets, setBudgets] = useState<ExpenseBudget[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  const [formData, setFormData] = useState({ amount: '', type: 'MONTHLY' as BudgetType })
+  const [formData, setFormData] = useState({ amount: '', type: 'MONTHLY' as BudgetType, catagory: 'FOOD' as ExpenseCategory })
   const [submitting, setSubmitting] = useState(false)
   const [successMessage, setSuccessMessage] = useState<string | null>(null)
 
@@ -57,13 +61,14 @@ export default function ExpenseBudgetPage() {
         {
           amount: Number(formData.amount),
           type: formData.type,
+          catagory: formData.catagory,
         },
         { withCredentials: true }
       )
       
       setBudgets([...budgets, response.data])
-      setFormData({ amount: '', type: 'MONTHLY' })
-      setSuccessMessage(`${formData.type} expense budget created successfully!`)
+      setFormData({ amount: '', type: 'MONTHLY', catagory: 'FOOD' })
+      setSuccessMessage(`${formData.catagory} ${formData.type} budget created successfully!`)
       setError(null)
       
       setTimeout(() => setSuccessMessage(null), 3000)
@@ -137,6 +142,21 @@ export default function ExpenseBudgetPage() {
         <section className="entry-card goal-form-card">
           <h2>Create Expense Budget</h2>
           <form onSubmit={handleSubmit} className="entry-form">
+            <label>
+              <span>Category</span>
+              <select
+                value={formData.catagory}
+                onChange={(e) => setFormData({ ...formData, catagory: e.target.value as ExpenseCategory })}
+                disabled={submitting}
+              >
+                {expenseCategories.map((cat) => (
+                  <option key={cat} value={cat}>
+                    {cat}
+                  </option>
+                ))}
+              </select>
+            </label>
+
             <label>
               <span>Budget Type</span>
               <select

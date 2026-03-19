@@ -5,20 +5,24 @@ import TopNavigation from '../components/TopNavigation'
 const money = new Intl.NumberFormat('en-IN', { maximumFractionDigits: 0 })
 
 type BudgetType = 'WEEKLY' | 'MONTHLY' | 'YEARLY'
+type IncomeCategory = 'SALARY' | 'FREELANCE' | 'BUSINESS' | 'INVESTMENT' | 'GIFT' | 'OTHER'
 
 interface IncomeGoal {
   id: number
   amount: number
+  category: IncomeCategory
   type: BudgetType
   createdAt: string
   userId: number
 }
 
+const incomeCategories: IncomeCategory[] = ['SALARY', 'FREELANCE', 'BUSINESS', 'INVESTMENT', 'GIFT', 'OTHER']
+
 export default function IncomeGoalPage() {
   const [goals, setGoals] = useState<IncomeGoal[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  const [formData, setFormData] = useState({ amount: '', type: 'MONTHLY' as BudgetType })
+  const [formData, setFormData] = useState({ amount: '', type: 'MONTHLY' as BudgetType, catagory: 'SALARY' as IncomeCategory })
   const [submitting, setSubmitting] = useState(false)
   const [successMessage, setSuccessMessage] = useState<string | null>(null)
 
@@ -57,13 +61,14 @@ export default function IncomeGoalPage() {
         {
           amount: Number(formData.amount),
           type: formData.type,
+          catagory: formData.catagory,
         },
         { withCredentials: true }
       )
       
       setGoals([...goals, response.data])
-      setFormData({ amount: '', type: 'MONTHLY' })
-      setSuccessMessage(`${formData.type} income goal created successfully!`)
+      setFormData({ amount: '', type: 'MONTHLY', catagory: 'SALARY' })
+      setSuccessMessage(`${formData.catagory} ${formData.type} income goal created successfully!`)
       setError(null)
       
       setTimeout(() => setSuccessMessage(null), 3000)
@@ -137,6 +142,21 @@ export default function IncomeGoalPage() {
         <section className="entry-card goal-form-card">
           <h2>Create Income Goal</h2>
           <form onSubmit={handleSubmit} className="entry-form">
+            <label>
+              <span>Category</span>
+              <select
+                value={formData.catagory}
+                onChange={(e) => setFormData({ ...formData, catagory: e.target.value as IncomeCategory })}
+                disabled={submitting}
+              >
+                {incomeCategories.map((cat) => (
+                  <option key={cat} value={cat}>
+                    {cat}
+                  </option>
+                ))}
+              </select>
+            </label>
+
             <label>
               <span>Goal Type</span>
               <select
