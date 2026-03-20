@@ -25,7 +25,7 @@ export const getIncome = async (req: Request, res: Response) => {
 
     return res.status(200).json(incomes);
   } catch (err) {
-    return res.status(500).json({ message: "Failed to fetch income" });
+    return res.status(500).json({ message: "Failed to fetch income try agian" });
   }
 };
 export const addIncome = async (req: Request, res: Response) => {
