@@ -4819,12 +4819,14 @@ export namespace Prisma {
   export type IncomeGoalAvgAggregateOutputType = {
     id: number | null
     amount: number | null
+    fulfilledAmount: number | null
     userId: number | null
   }
 
   export type IncomeGoalSumAggregateOutputType = {
     id: number | null
     amount: number | null
+    fulfilledAmount: number | null
     userId: number | null
   }
 
@@ -4832,7 +4834,11 @@ export namespace Prisma {
     id: number | null
     category: $Enums.IncomeCategory | null
     amount: number | null
+    fulfilledAmount: number | null
     type: $Enums.BudgetType | null
+    periodStart: Date | null
+    periodEnd: Date | null
+    isActive: boolean | null
     date: Date | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -4843,7 +4849,11 @@ export namespace Prisma {
     id: number | null
     category: $Enums.IncomeCategory | null
     amount: number | null
+    fulfilledAmount: number | null
     type: $Enums.BudgetType | null
+    periodStart: Date | null
+    periodEnd: Date | null
+    isActive: boolean | null
     date: Date | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -4854,7 +4864,11 @@ export namespace Prisma {
     id: number
     category: number
     amount: number
+    fulfilledAmount: number
     type: number
+    periodStart: number
+    periodEnd: number
+    isActive: number
     date: number
     createdAt: number
     updatedAt: number
@@ -4866,12 +4880,14 @@ export namespace Prisma {
   export type IncomeGoalAvgAggregateInputType = {
     id?: true
     amount?: true
+    fulfilledAmount?: true
     userId?: true
   }
 
   export type IncomeGoalSumAggregateInputType = {
     id?: true
     amount?: true
+    fulfilledAmount?: true
     userId?: true
   }
 
@@ -4879,7 +4895,11 @@ export namespace Prisma {
     id?: true
     category?: true
     amount?: true
+    fulfilledAmount?: true
     type?: true
+    periodStart?: true
+    periodEnd?: true
+    isActive?: true
     date?: true
     createdAt?: true
     updatedAt?: true
@@ -4890,7 +4910,11 @@ export namespace Prisma {
     id?: true
     category?: true
     amount?: true
+    fulfilledAmount?: true
     type?: true
+    periodStart?: true
+    periodEnd?: true
+    isActive?: true
     date?: true
     createdAt?: true
     updatedAt?: true
@@ -4901,7 +4925,11 @@ export namespace Prisma {
     id?: true
     category?: true
     amount?: true
+    fulfilledAmount?: true
     type?: true
+    periodStart?: true
+    periodEnd?: true
+    isActive?: true
     date?: true
     createdAt?: true
     updatedAt?: true
@@ -4999,7 +5027,11 @@ export namespace Prisma {
     id: number
     category: $Enums.IncomeCategory
     amount: number
+    fulfilledAmount: number
     type: $Enums.BudgetType
+    periodStart: Date
+    periodEnd: Date
+    isActive: boolean
     date: Date
     createdAt: Date
     updatedAt: Date
@@ -5029,7 +5061,11 @@ export namespace Prisma {
     id?: boolean
     category?: boolean
     amount?: boolean
+    fulfilledAmount?: boolean
     type?: boolean
+    periodStart?: boolean
+    periodEnd?: boolean
+    isActive?: boolean
     date?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -5041,7 +5077,11 @@ export namespace Prisma {
     id?: boolean
     category?: boolean
     amount?: boolean
+    fulfilledAmount?: boolean
     type?: boolean
+    periodStart?: boolean
+    periodEnd?: boolean
+    isActive?: boolean
     date?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -5053,7 +5093,11 @@ export namespace Prisma {
     id?: boolean
     category?: boolean
     amount?: boolean
+    fulfilledAmount?: boolean
     type?: boolean
+    periodStart?: boolean
+    periodEnd?: boolean
+    isActive?: boolean
     date?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -5065,14 +5109,18 @@ export namespace Prisma {
     id?: boolean
     category?: boolean
     amount?: boolean
+    fulfilledAmount?: boolean
     type?: boolean
+    periodStart?: boolean
+    periodEnd?: boolean
+    isActive?: boolean
     date?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     userId?: boolean
   }
 
-  export type IncomeGoalOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "category" | "amount" | "type" | "date" | "createdAt" | "updatedAt" | "userId", ExtArgs["result"]["incomeGoal"]>
+  export type IncomeGoalOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "category" | "amount" | "fulfilledAmount" | "type" | "periodStart" | "periodEnd" | "isActive" | "date" | "createdAt" | "updatedAt" | "userId", ExtArgs["result"]["incomeGoal"]>
   export type IncomeGoalInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
@@ -5092,7 +5140,11 @@ export namespace Prisma {
       id: number
       category: $Enums.IncomeCategory
       amount: number
+      fulfilledAmount: number
       type: $Enums.BudgetType
+      periodStart: Date
+      periodEnd: Date
+      isActive: boolean
       date: Date
       createdAt: Date
       updatedAt: Date
@@ -5524,7 +5576,11 @@ export namespace Prisma {
     readonly id: FieldRef<"IncomeGoal", 'Int'>
     readonly category: FieldRef<"IncomeGoal", 'IncomeCategory'>
     readonly amount: FieldRef<"IncomeGoal", 'Int'>
+    readonly fulfilledAmount: FieldRef<"IncomeGoal", 'Int'>
     readonly type: FieldRef<"IncomeGoal", 'BudgetType'>
+    readonly periodStart: FieldRef<"IncomeGoal", 'DateTime'>
+    readonly periodEnd: FieldRef<"IncomeGoal", 'DateTime'>
+    readonly isActive: FieldRef<"IncomeGoal", 'Boolean'>
     readonly date: FieldRef<"IncomeGoal", 'DateTime'>
     readonly createdAt: FieldRef<"IncomeGoal", 'DateTime'>
     readonly updatedAt: FieldRef<"IncomeGoal", 'DateTime'>
@@ -5958,12 +6014,14 @@ export namespace Prisma {
   export type ExpenseBudgetAvgAggregateOutputType = {
     id: number | null
     amount: number | null
+    fulfilledAmount: number | null
     userId: number | null
   }
 
   export type ExpenseBudgetSumAggregateOutputType = {
     id: number | null
     amount: number | null
+    fulfilledAmount: number | null
     userId: number | null
   }
 
@@ -5971,7 +6029,11 @@ export namespace Prisma {
     id: number | null
     category: $Enums.ExpenseCategory | null
     amount: number | null
+    fulfilledAmount: number | null
     type: $Enums.BudgetType | null
+    periodStart: Date | null
+    periodEnd: Date | null
+    isActive: boolean | null
     date: Date | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -5982,7 +6044,11 @@ export namespace Prisma {
     id: number | null
     category: $Enums.ExpenseCategory | null
     amount: number | null
+    fulfilledAmount: number | null
     type: $Enums.BudgetType | null
+    periodStart: Date | null
+    periodEnd: Date | null
+    isActive: boolean | null
     date: Date | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -5993,7 +6059,11 @@ export namespace Prisma {
     id: number
     category: number
     amount: number
+    fulfilledAmount: number
     type: number
+    periodStart: number
+    periodEnd: number
+    isActive: number
     date: number
     createdAt: number
     updatedAt: number
@@ -6005,12 +6075,14 @@ export namespace Prisma {
   export type ExpenseBudgetAvgAggregateInputType = {
     id?: true
     amount?: true
+    fulfilledAmount?: true
     userId?: true
   }
 
   export type ExpenseBudgetSumAggregateInputType = {
     id?: true
     amount?: true
+    fulfilledAmount?: true
     userId?: true
   }
 
@@ -6018,7 +6090,11 @@ export namespace Prisma {
     id?: true
     category?: true
     amount?: true
+    fulfilledAmount?: true
     type?: true
+    periodStart?: true
+    periodEnd?: true
+    isActive?: true
     date?: true
     createdAt?: true
     updatedAt?: true
@@ -6029,7 +6105,11 @@ export namespace Prisma {
     id?: true
     category?: true
     amount?: true
+    fulfilledAmount?: true
     type?: true
+    periodStart?: true
+    periodEnd?: true
+    isActive?: true
     date?: true
     createdAt?: true
     updatedAt?: true
@@ -6040,7 +6120,11 @@ export namespace Prisma {
     id?: true
     category?: true
     amount?: true
+    fulfilledAmount?: true
     type?: true
+    periodStart?: true
+    periodEnd?: true
+    isActive?: true
     date?: true
     createdAt?: true
     updatedAt?: true
@@ -6138,7 +6222,11 @@ export namespace Prisma {
     id: number
     category: $Enums.ExpenseCategory
     amount: number
+    fulfilledAmount: number
     type: $Enums.BudgetType
+    periodStart: Date
+    periodEnd: Date
+    isActive: boolean
     date: Date
     createdAt: Date
     updatedAt: Date
@@ -6168,7 +6256,11 @@ export namespace Prisma {
     id?: boolean
     category?: boolean
     amount?: boolean
+    fulfilledAmount?: boolean
     type?: boolean
+    periodStart?: boolean
+    periodEnd?: boolean
+    isActive?: boolean
     date?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -6180,7 +6272,11 @@ export namespace Prisma {
     id?: boolean
     category?: boolean
     amount?: boolean
+    fulfilledAmount?: boolean
     type?: boolean
+    periodStart?: boolean
+    periodEnd?: boolean
+    isActive?: boolean
     date?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -6192,7 +6288,11 @@ export namespace Prisma {
     id?: boolean
     category?: boolean
     amount?: boolean
+    fulfilledAmount?: boolean
     type?: boolean
+    periodStart?: boolean
+    periodEnd?: boolean
+    isActive?: boolean
     date?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -6204,14 +6304,18 @@ export namespace Prisma {
     id?: boolean
     category?: boolean
     amount?: boolean
+    fulfilledAmount?: boolean
     type?: boolean
+    periodStart?: boolean
+    periodEnd?: boolean
+    isActive?: boolean
     date?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     userId?: boolean
   }
 
-  export type ExpenseBudgetOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "category" | "amount" | "type" | "date" | "createdAt" | "updatedAt" | "userId", ExtArgs["result"]["expenseBudget"]>
+  export type ExpenseBudgetOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "category" | "amount" | "fulfilledAmount" | "type" | "periodStart" | "periodEnd" | "isActive" | "date" | "createdAt" | "updatedAt" | "userId", ExtArgs["result"]["expenseBudget"]>
   export type ExpenseBudgetInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
@@ -6231,7 +6335,11 @@ export namespace Prisma {
       id: number
       category: $Enums.ExpenseCategory
       amount: number
+      fulfilledAmount: number
       type: $Enums.BudgetType
+      periodStart: Date
+      periodEnd: Date
+      isActive: boolean
       date: Date
       createdAt: Date
       updatedAt: Date
@@ -6663,7 +6771,11 @@ export namespace Prisma {
     readonly id: FieldRef<"ExpenseBudget", 'Int'>
     readonly category: FieldRef<"ExpenseBudget", 'ExpenseCategory'>
     readonly amount: FieldRef<"ExpenseBudget", 'Int'>
+    readonly fulfilledAmount: FieldRef<"ExpenseBudget", 'Int'>
     readonly type: FieldRef<"ExpenseBudget", 'BudgetType'>
+    readonly periodStart: FieldRef<"ExpenseBudget", 'DateTime'>
+    readonly periodEnd: FieldRef<"ExpenseBudget", 'DateTime'>
+    readonly isActive: FieldRef<"ExpenseBudget", 'Boolean'>
     readonly date: FieldRef<"ExpenseBudget", 'DateTime'>
     readonly createdAt: FieldRef<"ExpenseBudget", 'DateTime'>
     readonly updatedAt: FieldRef<"ExpenseBudget", 'DateTime'>
@@ -7139,7 +7251,11 @@ export namespace Prisma {
     id: 'id',
     category: 'category',
     amount: 'amount',
+    fulfilledAmount: 'fulfilledAmount',
     type: 'type',
+    periodStart: 'periodStart',
+    periodEnd: 'periodEnd',
+    isActive: 'isActive',
     date: 'date',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
@@ -7153,7 +7269,11 @@ export namespace Prisma {
     id: 'id',
     category: 'category',
     amount: 'amount',
+    fulfilledAmount: 'fulfilledAmount',
     type: 'type',
+    periodStart: 'periodStart',
+    periodEnd: 'periodEnd',
+    isActive: 'isActive',
     date: 'date',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
@@ -7273,6 +7393,13 @@ export namespace Prisma {
    * Reference to a field of type 'BudgetType[]'
    */
   export type ListEnumBudgetTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BudgetType[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'Boolean'
+   */
+  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
 
 
@@ -7510,7 +7637,11 @@ export namespace Prisma {
     id?: IntFilter<"IncomeGoal"> | number
     category?: EnumIncomeCategoryFilter<"IncomeGoal"> | $Enums.IncomeCategory
     amount?: IntFilter<"IncomeGoal"> | number
+    fulfilledAmount?: IntFilter<"IncomeGoal"> | number
     type?: EnumBudgetTypeFilter<"IncomeGoal"> | $Enums.BudgetType
+    periodStart?: DateTimeFilter<"IncomeGoal"> | Date | string
+    periodEnd?: DateTimeFilter<"IncomeGoal"> | Date | string
+    isActive?: BoolFilter<"IncomeGoal"> | boolean
     date?: DateTimeFilter<"IncomeGoal"> | Date | string
     createdAt?: DateTimeFilter<"IncomeGoal"> | Date | string
     updatedAt?: DateTimeFilter<"IncomeGoal"> | Date | string
@@ -7522,7 +7653,11 @@ export namespace Prisma {
     id?: SortOrder
     category?: SortOrder
     amount?: SortOrder
+    fulfilledAmount?: SortOrder
     type?: SortOrder
+    periodStart?: SortOrder
+    periodEnd?: SortOrder
+    isActive?: SortOrder
     date?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -7537,7 +7672,11 @@ export namespace Prisma {
     NOT?: IncomeGoalWhereInput | IncomeGoalWhereInput[]
     category?: EnumIncomeCategoryFilter<"IncomeGoal"> | $Enums.IncomeCategory
     amount?: IntFilter<"IncomeGoal"> | number
+    fulfilledAmount?: IntFilter<"IncomeGoal"> | number
     type?: EnumBudgetTypeFilter<"IncomeGoal"> | $Enums.BudgetType
+    periodStart?: DateTimeFilter<"IncomeGoal"> | Date | string
+    periodEnd?: DateTimeFilter<"IncomeGoal"> | Date | string
+    isActive?: BoolFilter<"IncomeGoal"> | boolean
     date?: DateTimeFilter<"IncomeGoal"> | Date | string
     createdAt?: DateTimeFilter<"IncomeGoal"> | Date | string
     updatedAt?: DateTimeFilter<"IncomeGoal"> | Date | string
@@ -7549,7 +7688,11 @@ export namespace Prisma {
     id?: SortOrder
     category?: SortOrder
     amount?: SortOrder
+    fulfilledAmount?: SortOrder
     type?: SortOrder
+    periodStart?: SortOrder
+    periodEnd?: SortOrder
+    isActive?: SortOrder
     date?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -7568,7 +7711,11 @@ export namespace Prisma {
     id?: IntWithAggregatesFilter<"IncomeGoal"> | number
     category?: EnumIncomeCategoryWithAggregatesFilter<"IncomeGoal"> | $Enums.IncomeCategory
     amount?: IntWithAggregatesFilter<"IncomeGoal"> | number
+    fulfilledAmount?: IntWithAggregatesFilter<"IncomeGoal"> | number
     type?: EnumBudgetTypeWithAggregatesFilter<"IncomeGoal"> | $Enums.BudgetType
+    periodStart?: DateTimeWithAggregatesFilter<"IncomeGoal"> | Date | string
+    periodEnd?: DateTimeWithAggregatesFilter<"IncomeGoal"> | Date | string
+    isActive?: BoolWithAggregatesFilter<"IncomeGoal"> | boolean
     date?: DateTimeWithAggregatesFilter<"IncomeGoal"> | Date | string
     createdAt?: DateTimeWithAggregatesFilter<"IncomeGoal"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"IncomeGoal"> | Date | string
@@ -7582,7 +7729,11 @@ export namespace Prisma {
     id?: IntFilter<"ExpenseBudget"> | number
     category?: EnumExpenseCategoryFilter<"ExpenseBudget"> | $Enums.ExpenseCategory
     amount?: IntFilter<"ExpenseBudget"> | number
+    fulfilledAmount?: IntFilter<"ExpenseBudget"> | number
     type?: EnumBudgetTypeFilter<"ExpenseBudget"> | $Enums.BudgetType
+    periodStart?: DateTimeFilter<"ExpenseBudget"> | Date | string
+    periodEnd?: DateTimeFilter<"ExpenseBudget"> | Date | string
+    isActive?: BoolFilter<"ExpenseBudget"> | boolean
     date?: DateTimeFilter<"ExpenseBudget"> | Date | string
     createdAt?: DateTimeFilter<"ExpenseBudget"> | Date | string
     updatedAt?: DateTimeFilter<"ExpenseBudget"> | Date | string
@@ -7594,7 +7745,11 @@ export namespace Prisma {
     id?: SortOrder
     category?: SortOrder
     amount?: SortOrder
+    fulfilledAmount?: SortOrder
     type?: SortOrder
+    periodStart?: SortOrder
+    periodEnd?: SortOrder
+    isActive?: SortOrder
     date?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -7609,7 +7764,11 @@ export namespace Prisma {
     NOT?: ExpenseBudgetWhereInput | ExpenseBudgetWhereInput[]
     category?: EnumExpenseCategoryFilter<"ExpenseBudget"> | $Enums.ExpenseCategory
     amount?: IntFilter<"ExpenseBudget"> | number
+    fulfilledAmount?: IntFilter<"ExpenseBudget"> | number
     type?: EnumBudgetTypeFilter<"ExpenseBudget"> | $Enums.BudgetType
+    periodStart?: DateTimeFilter<"ExpenseBudget"> | Date | string
+    periodEnd?: DateTimeFilter<"ExpenseBudget"> | Date | string
+    isActive?: BoolFilter<"ExpenseBudget"> | boolean
     date?: DateTimeFilter<"ExpenseBudget"> | Date | string
     createdAt?: DateTimeFilter<"ExpenseBudget"> | Date | string
     updatedAt?: DateTimeFilter<"ExpenseBudget"> | Date | string
@@ -7621,7 +7780,11 @@ export namespace Prisma {
     id?: SortOrder
     category?: SortOrder
     amount?: SortOrder
+    fulfilledAmount?: SortOrder
     type?: SortOrder
+    periodStart?: SortOrder
+    periodEnd?: SortOrder
+    isActive?: SortOrder
     date?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -7640,7 +7803,11 @@ export namespace Prisma {
     id?: IntWithAggregatesFilter<"ExpenseBudget"> | number
     category?: EnumExpenseCategoryWithAggregatesFilter<"ExpenseBudget"> | $Enums.ExpenseCategory
     amount?: IntWithAggregatesFilter<"ExpenseBudget"> | number
+    fulfilledAmount?: IntWithAggregatesFilter<"ExpenseBudget"> | number
     type?: EnumBudgetTypeWithAggregatesFilter<"ExpenseBudget"> | $Enums.BudgetType
+    periodStart?: DateTimeWithAggregatesFilter<"ExpenseBudget"> | Date | string
+    periodEnd?: DateTimeWithAggregatesFilter<"ExpenseBudget"> | Date | string
+    isActive?: BoolWithAggregatesFilter<"ExpenseBudget"> | boolean
     date?: DateTimeWithAggregatesFilter<"ExpenseBudget"> | Date | string
     createdAt?: DateTimeWithAggregatesFilter<"ExpenseBudget"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"ExpenseBudget"> | Date | string
@@ -7865,7 +8032,11 @@ export namespace Prisma {
   export type IncomeGoalCreateInput = {
     category?: $Enums.IncomeCategory
     amount?: number
+    fulfilledAmount?: number
     type?: $Enums.BudgetType
+    periodStart?: Date | string
+    periodEnd?: Date | string
+    isActive?: boolean
     date?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -7876,7 +8047,11 @@ export namespace Prisma {
     id?: number
     category?: $Enums.IncomeCategory
     amount?: number
+    fulfilledAmount?: number
     type?: $Enums.BudgetType
+    periodStart?: Date | string
+    periodEnd?: Date | string
+    isActive?: boolean
     date?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -7886,7 +8061,11 @@ export namespace Prisma {
   export type IncomeGoalUpdateInput = {
     category?: EnumIncomeCategoryFieldUpdateOperationsInput | $Enums.IncomeCategory
     amount?: IntFieldUpdateOperationsInput | number
+    fulfilledAmount?: IntFieldUpdateOperationsInput | number
     type?: EnumBudgetTypeFieldUpdateOperationsInput | $Enums.BudgetType
+    periodStart?: DateTimeFieldUpdateOperationsInput | Date | string
+    periodEnd?: DateTimeFieldUpdateOperationsInput | Date | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -7897,7 +8076,11 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     category?: EnumIncomeCategoryFieldUpdateOperationsInput | $Enums.IncomeCategory
     amount?: IntFieldUpdateOperationsInput | number
+    fulfilledAmount?: IntFieldUpdateOperationsInput | number
     type?: EnumBudgetTypeFieldUpdateOperationsInput | $Enums.BudgetType
+    periodStart?: DateTimeFieldUpdateOperationsInput | Date | string
+    periodEnd?: DateTimeFieldUpdateOperationsInput | Date | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -7908,7 +8091,11 @@ export namespace Prisma {
     id?: number
     category?: $Enums.IncomeCategory
     amount?: number
+    fulfilledAmount?: number
     type?: $Enums.BudgetType
+    periodStart?: Date | string
+    periodEnd?: Date | string
+    isActive?: boolean
     date?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -7918,7 +8105,11 @@ export namespace Prisma {
   export type IncomeGoalUpdateManyMutationInput = {
     category?: EnumIncomeCategoryFieldUpdateOperationsInput | $Enums.IncomeCategory
     amount?: IntFieldUpdateOperationsInput | number
+    fulfilledAmount?: IntFieldUpdateOperationsInput | number
     type?: EnumBudgetTypeFieldUpdateOperationsInput | $Enums.BudgetType
+    periodStart?: DateTimeFieldUpdateOperationsInput | Date | string
+    periodEnd?: DateTimeFieldUpdateOperationsInput | Date | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -7928,7 +8119,11 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     category?: EnumIncomeCategoryFieldUpdateOperationsInput | $Enums.IncomeCategory
     amount?: IntFieldUpdateOperationsInput | number
+    fulfilledAmount?: IntFieldUpdateOperationsInput | number
     type?: EnumBudgetTypeFieldUpdateOperationsInput | $Enums.BudgetType
+    periodStart?: DateTimeFieldUpdateOperationsInput | Date | string
+    periodEnd?: DateTimeFieldUpdateOperationsInput | Date | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -7938,7 +8133,11 @@ export namespace Prisma {
   export type ExpenseBudgetCreateInput = {
     category?: $Enums.ExpenseCategory
     amount?: number
+    fulfilledAmount?: number
     type?: $Enums.BudgetType
+    periodStart?: Date | string
+    periodEnd?: Date | string
+    isActive?: boolean
     date?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -7949,7 +8148,11 @@ export namespace Prisma {
     id?: number
     category?: $Enums.ExpenseCategory
     amount?: number
+    fulfilledAmount?: number
     type?: $Enums.BudgetType
+    periodStart?: Date | string
+    periodEnd?: Date | string
+    isActive?: boolean
     date?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -7959,7 +8162,11 @@ export namespace Prisma {
   export type ExpenseBudgetUpdateInput = {
     category?: EnumExpenseCategoryFieldUpdateOperationsInput | $Enums.ExpenseCategory
     amount?: IntFieldUpdateOperationsInput | number
+    fulfilledAmount?: IntFieldUpdateOperationsInput | number
     type?: EnumBudgetTypeFieldUpdateOperationsInput | $Enums.BudgetType
+    periodStart?: DateTimeFieldUpdateOperationsInput | Date | string
+    periodEnd?: DateTimeFieldUpdateOperationsInput | Date | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -7970,7 +8177,11 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     category?: EnumExpenseCategoryFieldUpdateOperationsInput | $Enums.ExpenseCategory
     amount?: IntFieldUpdateOperationsInput | number
+    fulfilledAmount?: IntFieldUpdateOperationsInput | number
     type?: EnumBudgetTypeFieldUpdateOperationsInput | $Enums.BudgetType
+    periodStart?: DateTimeFieldUpdateOperationsInput | Date | string
+    periodEnd?: DateTimeFieldUpdateOperationsInput | Date | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -7981,7 +8192,11 @@ export namespace Prisma {
     id?: number
     category?: $Enums.ExpenseCategory
     amount?: number
+    fulfilledAmount?: number
     type?: $Enums.BudgetType
+    periodStart?: Date | string
+    periodEnd?: Date | string
+    isActive?: boolean
     date?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -7991,7 +8206,11 @@ export namespace Prisma {
   export type ExpenseBudgetUpdateManyMutationInput = {
     category?: EnumExpenseCategoryFieldUpdateOperationsInput | $Enums.ExpenseCategory
     amount?: IntFieldUpdateOperationsInput | number
+    fulfilledAmount?: IntFieldUpdateOperationsInput | number
     type?: EnumBudgetTypeFieldUpdateOperationsInput | $Enums.BudgetType
+    periodStart?: DateTimeFieldUpdateOperationsInput | Date | string
+    periodEnd?: DateTimeFieldUpdateOperationsInput | Date | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -8001,7 +8220,11 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     category?: EnumExpenseCategoryFieldUpdateOperationsInput | $Enums.ExpenseCategory
     amount?: IntFieldUpdateOperationsInput | number
+    fulfilledAmount?: IntFieldUpdateOperationsInput | number
     type?: EnumBudgetTypeFieldUpdateOperationsInput | $Enums.BudgetType
+    periodStart?: DateTimeFieldUpdateOperationsInput | Date | string
+    periodEnd?: DateTimeFieldUpdateOperationsInput | Date | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -8339,11 +8562,20 @@ export namespace Prisma {
     not?: NestedEnumBudgetTypeFilter<$PrismaModel> | $Enums.BudgetType
   }
 
+  export type BoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
   export type IncomeGoalCountOrderByAggregateInput = {
     id?: SortOrder
     category?: SortOrder
     amount?: SortOrder
+    fulfilledAmount?: SortOrder
     type?: SortOrder
+    periodStart?: SortOrder
+    periodEnd?: SortOrder
+    isActive?: SortOrder
     date?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -8353,6 +8585,7 @@ export namespace Prisma {
   export type IncomeGoalAvgOrderByAggregateInput = {
     id?: SortOrder
     amount?: SortOrder
+    fulfilledAmount?: SortOrder
     userId?: SortOrder
   }
 
@@ -8360,7 +8593,11 @@ export namespace Prisma {
     id?: SortOrder
     category?: SortOrder
     amount?: SortOrder
+    fulfilledAmount?: SortOrder
     type?: SortOrder
+    periodStart?: SortOrder
+    periodEnd?: SortOrder
+    isActive?: SortOrder
     date?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -8371,7 +8608,11 @@ export namespace Prisma {
     id?: SortOrder
     category?: SortOrder
     amount?: SortOrder
+    fulfilledAmount?: SortOrder
     type?: SortOrder
+    periodStart?: SortOrder
+    periodEnd?: SortOrder
+    isActive?: SortOrder
     date?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -8381,6 +8622,7 @@ export namespace Prisma {
   export type IncomeGoalSumOrderByAggregateInput = {
     id?: SortOrder
     amount?: SortOrder
+    fulfilledAmount?: SortOrder
     userId?: SortOrder
   }
 
@@ -8394,11 +8636,23 @@ export namespace Prisma {
     _max?: NestedEnumBudgetTypeFilter<$PrismaModel>
   }
 
+  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
+  }
+
   export type ExpenseBudgetCountOrderByAggregateInput = {
     id?: SortOrder
     category?: SortOrder
     amount?: SortOrder
+    fulfilledAmount?: SortOrder
     type?: SortOrder
+    periodStart?: SortOrder
+    periodEnd?: SortOrder
+    isActive?: SortOrder
     date?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -8408,6 +8662,7 @@ export namespace Prisma {
   export type ExpenseBudgetAvgOrderByAggregateInput = {
     id?: SortOrder
     amount?: SortOrder
+    fulfilledAmount?: SortOrder
     userId?: SortOrder
   }
 
@@ -8415,7 +8670,11 @@ export namespace Prisma {
     id?: SortOrder
     category?: SortOrder
     amount?: SortOrder
+    fulfilledAmount?: SortOrder
     type?: SortOrder
+    periodStart?: SortOrder
+    periodEnd?: SortOrder
+    isActive?: SortOrder
     date?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -8426,7 +8685,11 @@ export namespace Prisma {
     id?: SortOrder
     category?: SortOrder
     amount?: SortOrder
+    fulfilledAmount?: SortOrder
     type?: SortOrder
+    periodStart?: SortOrder
+    periodEnd?: SortOrder
+    isActive?: SortOrder
     date?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -8436,6 +8699,7 @@ export namespace Prisma {
   export type ExpenseBudgetSumOrderByAggregateInput = {
     id?: SortOrder
     amount?: SortOrder
+    fulfilledAmount?: SortOrder
     userId?: SortOrder
   }
 
@@ -8673,6 +8937,10 @@ export namespace Prisma {
     set?: $Enums.BudgetType
   }
 
+  export type BoolFieldUpdateOperationsInput = {
+    set?: boolean
+  }
+
   export type UserUpdateOneRequiredWithoutIncomeGoalsNestedInput = {
     create?: XOR<UserCreateWithoutIncomeGoalsInput, UserUncheckedCreateWithoutIncomeGoalsInput>
     connectOrCreate?: UserCreateOrConnectWithoutIncomeGoalsInput
@@ -8872,6 +9140,11 @@ export namespace Prisma {
     not?: NestedEnumBudgetTypeFilter<$PrismaModel> | $Enums.BudgetType
   }
 
+  export type NestedBoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
   export type NestedEnumBudgetTypeWithAggregatesFilter<$PrismaModel = never> = {
     equals?: $Enums.BudgetType | EnumBudgetTypeFieldRefInput<$PrismaModel>
     in?: $Enums.BudgetType[] | ListEnumBudgetTypeFieldRefInput<$PrismaModel>
@@ -8880,6 +9153,14 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumBudgetTypeFilter<$PrismaModel>
     _max?: NestedEnumBudgetTypeFilter<$PrismaModel>
+  }
+
+  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type IncomeCreateWithoutUserInput = {
@@ -8943,7 +9224,11 @@ export namespace Prisma {
   export type IncomeGoalCreateWithoutUserInput = {
     category?: $Enums.IncomeCategory
     amount?: number
+    fulfilledAmount?: number
     type?: $Enums.BudgetType
+    periodStart?: Date | string
+    periodEnd?: Date | string
+    isActive?: boolean
     date?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -8953,7 +9238,11 @@ export namespace Prisma {
     id?: number
     category?: $Enums.IncomeCategory
     amount?: number
+    fulfilledAmount?: number
     type?: $Enums.BudgetType
+    periodStart?: Date | string
+    periodEnd?: Date | string
+    isActive?: boolean
     date?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -8972,7 +9261,11 @@ export namespace Prisma {
   export type ExpenseBudgetCreateWithoutUserInput = {
     category?: $Enums.ExpenseCategory
     amount?: number
+    fulfilledAmount?: number
     type?: $Enums.BudgetType
+    periodStart?: Date | string
+    periodEnd?: Date | string
+    isActive?: boolean
     date?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -8982,7 +9275,11 @@ export namespace Prisma {
     id?: number
     category?: $Enums.ExpenseCategory
     amount?: number
+    fulfilledAmount?: number
     type?: $Enums.BudgetType
+    periodStart?: Date | string
+    periodEnd?: Date | string
+    isActive?: boolean
     date?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -9081,7 +9378,11 @@ export namespace Prisma {
     id?: IntFilter<"IncomeGoal"> | number
     category?: EnumIncomeCategoryFilter<"IncomeGoal"> | $Enums.IncomeCategory
     amount?: IntFilter<"IncomeGoal"> | number
+    fulfilledAmount?: IntFilter<"IncomeGoal"> | number
     type?: EnumBudgetTypeFilter<"IncomeGoal"> | $Enums.BudgetType
+    periodStart?: DateTimeFilter<"IncomeGoal"> | Date | string
+    periodEnd?: DateTimeFilter<"IncomeGoal"> | Date | string
+    isActive?: BoolFilter<"IncomeGoal"> | boolean
     date?: DateTimeFilter<"IncomeGoal"> | Date | string
     createdAt?: DateTimeFilter<"IncomeGoal"> | Date | string
     updatedAt?: DateTimeFilter<"IncomeGoal"> | Date | string
@@ -9111,7 +9412,11 @@ export namespace Prisma {
     id?: IntFilter<"ExpenseBudget"> | number
     category?: EnumExpenseCategoryFilter<"ExpenseBudget"> | $Enums.ExpenseCategory
     amount?: IntFilter<"ExpenseBudget"> | number
+    fulfilledAmount?: IntFilter<"ExpenseBudget"> | number
     type?: EnumBudgetTypeFilter<"ExpenseBudget"> | $Enums.BudgetType
+    periodStart?: DateTimeFilter<"ExpenseBudget"> | Date | string
+    periodEnd?: DateTimeFilter<"ExpenseBudget"> | Date | string
+    isActive?: BoolFilter<"ExpenseBudget"> | boolean
     date?: DateTimeFilter<"ExpenseBudget"> | Date | string
     createdAt?: DateTimeFilter<"ExpenseBudget"> | Date | string
     updatedAt?: DateTimeFilter<"ExpenseBudget"> | Date | string
@@ -9374,7 +9679,11 @@ export namespace Prisma {
     id?: number
     category?: $Enums.IncomeCategory
     amount?: number
+    fulfilledAmount?: number
     type?: $Enums.BudgetType
+    periodStart?: Date | string
+    periodEnd?: Date | string
+    isActive?: boolean
     date?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -9384,7 +9693,11 @@ export namespace Prisma {
     id?: number
     category?: $Enums.ExpenseCategory
     amount?: number
+    fulfilledAmount?: number
     type?: $Enums.BudgetType
+    periodStart?: Date | string
+    periodEnd?: Date | string
+    isActive?: boolean
     date?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -9451,7 +9764,11 @@ export namespace Prisma {
   export type IncomeGoalUpdateWithoutUserInput = {
     category?: EnumIncomeCategoryFieldUpdateOperationsInput | $Enums.IncomeCategory
     amount?: IntFieldUpdateOperationsInput | number
+    fulfilledAmount?: IntFieldUpdateOperationsInput | number
     type?: EnumBudgetTypeFieldUpdateOperationsInput | $Enums.BudgetType
+    periodStart?: DateTimeFieldUpdateOperationsInput | Date | string
+    periodEnd?: DateTimeFieldUpdateOperationsInput | Date | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -9461,7 +9778,11 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     category?: EnumIncomeCategoryFieldUpdateOperationsInput | $Enums.IncomeCategory
     amount?: IntFieldUpdateOperationsInput | number
+    fulfilledAmount?: IntFieldUpdateOperationsInput | number
     type?: EnumBudgetTypeFieldUpdateOperationsInput | $Enums.BudgetType
+    periodStart?: DateTimeFieldUpdateOperationsInput | Date | string
+    periodEnd?: DateTimeFieldUpdateOperationsInput | Date | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -9471,7 +9792,11 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     category?: EnumIncomeCategoryFieldUpdateOperationsInput | $Enums.IncomeCategory
     amount?: IntFieldUpdateOperationsInput | number
+    fulfilledAmount?: IntFieldUpdateOperationsInput | number
     type?: EnumBudgetTypeFieldUpdateOperationsInput | $Enums.BudgetType
+    periodStart?: DateTimeFieldUpdateOperationsInput | Date | string
+    periodEnd?: DateTimeFieldUpdateOperationsInput | Date | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -9480,7 +9805,11 @@ export namespace Prisma {
   export type ExpenseBudgetUpdateWithoutUserInput = {
     category?: EnumExpenseCategoryFieldUpdateOperationsInput | $Enums.ExpenseCategory
     amount?: IntFieldUpdateOperationsInput | number
+    fulfilledAmount?: IntFieldUpdateOperationsInput | number
     type?: EnumBudgetTypeFieldUpdateOperationsInput | $Enums.BudgetType
+    periodStart?: DateTimeFieldUpdateOperationsInput | Date | string
+    periodEnd?: DateTimeFieldUpdateOperationsInput | Date | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -9490,7 +9819,11 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     category?: EnumExpenseCategoryFieldUpdateOperationsInput | $Enums.ExpenseCategory
     amount?: IntFieldUpdateOperationsInput | number
+    fulfilledAmount?: IntFieldUpdateOperationsInput | number
     type?: EnumBudgetTypeFieldUpdateOperationsInput | $Enums.BudgetType
+    periodStart?: DateTimeFieldUpdateOperationsInput | Date | string
+    periodEnd?: DateTimeFieldUpdateOperationsInput | Date | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -9500,7 +9833,11 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     category?: EnumExpenseCategoryFieldUpdateOperationsInput | $Enums.ExpenseCategory
     amount?: IntFieldUpdateOperationsInput | number
+    fulfilledAmount?: IntFieldUpdateOperationsInput | number
     type?: EnumBudgetTypeFieldUpdateOperationsInput | $Enums.BudgetType
+    periodStart?: DateTimeFieldUpdateOperationsInput | Date | string
+    periodEnd?: DateTimeFieldUpdateOperationsInput | Date | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string

@@ -182,17 +182,39 @@ export const addIncomeGoal = async (req: Request, res: Response) => {
       return res.status(400).json({ message: "Invalid income category" });
     }
 
-    // Check if goal already exists for this category + type combination
+    // Calculate period dates based on goal type
+    const now = new Date();
+    let periodEnd = new Date(now);
+
+    if (type === "WEEKLY") {
+      periodEnd.setDate(periodEnd.getDate() + 7);
+    } else if (type === "MONTHLY") {
+      periodEnd.setMonth(periodEnd.getMonth() + 1);
+    } else if (type === "YEARLY") {
+      periodEnd.setFullYear(periodEnd.getFullYear() + 1);
+    }
+
+    // Check if an active goal already exists for this category and type with overlapping period
     const existingGoal = await prisma.incomeGoal.findFirst({
       where: {
         userId: userid,
         category: catagory.toUpperCase() as IncomeCategory,
         type: type,
+        isActive: true,
+        // Check for overlapping periods
+        periodStart: {
+          lte: periodEnd,
+        },
+        periodEnd: {
+          gte: now,
+        },
       },
     });
 
     if (existingGoal) {
-      return res.status(400).json({ message: `${type} income goal for ${catagory} category already exists` });
+      return res.status(400).json({
+        message: `An active ${type} income goal for ${catagory.toUpperCase()} category already exists from ${existingGoal.periodStart} to ${existingGoal.periodEnd}`,
+      });
     }
 
     const incomeGoal = await prisma.incomeGoal.create({
@@ -201,6 +223,8 @@ export const addIncomeGoal = async (req: Request, res: Response) => {
         type,
         category: catagory.toUpperCase() as IncomeCategory,
         userId: userid,
+        periodStart: now,
+        periodEnd: periodEnd,
       },
     });
 
@@ -273,7 +297,7 @@ export const updateIncomeGoal = async (req: Request, res: Response) => {
       return res.status(400).json({ message: "Invalid goal id" });
     }
 
-    const { amount, type, catagory } = req.body;
+    const { amount, type } = req.body;
 
     // Verify goal ownership
     const existingGoal = await prisma.incomeGoal.findFirst({
@@ -287,8 +311,17 @@ export const updateIncomeGoal = async (req: Request, res: Response) => {
       return res.status(404).json({ message: "Income goal not found" });
     }
 
+    // Check if goal is active - only allow updates if active
+    if (!existingGoal.isActive) {
+      return res.status(400).json({ message: "Cannot update an inactive income goal" });
+    }
+
     // Validate update fields
-    const updateData: { amount?: number; type?: "WEEKLY" | "MONTHLY" | "YEARLY"; category?: IncomeCategory } = {};
+    const updateData: {
+      amount?: number;
+      type?: "WEEKLY" | "MONTHLY" | "YEARLY";
+      periodEnd?: Date;
+    } = {};
 
     if (amount !== undefined) {
       if (typeof amount !== "number" || amount <= 0) {
@@ -297,36 +330,48 @@ export const updateIncomeGoal = async (req: Request, res: Response) => {
       updateData.amount = amount;
     }
 
-    if (catagory !== undefined) {
-      if (!validIncomeCatagory(catagory)) {
-        return res.status(400).json({ message: "Invalid income category" });
-      }
-      updateData.category = catagory.toUpperCase() as IncomeCategory;
-    }
-
     if (type !== undefined) {
       if (!validBudgetType(type)) {
         return res.status(400).json({ message: "Type must be WEEKLY, MONTHLY, or YEARLY" });
       }
       updateData.type = type;
+
+      // Recalculate periodEnd based on new type, keeping periodStart the same
+      const newPeriodEnd = new Date(existingGoal.periodStart);
+      if (type === "WEEKLY") {
+        newPeriodEnd.setDate(newPeriodEnd.getDate() + 7);
+      } else if (type === "MONTHLY") {
+        newPeriodEnd.setMonth(newPeriodEnd.getMonth() + 1);
+      } else if (type === "YEARLY") {
+        newPeriodEnd.setFullYear(newPeriodEnd.getFullYear() + 1);
+      }
+      updateData.periodEnd = newPeriodEnd;
     }
 
-    // Check if category + type combination already exists (only if either is being updated)
-    if (catagory !== undefined || type !== undefined) {
-      const finalCategory = catagory !== undefined ? catagory.toUpperCase() : existingGoal.category;
-      const finalType = type || existingGoal.type;
-
+    // Check if category + type combination already exists with overlapping periods (only if type is being updated)
+    if (type !== undefined) {
+      const newPeriodEnd = updateData.periodEnd || existingGoal.periodEnd;
       const conflictingGoal = await prisma.incomeGoal.findFirst({
         where: {
           userId: userid,
-          category: finalCategory as IncomeCategory,
-          type: finalType,
+          category: existingGoal.category,
+          type: type,
+          isActive: true,
           NOT: { id: goalid },
+          // Check for overlapping periods
+          periodStart: {
+            lte: newPeriodEnd,
+          },
+          periodEnd: {
+            gte: existingGoal.periodStart,
+          },
         },
       });
 
       if (conflictingGoal) {
-        return res.status(400).json({ message: `${finalType} income goal for ${finalCategory} category already exists` });
+        return res.status(400).json({
+          message: `An active ${type} income goal for ${existingGoal.category} category already exists with overlapping period`,
+        });
       }
     }
 
