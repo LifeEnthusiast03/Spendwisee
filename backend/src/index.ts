@@ -17,9 +17,11 @@ redisClient.on("error", (error) => {
   console.error("Redis client error:", error);
 });
 
+const allowedOrigins = (process.env.FRONTEND_URL ?? "http://localhost:5173").split(',').map(url => url.trim());
+
 app.use(
   cors({
-    origin: process.env.FRONTEND_URL ?? "http://localhost:5173",
+    origin: allowedOrigins,
     credentials: true,
   })
 )
