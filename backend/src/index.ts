@@ -5,7 +5,7 @@ import session from "express-session";
 import { RedisStore } from "connect-redis";
 import { createClient } from "redis";
 import passport from "./config/passport.js";
-import router  from "./routes/auth_route.js";
+import authrouter  from "./routes/auth_route.js";
 import incomerouter  from "./routes/income_route.js"
 import expenserouter  from "./routes/expense_route.js";
 const app:Application = express();
@@ -46,7 +46,7 @@ app.use(
 
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(router);
+app.use(authrouter);
 app.use(incomerouter);
 app.use(expenserouter);
 
