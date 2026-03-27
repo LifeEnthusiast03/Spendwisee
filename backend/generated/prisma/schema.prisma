@@ -24,6 +24,7 @@ model User {
   expenses       Expense[]
   incomeGoals    IncomeGoal[]
   expenseBudgets ExpenseBudget[]
+  goals          Goal[]
 }
 
 enum IncomeCategory {
@@ -115,4 +116,20 @@ model ExpenseBudget {
 
   @@index([userId, type])
   @@index([userId, category, isActive])
+}
+
+model Goal {
+  id        Int      @id @default(autoincrement())
+  name      String
+  amount    Int      @default(0)
+  startdate DateTime @default(now())
+  enddate   DateTime @default(now())
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([userId, isActive])
 }
