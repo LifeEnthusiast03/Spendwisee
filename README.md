@@ -21,7 +21,8 @@ Implemented and working:
   - Limits (manage expense budgets)
   - Profile
 - Separate Income Form and Expense Form pages
-- Premium dark-themed UI with chart visualizations and smooth animations
+- Premium dark-themed UI with chart visualizations and smooth glassmorphic animations
+- **State Management**: Refactored frontend heavily utilizing strongly-typed Redux Toolkit slices (`auth`, `income`, `expense`, `goals`, etc.)
 
 ---
 
@@ -29,7 +30,7 @@ Implemented and working:
 
 | Layer | Tech |
 |---|---|
-| Frontend | React 19, TypeScript, Vite, React Router v7, Tailwind v4 |
+| Frontend | React 19, TypeScript, Vite, React Router v7, Tailwind v4, Redux Toolkit |
 | Backend | Node.js, Express, TypeScript |
 | Auth | Passport Local + Passport Google OAuth + express-session |
 | ORM | Prisma |
@@ -435,7 +436,7 @@ npm run build
 
 ### Dashboard & Analytics
 - **Home**: Quick overview of balance, recent transactions, and stats
-- **Analytics**: Trend charts and category breakdowns
+- **Analytics**: Modernized, dynamic dashboard presenting key financial health KPIs (spend ratio, transaction volume) and colorful trend charts/donut breakpoints.
 - **Budget**: Filtered transactions, goal/budget summaries, and completion visualizations
 - **Profile**: User info and account management
 - **Goals**: Dedicated page to manage income goals
