@@ -6,7 +6,7 @@
 		radial-gradient(circle at top left, rgba(255, 174, 93, 0.22), transparent 32%),
 		radial-gradient(circle at right center, rgba(123, 74, 226, 0.18), transparent 30%),
 		linear-gradient(135deg, #18111a 0%, #241926 48%, #111827 100%);
-	font-family: "Segoe UI", "Trebuchet MS", sans-serif;
+	font-family: "Inter", "Segoe UI", "Trebuchet MS", sans-serif;
 }
 
 body {
@@ -2729,5 +2729,521 @@ body {
 	.tx-amount {
 		grid-column: 2;
 		justify-self: end;
+	}
+}
+
+/* ===================== LOADING SCREEN ===================== */
+.loading-screen {
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 1.2rem;
+	background: linear-gradient(135deg, #18111a 0%, #241926 48%, #111827 100%);
+}
+
+.loading-screen p {
+	color: rgba(246, 239, 232, 0.7);
+	font-size: 0.95rem;
+	letter-spacing: 0.03em;
+}
+
+.loading-spinner {
+	width: 36px;
+	height: 36px;
+	border: 3px solid rgba(255, 190, 130, 0.2);
+	border-top-color: #ffbe82;
+	border-radius: 50%;
+	animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+	to { transform: rotate(360deg); }
+}
+
+/* ===================== SKELETON ===================== */
+.skeleton-card {
+	height: 120px;
+	border-radius: 20px;
+	background: linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+	border: 1px solid rgba(255,255,255,0.06);
+}
+
+.pulse {
+	animation: pulse-glow 1.8s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+	0%, 100% { opacity: 0.5; }
+	50% { opacity: 1; }
+}
+
+/* ===================== GOALS SAVED COLOR ===================== */
+.goals-saved {
+	background: linear-gradient(135deg, #38bdf8, #a855f7);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	background-clip: text;
+}
+
+/* ===================== GOALS PREVIEW (HOME) ===================== */
+.goals-preview-card {
+	padding: 1.2rem;
+}
+
+.goals-preview-grid {
+	display: grid;
+	gap: 0.8rem;
+	margin-top: 0.8rem;
+}
+
+.goal-preview-item {
+	padding: 0.9rem 1rem;
+	border-radius: 14px;
+	background: rgba(255,255,255,0.04);
+	border: 1px solid rgba(255,255,255,0.08);
+}
+
+.goal-preview-head {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 0.5rem;
+}
+
+.goal-preview-head strong {
+	text-transform: capitalize;
+	font-size: 0.95rem;
+}
+
+.goal-preview-head span {
+	font-size: 0.82rem;
+	color: #10b981;
+	font-weight: 700;
+}
+
+.goal-preview-footer {
+	margin-top: 0.4rem;
+}
+
+.goal-preview-footer small {
+	font-size: 0.78rem;
+	color: rgba(246,239,232,0.6);
+}
+
+/* ===================== GOAL CREATE TOGGLE ===================== */
+.goal-create-toggle {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.5rem;
+	padding: 0.85rem 1.4rem;
+	border: 1.5px solid rgba(255,190,130,0.3);
+	border-radius: 14px;
+	background: linear-gradient(135deg, rgba(255,190,130,0.12), rgba(255,174,93,0.08));
+	color: #ffbe82;
+	font-weight: 600;
+	font-size: 0.92rem;
+	cursor: pointer;
+	transition: all 0.3s ease;
+}
+
+.goal-create-toggle:hover {
+	background: linear-gradient(135deg, rgba(255,190,130,0.2), rgba(255,174,93,0.14));
+	border-color: rgba(255,190,130,0.5);
+	transform: translateY(-1px);
+	box-shadow: 0 6px 18px rgba(255,190,130,0.15);
+}
+
+/* ===================== GOALS GRID ===================== */
+.goals-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+	gap: 1rem;
+}
+
+/* ===================== GOAL CARD ===================== */
+.goal-card {
+	padding: 1.4rem !important;
+}
+
+.goal-card-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 1rem;
+}
+
+.goal-card-title {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+}
+
+.goal-card-title h3 {
+	margin: 0;
+	font-size: 1.05rem;
+	font-weight: 700;
+	text-transform: capitalize;
+	letter-spacing: -0.01em;
+}
+
+.goal-card-title svg {
+	color: #10b981;
+}
+
+.goal-card-actions {
+	display: flex;
+	gap: 0.3rem;
+}
+
+.goal-card-actions button {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 30px;
+	height: 30px;
+	border: 1px solid rgba(255,255,255,0.1);
+	border-radius: 8px;
+	background: rgba(255,255,255,0.05);
+	color: rgba(246,239,232,0.7);
+	cursor: pointer;
+	transition: all 0.2s ease;
+}
+
+.goal-card-actions button:hover {
+	background: rgba(255,255,255,0.1);
+	color: #f6efe8;
+	border-color: rgba(255,255,255,0.2);
+}
+
+/* ===================== GOAL PROGRESS ===================== */
+.goal-progress-section {
+	display: grid;
+	grid-template-columns: auto 1fr;
+	gap: 1.2rem;
+	align-items: center;
+	margin-bottom: 1rem;
+}
+
+.goal-progress-ring-wrap {
+	position: relative;
+	width: 100px;
+	height: 100px;
+}
+
+.goal-progress-ring {
+	width: 100%;
+	height: 100%;
+	transform: rotate(-90deg);
+}
+
+.goal-progress-center {
+	position: absolute;
+	inset: 0;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+
+.goal-progress-center strong {
+	font-size: 1.15rem;
+	font-weight: 800;
+	background: linear-gradient(135deg, #10b981, #38bdf8);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	background-clip: text;
+}
+
+.goal-progress-center small {
+	font-size: 0.68rem;
+	color: rgba(246,239,232,0.55);
+	text-transform: uppercase;
+	letter-spacing: 0.1em;
+}
+
+.goal-progress-details {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 0.5rem;
+}
+
+.goal-progress-details > div {
+	display: flex;
+	flex-direction: column;
+	gap: 0.15rem;
+	padding: 0.45rem 0.6rem;
+	border-radius: 10px;
+	background: rgba(255,255,255,0.04);
+}
+
+.goal-progress-details small {
+	font-size: 0.72rem;
+	color: rgba(246,239,232,0.55);
+	text-transform: uppercase;
+	letter-spacing: 0.06em;
+}
+
+.goal-progress-details strong {
+	font-size: 0.88rem;
+}
+
+/* ===================== GOAL BAR ===================== */
+.goal-card-bar {
+	margin-bottom: 1rem;
+}
+
+.bar-fill.goal-fill {
+	background: linear-gradient(90deg, #10b981, #38bdf8);
+	transition: width 0.6s ease;
+}
+
+/* ===================== GOAL MONEY ACTIONS ===================== */
+.goal-card-money-actions {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 0.6rem;
+}
+
+.goal-money-btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.4rem;
+	padding: 0.7rem;
+	border-radius: 12px;
+	font-size: 0.85rem;
+	font-weight: 600;
+	cursor: pointer;
+	transition: all 0.25s ease;
+	border: 1.5px solid;
+}
+
+.goal-money-btn.add {
+	background: rgba(16, 185, 129, 0.12);
+	border-color: rgba(16, 185, 129, 0.3);
+	color: #34d399;
+}
+
+.goal-money-btn.add:hover {
+	background: rgba(16, 185, 129, 0.2);
+	border-color: rgba(16, 185, 129, 0.5);
+	transform: translateY(-1px);
+	box-shadow: 0 4px 12px rgba(16, 185, 129, 0.15);
+}
+
+.goal-money-btn.remove {
+	background: rgba(244, 63, 94, 0.12);
+	border-color: rgba(244, 63, 94, 0.3);
+	color: #fb7185;
+}
+
+.goal-money-btn.remove:hover:not(:disabled) {
+	background: rgba(244, 63, 94, 0.2);
+	border-color: rgba(244, 63, 94, 0.5);
+	transform: translateY(-1px);
+	box-shadow: 0 4px 12px rgba(244, 63, 94, 0.15);
+}
+
+.goal-money-btn:disabled {
+	opacity: 0.4;
+	cursor: not-allowed;
+}
+
+/* ===================== EMPTY GOALS STATE ===================== */
+.empty-goals-state {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 0.6rem;
+	padding: 2.5rem 1.5rem;
+	text-align: center;
+	color: rgba(246,239,232,0.6);
+}
+
+.empty-goals-state svg {
+	color: rgba(255,190,130,0.5);
+}
+
+.empty-goals-state h2 {
+	margin: 0;
+	font-size: 1.2rem;
+	color: #f6efe8;
+}
+
+.empty-goals-state p {
+	margin: 0;
+	max-width: 32ch;
+	font-size: 0.9rem;
+}
+
+/* ===================== MODAL ===================== */
+.modal-overlay {
+	position: fixed;
+	inset: 0;
+	z-index: 1000;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: rgba(0,0,0,0.6);
+	backdrop-filter: blur(8px);
+	animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+	from { opacity: 0; }
+	to { opacity: 1; }
+}
+
+.modal-card {
+	width: min(440px, 92vw);
+	padding: 2rem;
+	border-radius: 24px;
+	background: linear-gradient(160deg, rgba(25,30,48,0.98), rgba(15,20,35,0.96));
+	border: 1px solid rgba(255,255,255,0.1);
+	box-shadow: 0 32px 64px rgba(0,0,0,0.5);
+	animation: slideUp 0.25s ease;
+}
+
+@keyframes slideUp {
+	from { transform: translateY(20px); opacity: 0; }
+	to { transform: translateY(0); opacity: 1; }
+}
+
+.modal-card h2 {
+	margin: 0 0 0.3rem;
+	font-size: 1.3rem;
+}
+
+.modal-subtitle {
+	margin: 0 0 1.2rem;
+	font-size: 0.88rem;
+	color: rgba(246,239,232,0.65);
+	line-height: 1.5;
+}
+
+.modal-form {
+	display: grid;
+	gap: 1rem;
+}
+
+.modal-form label {
+	display: grid;
+	gap: 0.4rem;
+}
+
+.modal-form label span {
+	font-size: 0.88rem;
+	color: rgba(246,239,232,0.8);
+	font-weight: 500;
+}
+
+.modal-form input {
+	padding: 0.9rem 1rem;
+	border: 1.5px solid rgba(255,255,255,0.12);
+	border-radius: 14px;
+	background: rgba(255,255,255,0.05);
+	color: #f6efe8;
+	font: inherit;
+	font-size: 0.95rem;
+	outline: none;
+	transition: all 0.25s ease;
+}
+
+.modal-form input:focus {
+	border-color: rgba(255,190,130,0.6);
+	box-shadow: 0 0 0 4px rgba(255,190,130,0.12);
+}
+
+.modal-actions {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 0.7rem;
+	margin-top: 0.3rem;
+}
+
+.modal-cancel {
+	padding: 0.85rem 1rem;
+	border: 1.5px solid rgba(255,255,255,0.12);
+	border-radius: 14px;
+	background: rgba(255,255,255,0.05);
+	color: rgba(246,239,232,0.8);
+	font-weight: 600;
+	cursor: pointer;
+	transition: all 0.2s ease;
+}
+
+.modal-cancel:hover {
+	background: rgba(255,255,255,0.1);
+	border-color: rgba(255,255,255,0.2);
+}
+
+.modal-confirm {
+	padding: 0.85rem 1rem;
+	border: 0;
+	border-radius: 14px;
+	font-weight: 600;
+	cursor: pointer;
+	transition: all 0.25s ease;
+}
+
+.modal-confirm.add {
+	background: linear-gradient(135deg, #10b981, #059669);
+	color: #fff;
+}
+
+.modal-confirm.add:hover {
+	transform: translateY(-1px);
+	box-shadow: 0 6px 18px rgba(16, 185, 129, 0.3);
+}
+
+.modal-confirm.remove {
+	background: linear-gradient(135deg, #f43f5e, #e11d48);
+	color: #fff;
+}
+
+.modal-confirm.remove:hover {
+	transform: translateY(-1px);
+	box-shadow: 0 6px 18px rgba(244, 63, 94, 0.3);
+}
+
+/* ===================== GOAL CATEGORY BADGE ===================== */
+.goal-category-badge {
+	display: inline-block;
+	padding: 0.2rem 0.6rem;
+	border-radius: 999px;
+	font-size: 0.72rem;
+	font-weight: 600;
+	background: rgba(56, 189, 248, 0.15);
+	color: #7dd3fc;
+	border: 1px solid rgba(56, 189, 248, 0.25);
+	letter-spacing: 0.04em;
+}
+
+.goal-item-meta {
+	margin-top: 0.4rem;
+}
+
+/* ===================== EMPTY STATE ===================== */
+.empty-state {
+	padding: 1.5rem;
+	text-align: center;
+	color: rgba(246,239,232,0.5);
+	font-size: 0.9rem;
+}
+
+@media (max-width: 500px) {
+	.goals-grid {
+		grid-template-columns: 1fr;
+	}
+
+	.goal-progress-section {
+		grid-template-columns: 1fr;
+		justify-items: center;
+	}
+
+	.goal-progress-details {
+		width: 100%;
 	}
 }

@@ -1,60 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-
-function HomeIcon() {
-  return (
-    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-      <path d="M3 10.5 12 3l9 7.5" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-      <path d="M5.5 9.5V20h13V9.5" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  )
-}
-
-function AnalyticsIcon() {
-  return (
-    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-      <path d="M4 19.5h16" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-      <path d="M7 16v-4m5 4V8m5 8v-6" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-    </svg>
-  )
-}
-
-function PlusIcon() {
-  return (
-    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-      <path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-    </svg>
-  )
-}
-
-function BudgetIcon() {
-  return (
-    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-      <rect x="3.5" y="5" width="17" height="14" rx="3" fill="none" stroke="currentColor" strokeWidth="1.8" />
-      <path d="M3.5 9.5h17" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-      <path d="M15.5 14h2" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-    </svg>
-  )
-}
-
-function GoalsIcon() {
-  return (
-    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-      <circle cx="12" cy="12" r="7.5" fill="none" stroke="currentColor" strokeWidth="1.8" />
-      <circle cx="12" cy="12" r="4.5" fill="none" stroke="currentColor" strokeWidth="1.8" />
-      <circle cx="12" cy="12" r="1.5" fill="currentColor" />
-    </svg>
-  )
-}
-
-function ProfileIcon() {
-  return (
-    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-      <circle cx="12" cy="8" r="3.5" fill="none" stroke="currentColor" strokeWidth="1.8" />
-      <path d="M5.5 19c1.6-3.3 4.1-4.8 6.5-4.8s4.9 1.5 6.5 4.8" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-    </svg>
-  )
-}
+import { Home, BarChart3, Plus, Target, Wallet, PiggyBank, User } from 'lucide-react'
 
 export default function TopNavigation() {
   const location = useLocation()
@@ -64,23 +10,14 @@ export default function TopNavigation() {
 
   useEffect(() => {
     const closeOnOutsideClick = (event: MouseEvent) => {
-      if (!addMenuRef.current) {
-        return
-      }
-      if (!addMenuRef.current.contains(event.target as Node)) {
-        setIsAddOpen(false)
-      }
+      if (!addMenuRef.current) return
+      if (!addMenuRef.current.contains(event.target as Node)) setIsAddOpen(false)
     }
-
     const closeOnEscape = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        setIsAddOpen(false)
-      }
+      if (event.key === 'Escape') setIsAddOpen(false)
     }
-
     document.addEventListener('mousedown', closeOnOutsideClick)
     document.addEventListener('keydown', closeOnEscape)
-
     return () => {
       document.removeEventListener('mousedown', closeOnOutsideClick)
       document.removeEventListener('keydown', closeOnEscape)
@@ -92,18 +29,16 @@ export default function TopNavigation() {
     navigate(target)
   }
 
+  const isActive = (path: string) => location.pathname === path
+
   return (
     <nav className="top-nav" aria-label="Top navigation">
-      <Link className={`top-nav-item ${location.pathname === '/home' ? 'active' : ''}`} to="/home">
-        <span className="nav-icon">
-          <HomeIcon />
-        </span>
+      <Link className={`top-nav-item ${isActive('/home') ? 'active' : ''}`} to="/home">
+        <span className="nav-icon"><Home size={20} /></span>
         <small>Home</small>
       </Link>
-      <Link className={`top-nav-item ${location.pathname === '/analytics' ? 'active' : ''}`} to="/analytics">
-        <span className="nav-icon">
-          <AnalyticsIcon />
-        </span>
+      <Link className={`top-nav-item ${isActive('/analytics') ? 'active' : ''}`} to="/analytics">
+        <span className="nav-icon"><BarChart3 size={20} /></span>
         <small>Analytics</small>
       </Link>
       <div className="top-nav-add-wrap" ref={addMenuRef}>
@@ -114,12 +49,9 @@ export default function TopNavigation() {
           onClick={() => setIsAddOpen((prev) => !prev)}
           type="button"
         >
-          <span className="nav-icon">
-            <PlusIcon />
-          </span>
+          <span className="nav-icon"><Plus size={22} /></span>
           <small>Add</small>
         </button>
-
         {isAddOpen ? (
           <div className="add-choice-card" role="dialog" aria-label="Choose transaction type">
             <p>Add transaction</p>
@@ -132,28 +64,20 @@ export default function TopNavigation() {
           </div>
         ) : null}
       </div>
-      <Link className={`top-nav-item ${location.pathname === '/income-goals' ? 'active' : ''}`} to="/income-goals">
-        <span className="nav-icon">
-          <GoalsIcon />
-        </span>
+      <Link className={`top-nav-item ${isActive('/goals') ? 'active' : ''}`} to="/goals">
+        <span className="nav-icon"><PiggyBank size={20} /></span>
         <small>Goals</small>
       </Link>
-      <Link className={`top-nav-item ${location.pathname === '/expense-budget' ? 'active' : ''}`} to="/expense-budget">
-        <span className="nav-icon">
-          <BudgetIcon />
-        </span>
-        <small>Limits</small>
+      <Link className={`top-nav-item ${isActive('/income-goals') ? 'active' : ''}`} to="/income-goals">
+        <span className="nav-icon"><Target size={20} /></span>
+        <small>Targets</small>
       </Link>
-      <Link className={`top-nav-item ${location.pathname === '/budget' ? 'active' : ''}`} to="/budget">
-        <span className="nav-icon">
-          <BudgetIcon />
-        </span>
+      <Link className={`top-nav-item ${isActive('/budget') ? 'active' : ''}`} to="/budget">
+        <span className="nav-icon"><Wallet size={20} /></span>
         <small>Budget</small>
       </Link>
-      <Link className={`top-nav-item ${location.pathname === '/profile' ? 'active' : ''}`} to="/profile">
-        <span className="nav-icon">
-          <ProfileIcon />
-        </span>
+      <Link className={`top-nav-item ${isActive('/profile') ? 'active' : ''}`} to="/profile">
+        <span className="nav-icon"><User size={20} /></span>
         <small>Profile</small>
       </Link>
     </nav>
