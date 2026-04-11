@@ -119,16 +119,17 @@ model ExpenseBudget {
 }
 
 model Goal {
-  id        Int      @id @default(autoincrement())
-  name      String
-  amount    Int      @default(0)
-  startdate DateTime @default(now())
-  enddate   DateTime @default(now())
-  isActive  Boolean  @default(true)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  userId    Int
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id         Int      @id @default(autoincrement())
+  name       String
+  amount     Int      @default(0)
+  totalMoney Int      @default(0)
+  startdate  DateTime @default(now())
+  enddate    DateTime @default(now())
+  isActive   Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  userId     Int
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
   @@index([userId, isActive])

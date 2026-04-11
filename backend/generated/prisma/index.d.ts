@@ -7337,12 +7337,14 @@ export namespace Prisma {
   export type GoalAvgAggregateOutputType = {
     id: number | null
     amount: number | null
+    totalMoney: number | null
     userId: number | null
   }
 
   export type GoalSumAggregateOutputType = {
     id: number | null
     amount: number | null
+    totalMoney: number | null
     userId: number | null
   }
 
@@ -7350,6 +7352,7 @@ export namespace Prisma {
     id: number | null
     name: string | null
     amount: number | null
+    totalMoney: number | null
     startdate: Date | null
     enddate: Date | null
     isActive: boolean | null
@@ -7362,6 +7365,7 @@ export namespace Prisma {
     id: number | null
     name: string | null
     amount: number | null
+    totalMoney: number | null
     startdate: Date | null
     enddate: Date | null
     isActive: boolean | null
@@ -7374,6 +7378,7 @@ export namespace Prisma {
     id: number
     name: number
     amount: number
+    totalMoney: number
     startdate: number
     enddate: number
     isActive: number
@@ -7387,12 +7392,14 @@ export namespace Prisma {
   export type GoalAvgAggregateInputType = {
     id?: true
     amount?: true
+    totalMoney?: true
     userId?: true
   }
 
   export type GoalSumAggregateInputType = {
     id?: true
     amount?: true
+    totalMoney?: true
     userId?: true
   }
 
@@ -7400,6 +7407,7 @@ export namespace Prisma {
     id?: true
     name?: true
     amount?: true
+    totalMoney?: true
     startdate?: true
     enddate?: true
     isActive?: true
@@ -7412,6 +7420,7 @@ export namespace Prisma {
     id?: true
     name?: true
     amount?: true
+    totalMoney?: true
     startdate?: true
     enddate?: true
     isActive?: true
@@ -7424,6 +7433,7 @@ export namespace Prisma {
     id?: true
     name?: true
     amount?: true
+    totalMoney?: true
     startdate?: true
     enddate?: true
     isActive?: true
@@ -7523,6 +7533,7 @@ export namespace Prisma {
     id: number
     name: string
     amount: number
+    totalMoney: number
     startdate: Date
     enddate: Date
     isActive: boolean
@@ -7554,6 +7565,7 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     amount?: boolean
+    totalMoney?: boolean
     startdate?: boolean
     enddate?: boolean
     isActive?: boolean
@@ -7567,6 +7579,7 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     amount?: boolean
+    totalMoney?: boolean
     startdate?: boolean
     enddate?: boolean
     isActive?: boolean
@@ -7580,6 +7593,7 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     amount?: boolean
+    totalMoney?: boolean
     startdate?: boolean
     enddate?: boolean
     isActive?: boolean
@@ -7593,6 +7607,7 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     amount?: boolean
+    totalMoney?: boolean
     startdate?: boolean
     enddate?: boolean
     isActive?: boolean
@@ -7601,7 +7616,7 @@ export namespace Prisma {
     userId?: boolean
   }
 
-  export type GoalOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "amount" | "startdate" | "enddate" | "isActive" | "createdAt" | "updatedAt" | "userId", ExtArgs["result"]["goal"]>
+  export type GoalOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "amount" | "totalMoney" | "startdate" | "enddate" | "isActive" | "createdAt" | "updatedAt" | "userId", ExtArgs["result"]["goal"]>
   export type GoalInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
@@ -7621,6 +7636,7 @@ export namespace Prisma {
       id: number
       name: string
       amount: number
+      totalMoney: number
       startdate: Date
       enddate: Date
       isActive: boolean
@@ -8054,6 +8070,7 @@ export namespace Prisma {
     readonly id: FieldRef<"Goal", 'Int'>
     readonly name: FieldRef<"Goal", 'String'>
     readonly amount: FieldRef<"Goal", 'Int'>
+    readonly totalMoney: FieldRef<"Goal", 'Int'>
     readonly startdate: FieldRef<"Goal", 'DateTime'>
     readonly enddate: FieldRef<"Goal", 'DateTime'>
     readonly isActive: FieldRef<"Goal", 'Boolean'>
@@ -8567,6 +8584,7 @@ export namespace Prisma {
     id: 'id',
     name: 'name',
     amount: 'amount',
+    totalMoney: 'totalMoney',
     startdate: 'startdate',
     enddate: 'enddate',
     isActive: 'isActive',
@@ -9119,6 +9137,7 @@ export namespace Prisma {
     id?: IntFilter<"Goal"> | number
     name?: StringFilter<"Goal"> | string
     amount?: IntFilter<"Goal"> | number
+    totalMoney?: IntFilter<"Goal"> | number
     startdate?: DateTimeFilter<"Goal"> | Date | string
     enddate?: DateTimeFilter<"Goal"> | Date | string
     isActive?: BoolFilter<"Goal"> | boolean
@@ -9132,6 +9151,7 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     amount?: SortOrder
+    totalMoney?: SortOrder
     startdate?: SortOrder
     enddate?: SortOrder
     isActive?: SortOrder
@@ -9148,6 +9168,7 @@ export namespace Prisma {
     NOT?: GoalWhereInput | GoalWhereInput[]
     name?: StringFilter<"Goal"> | string
     amount?: IntFilter<"Goal"> | number
+    totalMoney?: IntFilter<"Goal"> | number
     startdate?: DateTimeFilter<"Goal"> | Date | string
     enddate?: DateTimeFilter<"Goal"> | Date | string
     isActive?: BoolFilter<"Goal"> | boolean
@@ -9161,6 +9182,7 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     amount?: SortOrder
+    totalMoney?: SortOrder
     startdate?: SortOrder
     enddate?: SortOrder
     isActive?: SortOrder
@@ -9181,6 +9203,7 @@ export namespace Prisma {
     id?: IntWithAggregatesFilter<"Goal"> | number
     name?: StringWithAggregatesFilter<"Goal"> | string
     amount?: IntWithAggregatesFilter<"Goal"> | number
+    totalMoney?: IntWithAggregatesFilter<"Goal"> | number
     startdate?: DateTimeWithAggregatesFilter<"Goal"> | Date | string
     enddate?: DateTimeWithAggregatesFilter<"Goal"> | Date | string
     isActive?: BoolWithAggregatesFilter<"Goal"> | boolean
@@ -9613,6 +9636,7 @@ export namespace Prisma {
   export type GoalCreateInput = {
     name: string
     amount?: number
+    totalMoney?: number
     startdate?: Date | string
     enddate?: Date | string
     isActive?: boolean
@@ -9625,6 +9649,7 @@ export namespace Prisma {
     id?: number
     name: string
     amount?: number
+    totalMoney?: number
     startdate?: Date | string
     enddate?: Date | string
     isActive?: boolean
@@ -9636,6 +9661,7 @@ export namespace Prisma {
   export type GoalUpdateInput = {
     name?: StringFieldUpdateOperationsInput | string
     amount?: IntFieldUpdateOperationsInput | number
+    totalMoney?: IntFieldUpdateOperationsInput | number
     startdate?: DateTimeFieldUpdateOperationsInput | Date | string
     enddate?: DateTimeFieldUpdateOperationsInput | Date | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -9648,6 +9674,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     amount?: IntFieldUpdateOperationsInput | number
+    totalMoney?: IntFieldUpdateOperationsInput | number
     startdate?: DateTimeFieldUpdateOperationsInput | Date | string
     enddate?: DateTimeFieldUpdateOperationsInput | Date | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -9660,6 +9687,7 @@ export namespace Prisma {
     id?: number
     name: string
     amount?: number
+    totalMoney?: number
     startdate?: Date | string
     enddate?: Date | string
     isActive?: boolean
@@ -9671,6 +9699,7 @@ export namespace Prisma {
   export type GoalUpdateManyMutationInput = {
     name?: StringFieldUpdateOperationsInput | string
     amount?: IntFieldUpdateOperationsInput | number
+    totalMoney?: IntFieldUpdateOperationsInput | number
     startdate?: DateTimeFieldUpdateOperationsInput | Date | string
     enddate?: DateTimeFieldUpdateOperationsInput | Date | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -9682,6 +9711,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     amount?: IntFieldUpdateOperationsInput | number
+    totalMoney?: IntFieldUpdateOperationsInput | number
     startdate?: DateTimeFieldUpdateOperationsInput | Date | string
     enddate?: DateTimeFieldUpdateOperationsInput | Date | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -10176,6 +10206,7 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     amount?: SortOrder
+    totalMoney?: SortOrder
     startdate?: SortOrder
     enddate?: SortOrder
     isActive?: SortOrder
@@ -10187,6 +10218,7 @@ export namespace Prisma {
   export type GoalAvgOrderByAggregateInput = {
     id?: SortOrder
     amount?: SortOrder
+    totalMoney?: SortOrder
     userId?: SortOrder
   }
 
@@ -10194,6 +10226,7 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     amount?: SortOrder
+    totalMoney?: SortOrder
     startdate?: SortOrder
     enddate?: SortOrder
     isActive?: SortOrder
@@ -10206,6 +10239,7 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     amount?: SortOrder
+    totalMoney?: SortOrder
     startdate?: SortOrder
     enddate?: SortOrder
     isActive?: SortOrder
@@ -10217,6 +10251,7 @@ export namespace Prisma {
   export type GoalSumOrderByAggregateInput = {
     id?: SortOrder
     amount?: SortOrder
+    totalMoney?: SortOrder
     userId?: SortOrder
   }
 
@@ -10871,6 +10906,7 @@ export namespace Prisma {
   export type GoalCreateWithoutUserInput = {
     name: string
     amount?: number
+    totalMoney?: number
     startdate?: Date | string
     enddate?: Date | string
     isActive?: boolean
@@ -10882,6 +10918,7 @@ export namespace Prisma {
     id?: number
     name: string
     amount?: number
+    totalMoney?: number
     startdate?: Date | string
     enddate?: Date | string
     isActive?: boolean
@@ -11050,6 +11087,7 @@ export namespace Prisma {
     id?: IntFilter<"Goal"> | number
     name?: StringFilter<"Goal"> | string
     amount?: IntFilter<"Goal"> | number
+    totalMoney?: IntFilter<"Goal"> | number
     startdate?: DateTimeFilter<"Goal"> | Date | string
     enddate?: DateTimeFilter<"Goal"> | Date | string
     isActive?: BoolFilter<"Goal"> | boolean
@@ -11420,6 +11458,7 @@ export namespace Prisma {
     id?: number
     name: string
     amount?: number
+    totalMoney?: number
     startdate?: Date | string
     enddate?: Date | string
     isActive?: boolean
@@ -11570,6 +11609,7 @@ export namespace Prisma {
   export type GoalUpdateWithoutUserInput = {
     name?: StringFieldUpdateOperationsInput | string
     amount?: IntFieldUpdateOperationsInput | number
+    totalMoney?: IntFieldUpdateOperationsInput | number
     startdate?: DateTimeFieldUpdateOperationsInput | Date | string
     enddate?: DateTimeFieldUpdateOperationsInput | Date | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -11581,6 +11621,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     amount?: IntFieldUpdateOperationsInput | number
+    totalMoney?: IntFieldUpdateOperationsInput | number
     startdate?: DateTimeFieldUpdateOperationsInput | Date | string
     enddate?: DateTimeFieldUpdateOperationsInput | Date | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -11592,6 +11633,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     amount?: IntFieldUpdateOperationsInput | number
+    totalMoney?: IntFieldUpdateOperationsInput | number
     startdate?: DateTimeFieldUpdateOperationsInput | Date | string
     enddate?: DateTimeFieldUpdateOperationsInput | Date | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
