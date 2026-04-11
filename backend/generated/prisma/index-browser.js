@@ -184,6 +184,7 @@ exports.Prisma.GoalScalarFieldEnum = {
   id: 'id',
   name: 'name',
   amount: 'amount',
+  totalMoney: 'totalMoney',
   startdate: 'startdate',
   enddate: 'enddate',
   isActive: 'isActive',

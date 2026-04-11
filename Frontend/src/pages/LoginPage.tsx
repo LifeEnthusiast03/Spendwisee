@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
-
-const BACKEND_URL = 'http://localhost:3000'
+import { API_BASE } from '../store/api'
 
 export default function LoginPage() {
   const [email, setEmail] = useState('')
@@ -11,7 +10,7 @@ export default function LoginPage() {
   const errorFromServer = searchParams.get('error')
 
   const handleGoogleLogin = () => {
-    window.location.href = `${BACKEND_URL}/auth/google`
+    window.location.href = `${API_BASE}/auth/google`
   }
 
   return (
@@ -51,12 +50,8 @@ export default function LoginPage() {
 
       <section className="auth-panel">
         <div className="auth-tabs" aria-label="Authentication pages">
-          <Link className="auth-tab active" to="/login">
-            Login
-          </Link>
-          <Link className="auth-tab" to="/signup">
-            Sign up
-          </Link>
+          <Link className="auth-tab active" to="/login">Login</Link>
+          <Link className="auth-tab" to="/signup">Sign up</Link>
         </div>
 
         <div className="auth-panel-head">
@@ -69,55 +64,25 @@ export default function LoginPage() {
           Continue with Google
         </button>
 
-        <div className="auth-divider">
-          <span>or continue with email</span>
-        </div>
+        <div className="auth-divider"><span>or continue with email</span></div>
 
-        <form
-          action={`${BACKEND_URL}/auth/login`}
-          className="auth-form"
-          method="post"
-          onSubmit={() => setIsSubmitting(true)}
-        >
+        <form action={`${API_BASE}/auth/login`} className="auth-form" method="post" onSubmit={() => setIsSubmitting(true)}>
           <label>
             <span>Email</span>
-            <input
-              autoComplete="email"
-              name="email"
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="you@example.com"
-              required
-              type="email"
-              value={email}
-            />
+            <input autoComplete="email" name="email" onChange={(e) => setEmail(e.target.value)} placeholder="you@example.com" required type="email" value={email} />
           </label>
-
           <label>
             <span>Password</span>
-            <input
-              autoComplete="current-password"
-              minLength={6}
-              name="password"
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Enter your password"
-              required
-              type="password"
-              value={password}
-            />
+            <input autoComplete="current-password" minLength={6} name="password" onChange={(e) => setPassword(e.target.value)} placeholder="Enter your password" required type="password" value={password} />
           </label>
-
-          {errorFromServer ? (
-            <p className="auth-message error">{errorFromServer}</p>
-          ) : null}
-
+          {errorFromServer ? <p className="auth-message error">{errorFromServer}</p> : null}
           <button className="submit-button" disabled={isSubmitting} type="submit">
             {isSubmitting ? 'Please wait...' : 'Login'}
           </button>
         </form>
 
         <p className="auth-switch">
-          Need an account?{' '}
-          <Link to="/signup">Sign up</Link>
+          Need an account? <Link to="/signup">Sign up</Link>
         </p>
       </section>
     </main>

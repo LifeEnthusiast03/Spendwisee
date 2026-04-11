@@ -2,9 +2,8 @@ import { Router,Request,Response } from "express";
 import passport from "passport";
 import bcrypt from "bcrypt"
 import type { IVerifyOptions } from "passport-local";
-import { isAuthenticated } from "../middleware/auth_middleware.js";
 import {prisma} from "../lib/prisma.js"
-import { log } from "node:console";
+
 
 const router = Router()
 

@@ -1,13 +1,8 @@
-import axios from 'axios'
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-
-const BACKEND_URL = 'http://localhost:3000'
-
-const api = axios.create({
-  baseURL: BACKEND_URL,
-  withCredentials: true,
-})
+import { isAxiosError } from 'axios'
+import toast from 'react-hot-toast'
+import api from '../store/api'
 
 export default function SignupPage() {
   const navigate = useNavigate()
@@ -15,32 +10,30 @@ export default function SignupPage() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
-  const [success, setSuccess] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
 
+  const API_BASE = import.meta.env.VITE_API_URL ?? 'http://localhost:3000'
+
   const handleGoogleLogin = () => {
-    window.location.href = `${BACKEND_URL}/auth/google`
+    window.location.href = `${API_BASE}/auth/google`
   }
 
   const handleSubmit = async (event: React.SyntheticEvent<HTMLFormElement>) => {
     event.preventDefault()
     setError('')
-    setSuccess('')
     setIsSubmitting(true)
 
     try {
       const response = await api.post('/auth/register', { name, email, password })
-      setSuccess(response.data.message ?? 'Registered successfully')
+      toast.success(response.data.message ?? 'Registered successfully!')
       setName('')
       setEmail('')
       setPassword('')
       window.setTimeout(() => navigate('/login'), 900)
-    } catch (err) {
-      if (axios.isAxiosError(err)) {
-        setError(err.response?.data?.message ?? 'Request failed')
-      } else {
-        setError('Something went wrong')
-      }
+    } catch (err: unknown) {
+      const msg = isAxiosError(err) ? err.response?.data?.message ?? 'Something went wrong' : 'Something went wrong'
+      setError(msg)
+      toast.error(msg)
     } finally {
       setIsSubmitting(false)
     }
@@ -83,12 +76,8 @@ export default function SignupPage() {
 
       <section className="auth-panel">
         <div className="auth-tabs" aria-label="Authentication pages">
-          <Link className="auth-tab" to="/login">
-            Login
-          </Link>
-          <Link className="auth-tab active" to="/signup">
-            Sign up
-          </Link>
+          <Link className="auth-tab" to="/login">Login</Link>
+          <Link className="auth-tab active" to="/signup">Sign up</Link>
         </div>
 
         <div className="auth-panel-head">
@@ -101,62 +90,29 @@ export default function SignupPage() {
           Continue with Google
         </button>
 
-        <div className="auth-divider">
-          <span>or continue with email</span>
-        </div>
+        <div className="auth-divider"><span>or continue with email</span></div>
 
         <form className="auth-form" onSubmit={handleSubmit}>
           <label>
             <span>Full name</span>
-            <input
-              autoComplete="name"
-              name="name"
-              onChange={(e) => setName(e.target.value)}
-              placeholder="Alex Johnson"
-              required
-              type="text"
-              value={name}
-            />
+            <input autoComplete="name" name="name" onChange={(e) => setName(e.target.value)} placeholder="Alex Johnson" required type="text" value={name} />
           </label>
-
           <label>
             <span>Email</span>
-            <input
-              autoComplete="email"
-              name="email"
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="you@example.com"
-              required
-              type="email"
-              value={email}
-            />
+            <input autoComplete="email" name="email" onChange={(e) => setEmail(e.target.value)} placeholder="you@example.com" required type="email" value={email} />
           </label>
-
           <label>
             <span>Password</span>
-            <input
-              autoComplete="new-password"
-              minLength={6}
-              name="password"
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Enter your password"
-              required
-              type="password"
-              value={password}
-            />
+            <input autoComplete="new-password" minLength={6} name="password" onChange={(e) => setPassword(e.target.value)} placeholder="Enter your password" required type="password" value={password} />
           </label>
-
           {error ? <p className="auth-message error">{error}</p> : null}
-          {success ? <p className="auth-message success">{success}</p> : null}
-
           <button className="submit-button" disabled={isSubmitting} type="submit">
             {isSubmitting ? 'Please wait...' : 'Create account'}
           </button>
         </form>
 
         <p className="auth-switch">
-          Already have an account?{' '}
-          <Link to="/login">Login</Link>
+          Already have an account? <Link to="/login">Login</Link>
         </p>
       </section>
     </main>

@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Goal" ADD COLUMN     "totalMoney" INTEGER NOT NULL DEFAULT 0;

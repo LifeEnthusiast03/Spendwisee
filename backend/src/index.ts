@@ -8,6 +8,7 @@ import passport from "./config/passport.js";
 import authrouter  from "./routes/auth_route.js";
 import incomerouter  from "./routes/income_route.js"
 import expenserouter  from "./routes/expense_route.js";
+import goalrouter from "./routes/goal_route.js";
 const app:Application = express();
 const PORT = 3000;
 const REDIS_URL = process.env.REDIS_URL ?? "redis://localhost:6379";
@@ -49,6 +50,7 @@ app.use(passport.session());
 app.use(authrouter);
 app.use(incomerouter);
 app.use(expenserouter);
+app.use(goalrouter);
 
 const startServer = async () => {
   await redisClient.connect();
