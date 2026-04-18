@@ -60,6 +60,33 @@ export const addExpense = async (req: Request, res: Response) => {
       }
     }
 
+    // Check if user has enough income to cover this expense (accounting for goal commitments)
+    const [totalIncomeResult, totalExpenseResult, totalGoalFulfilledResult] = await Promise.all([
+      prisma.income.aggregate({
+        where: { userId: userid },
+        _sum: { amount: true },
+      }),
+      prisma.expense.aggregate({
+        where: { userId: userid },
+        _sum: { amount: true },
+      }),
+      prisma.goal.aggregate({
+        where: { userId: userid },
+        _sum: { totalMoney: true },
+      }),
+    ]);
+
+    const totalIncome = totalIncomeResult._sum.amount ?? 0;
+    const totalExpense = totalExpenseResult._sum.amount ?? 0;
+    const totalGoalFulfilled = totalGoalFulfilledResult._sum.totalMoney ?? 0;
+    const availableBalance = totalIncome - totalExpense - totalGoalFulfilled;
+
+    if (amount > availableBalance) {
+      return res.status(400).json({
+        message: `Insufficient income. Your available balance is ${availableBalance} (total income: ${totalIncome} - total expenses: ${totalExpense} - goal commitments: ${totalGoalFulfilled}), but the expense amount is ${amount}`,
+      });
+    }
+
     const newexpense = await prisma.expense.create({
       data: {
         amount,
@@ -69,6 +96,29 @@ export const addExpense = async (req: Request, res: Response) => {
         ...(parsedDate ? { date: parsedDate } : {}),
       },
     });
+
+    // Check for active expense budgets matching this category and update fulfilledAmount
+    const expenseDate = parsedDate ?? new Date();
+    const activeBudgets = await prisma.expenseBudget.findMany({
+      where: {
+        userId: userid,
+        category: catagory.toUpperCase() as ExpenseCategory,
+        isActive: true,
+        periodStart: { lte: expenseDate },
+        periodEnd: { gte: expenseDate },
+      },
+    });
+
+    if (activeBudgets.length > 0) {
+      await Promise.all(
+        activeBudgets.map((budget) =>
+          prisma.expenseBudget.update({
+            where: { id: budget.id },
+            data: { fulfilledAmount: { increment: amount } },
+          })
+        )
+      );
+    }
 
     return res.status(201).json(newexpense);
   } catch (err) {

@@ -64,6 +64,29 @@ export const addIncome = async (req: Request, res: Response) => {
       },
     });
 
+    // Check for active income goals matching this category and update fulfilledAmount
+    const incomeDate = parsedDate ?? new Date();
+    const activeGoals = await prisma.incomeGoal.findMany({
+      where: {
+        userId: userid,
+        category: catagory.toUpperCase() as IncomeCategory,
+        isActive: true,
+        periodStart: { lte: incomeDate },
+        periodEnd: { gte: incomeDate },
+      },
+    });
+
+    if (activeGoals.length > 0) {
+      await Promise.all(
+        activeGoals.map((goal) =>
+          prisma.incomeGoal.update({
+            where: { id: goal.id },
+            data: { fulfilledAmount: { increment: amount } },
+          })
+        )
+      );
+    }
+
     return res.status(201).json(newincome);
   } catch (err) {
     return res.status(500).json({ message: "Failed to add income" });
@@ -134,11 +157,38 @@ export const deleteIncome = async (req: Request, res: Response) => {
         id: incomeid,
         userId: userid,
       },
-      select: { id: true },
     });
 
     if (!income) {
       return res.status(404).json({ message: "Income not found" });
+    }
+
+    // Calculate total income, total expenses, and total active goal amounts
+    const [totalIncomeResult, totalExpenseResult, totalGoalResult] = await Promise.all([
+      prisma.income.aggregate({
+        where: { userId: userid },
+        _sum: { amount: true },
+      }),
+      prisma.expense.aggregate({
+        where: { userId: userid },
+        _sum: { amount: true },
+      }),
+      prisma.goal.aggregate({
+        where: { userId: userid },
+        _sum: { totalMoney: true },
+      }),
+    ]);
+
+    const totalIncome = totalIncomeResult._sum.amount ?? 0;
+    const totalExpense = totalExpenseResult._sum.amount ?? 0;
+    const totalGoalFulfilled = totalGoalResult._sum.totalMoney ?? 0;
+
+    const remainingIncome = totalIncome - income.amount;
+
+    if (remainingIncome < totalExpense + totalGoalFulfilled) {
+      return res.status(400).json({
+        message: `Cannot delete this income. Your remaining income (${remainingIncome}) would be less than your total expenses (${totalExpense}) + goal commitments (${totalGoalFulfilled}) = ${totalExpense + totalGoalFulfilled}`,
+      });
     }
 
     await prisma.income.delete({
