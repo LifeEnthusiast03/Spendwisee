@@ -103,7 +103,6 @@ export const addExpense = async (req: Request, res: Response) => {
       where: {
         userId: userid,
         category: catagory.toUpperCase() as ExpenseCategory,
-        isActive: true,
         periodStart: { lte: expenseDate },
         periodEnd: { gte: expenseDate },
       },
@@ -256,7 +255,6 @@ export const addExpenseBudget = async (req: Request, res: Response) => {
         userId: userid,
         category: catagory.toUpperCase(),
         type: type,
-        isActive: true,
         // Check for overlapping periods
         periodStart: {
           lte: periodEnd, // existing budget starts before or at the end of new period
@@ -364,8 +362,9 @@ export const updateExpenseBudget = async (req: Request, res: Response) => {
       return res.status(404).json({ message: "Expense budget not found" });
     }
 
-    // Check if budget is active - only allow updates if active
-    if (!existingBudget.isActive) {
+    // Check if budget is active (period-based) - only allow updates if active
+    const now = new Date();
+    if (now < existingBudget.periodStart || now > existingBudget.periodEnd) {
       return res.status(400).json({ message: "Cannot update an inactive budget" });
     }
 
@@ -408,7 +407,6 @@ export const updateExpenseBudget = async (req: Request, res: Response) => {
           userId: userid,
           category: existingBudget.category,
           type: type,
-          isActive: true,
           NOT: { id: budgetid },
           // Check for overlapping periods
           periodStart: {

@@ -88,7 +88,6 @@ model IncomeGoal {
   type            BudgetType     @default(MONTHLY)
   periodStart     DateTime       @default(now())
   periodEnd       DateTime       @default(now())
-  isActive        Boolean        @default(true)
   date            DateTime       @default(now())
   createdAt       DateTime       @default(now())
   updatedAt       DateTime       @updatedAt
@@ -96,7 +95,7 @@ model IncomeGoal {
   user            User           @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId, type])
-  @@index([userId, category, isActive])
+  @@index([userId, category, periodStart, periodEnd])
 }
 
 model ExpenseBudget {
@@ -107,7 +106,6 @@ model ExpenseBudget {
   type            BudgetType      @default(MONTHLY)
   periodStart     DateTime        @default(now())
   periodEnd       DateTime        @default(now())
-  isActive        Boolean         @default(true)
   date            DateTime        @default(now())
   createdAt       DateTime        @default(now())
   updatedAt       DateTime        @updatedAt
@@ -115,7 +113,7 @@ model ExpenseBudget {
   user            User            @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId, type])
-  @@index([userId, category, isActive])
+  @@index([userId, category, periodStart, periodEnd])
 }
 
 model Goal {

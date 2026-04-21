@@ -70,7 +70,6 @@ export const addIncome = async (req: Request, res: Response) => {
       where: {
         userId: userid,
         category: catagory.toUpperCase() as IncomeCategory,
-        isActive: true,
         periodStart: { lte: incomeDate },
         periodEnd: { gte: incomeDate },
       },
@@ -250,7 +249,6 @@ export const addIncomeGoal = async (req: Request, res: Response) => {
         userId: userid,
         category: catagory.toUpperCase() as IncomeCategory,
         type: type,
-        isActive: true,
         // Check for overlapping periods
         periodStart: {
           lte: periodEnd,
@@ -361,8 +359,9 @@ export const updateIncomeGoal = async (req: Request, res: Response) => {
       return res.status(404).json({ message: "Income goal not found" });
     }
 
-    // Check if goal is active - only allow updates if active
-    if (!existingGoal.isActive) {
+    // Check if goal is active (period-based) - only allow updates if active
+    const now = new Date();
+    if (now < existingGoal.periodStart || now > existingGoal.periodEnd) {
       return res.status(400).json({ message: "Cannot update an inactive income goal" });
     }
 
@@ -406,7 +405,6 @@ export const updateIncomeGoal = async (req: Request, res: Response) => {
           userId: userid,
           category: existingGoal.category,
           type: type,
-          isActive: true,
           NOT: { id: goalid },
           // Check for overlapping periods
           periodStart: {

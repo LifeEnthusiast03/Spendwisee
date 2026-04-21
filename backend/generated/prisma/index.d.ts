@@ -4966,7 +4966,6 @@ export namespace Prisma {
     type: $Enums.BudgetType | null
     periodStart: Date | null
     periodEnd: Date | null
-    isActive: boolean | null
     date: Date | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -4981,7 +4980,6 @@ export namespace Prisma {
     type: $Enums.BudgetType | null
     periodStart: Date | null
     periodEnd: Date | null
-    isActive: boolean | null
     date: Date | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -4996,7 +4994,6 @@ export namespace Prisma {
     type: number
     periodStart: number
     periodEnd: number
-    isActive: number
     date: number
     createdAt: number
     updatedAt: number
@@ -5027,7 +5024,6 @@ export namespace Prisma {
     type?: true
     periodStart?: true
     periodEnd?: true
-    isActive?: true
     date?: true
     createdAt?: true
     updatedAt?: true
@@ -5042,7 +5038,6 @@ export namespace Prisma {
     type?: true
     periodStart?: true
     periodEnd?: true
-    isActive?: true
     date?: true
     createdAt?: true
     updatedAt?: true
@@ -5057,7 +5052,6 @@ export namespace Prisma {
     type?: true
     periodStart?: true
     periodEnd?: true
-    isActive?: true
     date?: true
     createdAt?: true
     updatedAt?: true
@@ -5159,7 +5153,6 @@ export namespace Prisma {
     type: $Enums.BudgetType
     periodStart: Date
     periodEnd: Date
-    isActive: boolean
     date: Date
     createdAt: Date
     updatedAt: Date
@@ -5193,7 +5186,6 @@ export namespace Prisma {
     type?: boolean
     periodStart?: boolean
     periodEnd?: boolean
-    isActive?: boolean
     date?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -5209,7 +5201,6 @@ export namespace Prisma {
     type?: boolean
     periodStart?: boolean
     periodEnd?: boolean
-    isActive?: boolean
     date?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -5225,7 +5216,6 @@ export namespace Prisma {
     type?: boolean
     periodStart?: boolean
     periodEnd?: boolean
-    isActive?: boolean
     date?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -5241,14 +5231,13 @@ export namespace Prisma {
     type?: boolean
     periodStart?: boolean
     periodEnd?: boolean
-    isActive?: boolean
     date?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     userId?: boolean
   }
 
-  export type IncomeGoalOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "category" | "amount" | "fulfilledAmount" | "type" | "periodStart" | "periodEnd" | "isActive" | "date" | "createdAt" | "updatedAt" | "userId", ExtArgs["result"]["incomeGoal"]>
+  export type IncomeGoalOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "category" | "amount" | "fulfilledAmount" | "type" | "periodStart" | "periodEnd" | "date" | "createdAt" | "updatedAt" | "userId", ExtArgs["result"]["incomeGoal"]>
   export type IncomeGoalInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
@@ -5272,7 +5261,6 @@ export namespace Prisma {
       type: $Enums.BudgetType
       periodStart: Date
       periodEnd: Date
-      isActive: boolean
       date: Date
       createdAt: Date
       updatedAt: Date
@@ -5708,7 +5696,6 @@ export namespace Prisma {
     readonly type: FieldRef<"IncomeGoal", 'BudgetType'>
     readonly periodStart: FieldRef<"IncomeGoal", 'DateTime'>
     readonly periodEnd: FieldRef<"IncomeGoal", 'DateTime'>
-    readonly isActive: FieldRef<"IncomeGoal", 'Boolean'>
     readonly date: FieldRef<"IncomeGoal", 'DateTime'>
     readonly createdAt: FieldRef<"IncomeGoal", 'DateTime'>
     readonly updatedAt: FieldRef<"IncomeGoal", 'DateTime'>
@@ -6161,7 +6148,6 @@ export namespace Prisma {
     type: $Enums.BudgetType | null
     periodStart: Date | null
     periodEnd: Date | null
-    isActive: boolean | null
     date: Date | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -6176,7 +6162,6 @@ export namespace Prisma {
     type: $Enums.BudgetType | null
     periodStart: Date | null
     periodEnd: Date | null
-    isActive: boolean | null
     date: Date | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -6191,7 +6176,6 @@ export namespace Prisma {
     type: number
     periodStart: number
     periodEnd: number
-    isActive: number
     date: number
     createdAt: number
     updatedAt: number
@@ -6222,7 +6206,6 @@ export namespace Prisma {
     type?: true
     periodStart?: true
     periodEnd?: true
-    isActive?: true
     date?: true
     createdAt?: true
     updatedAt?: true
@@ -6237,7 +6220,6 @@ export namespace Prisma {
     type?: true
     periodStart?: true
     periodEnd?: true
-    isActive?: true
     date?: true
     createdAt?: true
     updatedAt?: true
@@ -6252,7 +6234,6 @@ export namespace Prisma {
     type?: true
     periodStart?: true
     periodEnd?: true
-    isActive?: true
     date?: true
     createdAt?: true
     updatedAt?: true
@@ -6354,7 +6335,6 @@ export namespace Prisma {
     type: $Enums.BudgetType
     periodStart: Date
     periodEnd: Date
-    isActive: boolean
     date: Date
     createdAt: Date
     updatedAt: Date
@@ -6388,7 +6368,6 @@ export namespace Prisma {
     type?: boolean
     periodStart?: boolean
     periodEnd?: boolean
-    isActive?: boolean
     date?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -6404,7 +6383,6 @@ export namespace Prisma {
     type?: boolean
     periodStart?: boolean
     periodEnd?: boolean
-    isActive?: boolean
     date?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -6420,7 +6398,6 @@ export namespace Prisma {
     type?: boolean
     periodStart?: boolean
     periodEnd?: boolean
-    isActive?: boolean
     date?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -6436,14 +6413,13 @@ export namespace Prisma {
     type?: boolean
     periodStart?: boolean
     periodEnd?: boolean
-    isActive?: boolean
     date?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     userId?: boolean
   }
 
-  export type ExpenseBudgetOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "category" | "amount" | "fulfilledAmount" | "type" | "periodStart" | "periodEnd" | "isActive" | "date" | "createdAt" | "updatedAt" | "userId", ExtArgs["result"]["expenseBudget"]>
+  export type ExpenseBudgetOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "category" | "amount" | "fulfilledAmount" | "type" | "periodStart" | "periodEnd" | "date" | "createdAt" | "updatedAt" | "userId", ExtArgs["result"]["expenseBudget"]>
   export type ExpenseBudgetInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
@@ -6467,7 +6443,6 @@ export namespace Prisma {
       type: $Enums.BudgetType
       periodStart: Date
       periodEnd: Date
-      isActive: boolean
       date: Date
       createdAt: Date
       updatedAt: Date
@@ -6903,7 +6878,6 @@ export namespace Prisma {
     readonly type: FieldRef<"ExpenseBudget", 'BudgetType'>
     readonly periodStart: FieldRef<"ExpenseBudget", 'DateTime'>
     readonly periodEnd: FieldRef<"ExpenseBudget", 'DateTime'>
-    readonly isActive: FieldRef<"ExpenseBudget", 'Boolean'>
     readonly date: FieldRef<"ExpenseBudget", 'DateTime'>
     readonly createdAt: FieldRef<"ExpenseBudget", 'DateTime'>
     readonly updatedAt: FieldRef<"ExpenseBudget", 'DateTime'>
@@ -8552,7 +8526,6 @@ export namespace Prisma {
     type: 'type',
     periodStart: 'periodStart',
     periodEnd: 'periodEnd',
-    isActive: 'isActive',
     date: 'date',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
@@ -8570,7 +8543,6 @@ export namespace Prisma {
     type: 'type',
     periodStart: 'periodStart',
     periodEnd: 'periodEnd',
-    isActive: 'isActive',
     date: 'date',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
@@ -8957,7 +8929,6 @@ export namespace Prisma {
     type?: EnumBudgetTypeFilter<"IncomeGoal"> | $Enums.BudgetType
     periodStart?: DateTimeFilter<"IncomeGoal"> | Date | string
     periodEnd?: DateTimeFilter<"IncomeGoal"> | Date | string
-    isActive?: BoolFilter<"IncomeGoal"> | boolean
     date?: DateTimeFilter<"IncomeGoal"> | Date | string
     createdAt?: DateTimeFilter<"IncomeGoal"> | Date | string
     updatedAt?: DateTimeFilter<"IncomeGoal"> | Date | string
@@ -8973,7 +8944,6 @@ export namespace Prisma {
     type?: SortOrder
     periodStart?: SortOrder
     periodEnd?: SortOrder
-    isActive?: SortOrder
     date?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -8992,7 +8962,6 @@ export namespace Prisma {
     type?: EnumBudgetTypeFilter<"IncomeGoal"> | $Enums.BudgetType
     periodStart?: DateTimeFilter<"IncomeGoal"> | Date | string
     periodEnd?: DateTimeFilter<"IncomeGoal"> | Date | string
-    isActive?: BoolFilter<"IncomeGoal"> | boolean
     date?: DateTimeFilter<"IncomeGoal"> | Date | string
     createdAt?: DateTimeFilter<"IncomeGoal"> | Date | string
     updatedAt?: DateTimeFilter<"IncomeGoal"> | Date | string
@@ -9008,7 +8977,6 @@ export namespace Prisma {
     type?: SortOrder
     periodStart?: SortOrder
     periodEnd?: SortOrder
-    isActive?: SortOrder
     date?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -9031,7 +8999,6 @@ export namespace Prisma {
     type?: EnumBudgetTypeWithAggregatesFilter<"IncomeGoal"> | $Enums.BudgetType
     periodStart?: DateTimeWithAggregatesFilter<"IncomeGoal"> | Date | string
     periodEnd?: DateTimeWithAggregatesFilter<"IncomeGoal"> | Date | string
-    isActive?: BoolWithAggregatesFilter<"IncomeGoal"> | boolean
     date?: DateTimeWithAggregatesFilter<"IncomeGoal"> | Date | string
     createdAt?: DateTimeWithAggregatesFilter<"IncomeGoal"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"IncomeGoal"> | Date | string
@@ -9049,7 +9016,6 @@ export namespace Prisma {
     type?: EnumBudgetTypeFilter<"ExpenseBudget"> | $Enums.BudgetType
     periodStart?: DateTimeFilter<"ExpenseBudget"> | Date | string
     periodEnd?: DateTimeFilter<"ExpenseBudget"> | Date | string
-    isActive?: BoolFilter<"ExpenseBudget"> | boolean
     date?: DateTimeFilter<"ExpenseBudget"> | Date | string
     createdAt?: DateTimeFilter<"ExpenseBudget"> | Date | string
     updatedAt?: DateTimeFilter<"ExpenseBudget"> | Date | string
@@ -9065,7 +9031,6 @@ export namespace Prisma {
     type?: SortOrder
     periodStart?: SortOrder
     periodEnd?: SortOrder
-    isActive?: SortOrder
     date?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -9084,7 +9049,6 @@ export namespace Prisma {
     type?: EnumBudgetTypeFilter<"ExpenseBudget"> | $Enums.BudgetType
     periodStart?: DateTimeFilter<"ExpenseBudget"> | Date | string
     periodEnd?: DateTimeFilter<"ExpenseBudget"> | Date | string
-    isActive?: BoolFilter<"ExpenseBudget"> | boolean
     date?: DateTimeFilter<"ExpenseBudget"> | Date | string
     createdAt?: DateTimeFilter<"ExpenseBudget"> | Date | string
     updatedAt?: DateTimeFilter<"ExpenseBudget"> | Date | string
@@ -9100,7 +9064,6 @@ export namespace Prisma {
     type?: SortOrder
     periodStart?: SortOrder
     periodEnd?: SortOrder
-    isActive?: SortOrder
     date?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -9123,7 +9086,6 @@ export namespace Prisma {
     type?: EnumBudgetTypeWithAggregatesFilter<"ExpenseBudget"> | $Enums.BudgetType
     periodStart?: DateTimeWithAggregatesFilter<"ExpenseBudget"> | Date | string
     periodEnd?: DateTimeWithAggregatesFilter<"ExpenseBudget"> | Date | string
-    isActive?: BoolWithAggregatesFilter<"ExpenseBudget"> | boolean
     date?: DateTimeWithAggregatesFilter<"ExpenseBudget"> | Date | string
     createdAt?: DateTimeWithAggregatesFilter<"ExpenseBudget"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"ExpenseBudget"> | Date | string
@@ -9438,7 +9400,6 @@ export namespace Prisma {
     type?: $Enums.BudgetType
     periodStart?: Date | string
     periodEnd?: Date | string
-    isActive?: boolean
     date?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -9453,7 +9414,6 @@ export namespace Prisma {
     type?: $Enums.BudgetType
     periodStart?: Date | string
     periodEnd?: Date | string
-    isActive?: boolean
     date?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -9467,7 +9427,6 @@ export namespace Prisma {
     type?: EnumBudgetTypeFieldUpdateOperationsInput | $Enums.BudgetType
     periodStart?: DateTimeFieldUpdateOperationsInput | Date | string
     periodEnd?: DateTimeFieldUpdateOperationsInput | Date | string
-    isActive?: BoolFieldUpdateOperationsInput | boolean
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -9482,7 +9441,6 @@ export namespace Prisma {
     type?: EnumBudgetTypeFieldUpdateOperationsInput | $Enums.BudgetType
     periodStart?: DateTimeFieldUpdateOperationsInput | Date | string
     periodEnd?: DateTimeFieldUpdateOperationsInput | Date | string
-    isActive?: BoolFieldUpdateOperationsInput | boolean
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -9497,7 +9455,6 @@ export namespace Prisma {
     type?: $Enums.BudgetType
     periodStart?: Date | string
     periodEnd?: Date | string
-    isActive?: boolean
     date?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -9511,7 +9468,6 @@ export namespace Prisma {
     type?: EnumBudgetTypeFieldUpdateOperationsInput | $Enums.BudgetType
     periodStart?: DateTimeFieldUpdateOperationsInput | Date | string
     periodEnd?: DateTimeFieldUpdateOperationsInput | Date | string
-    isActive?: BoolFieldUpdateOperationsInput | boolean
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -9525,7 +9481,6 @@ export namespace Prisma {
     type?: EnumBudgetTypeFieldUpdateOperationsInput | $Enums.BudgetType
     periodStart?: DateTimeFieldUpdateOperationsInput | Date | string
     periodEnd?: DateTimeFieldUpdateOperationsInput | Date | string
-    isActive?: BoolFieldUpdateOperationsInput | boolean
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -9539,7 +9494,6 @@ export namespace Prisma {
     type?: $Enums.BudgetType
     periodStart?: Date | string
     periodEnd?: Date | string
-    isActive?: boolean
     date?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -9554,7 +9508,6 @@ export namespace Prisma {
     type?: $Enums.BudgetType
     periodStart?: Date | string
     periodEnd?: Date | string
-    isActive?: boolean
     date?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -9568,7 +9521,6 @@ export namespace Prisma {
     type?: EnumBudgetTypeFieldUpdateOperationsInput | $Enums.BudgetType
     periodStart?: DateTimeFieldUpdateOperationsInput | Date | string
     periodEnd?: DateTimeFieldUpdateOperationsInput | Date | string
-    isActive?: BoolFieldUpdateOperationsInput | boolean
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -9583,7 +9535,6 @@ export namespace Prisma {
     type?: EnumBudgetTypeFieldUpdateOperationsInput | $Enums.BudgetType
     periodStart?: DateTimeFieldUpdateOperationsInput | Date | string
     periodEnd?: DateTimeFieldUpdateOperationsInput | Date | string
-    isActive?: BoolFieldUpdateOperationsInput | boolean
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -9598,7 +9549,6 @@ export namespace Prisma {
     type?: $Enums.BudgetType
     periodStart?: Date | string
     periodEnd?: Date | string
-    isActive?: boolean
     date?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -9612,7 +9562,6 @@ export namespace Prisma {
     type?: EnumBudgetTypeFieldUpdateOperationsInput | $Enums.BudgetType
     periodStart?: DateTimeFieldUpdateOperationsInput | Date | string
     periodEnd?: DateTimeFieldUpdateOperationsInput | Date | string
-    isActive?: BoolFieldUpdateOperationsInput | boolean
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -9626,7 +9575,6 @@ export namespace Prisma {
     type?: EnumBudgetTypeFieldUpdateOperationsInput | $Enums.BudgetType
     periodStart?: DateTimeFieldUpdateOperationsInput | Date | string
     periodEnd?: DateTimeFieldUpdateOperationsInput | Date | string
-    isActive?: BoolFieldUpdateOperationsInput | boolean
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -10061,11 +10009,6 @@ export namespace Prisma {
     not?: NestedEnumBudgetTypeFilter<$PrismaModel> | $Enums.BudgetType
   }
 
-  export type BoolFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolFilter<$PrismaModel> | boolean
-  }
-
   export type IncomeGoalCountOrderByAggregateInput = {
     id?: SortOrder
     category?: SortOrder
@@ -10074,7 +10017,6 @@ export namespace Prisma {
     type?: SortOrder
     periodStart?: SortOrder
     periodEnd?: SortOrder
-    isActive?: SortOrder
     date?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -10096,7 +10038,6 @@ export namespace Prisma {
     type?: SortOrder
     periodStart?: SortOrder
     periodEnd?: SortOrder
-    isActive?: SortOrder
     date?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -10111,7 +10052,6 @@ export namespace Prisma {
     type?: SortOrder
     periodStart?: SortOrder
     periodEnd?: SortOrder
-    isActive?: SortOrder
     date?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -10135,14 +10075,6 @@ export namespace Prisma {
     _max?: NestedEnumBudgetTypeFilter<$PrismaModel>
   }
 
-  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedBoolFilter<$PrismaModel>
-    _max?: NestedBoolFilter<$PrismaModel>
-  }
-
   export type ExpenseBudgetCountOrderByAggregateInput = {
     id?: SortOrder
     category?: SortOrder
@@ -10151,7 +10083,6 @@ export namespace Prisma {
     type?: SortOrder
     periodStart?: SortOrder
     periodEnd?: SortOrder
-    isActive?: SortOrder
     date?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -10173,7 +10104,6 @@ export namespace Prisma {
     type?: SortOrder
     periodStart?: SortOrder
     periodEnd?: SortOrder
-    isActive?: SortOrder
     date?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -10188,7 +10118,6 @@ export namespace Prisma {
     type?: SortOrder
     periodStart?: SortOrder
     periodEnd?: SortOrder
-    isActive?: SortOrder
     date?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -10200,6 +10129,11 @@ export namespace Prisma {
     amount?: SortOrder
     fulfilledAmount?: SortOrder
     userId?: SortOrder
+  }
+
+  export type BoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
   }
 
   export type GoalCountOrderByAggregateInput = {
@@ -10253,6 +10187,14 @@ export namespace Prisma {
     amount?: SortOrder
     totalMoney?: SortOrder
     userId?: SortOrder
+  }
+
+  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type IncomeCreateNestedManyWithoutUserInput = {
@@ -10531,10 +10473,6 @@ export namespace Prisma {
     set?: $Enums.BudgetType
   }
 
-  export type BoolFieldUpdateOperationsInput = {
-    set?: boolean
-  }
-
   export type UserUpdateOneRequiredWithoutIncomeGoalsNestedInput = {
     create?: XOR<UserCreateWithoutIncomeGoalsInput, UserUncheckedCreateWithoutIncomeGoalsInput>
     connectOrCreate?: UserCreateOrConnectWithoutIncomeGoalsInput
@@ -10561,6 +10499,10 @@ export namespace Prisma {
     create?: XOR<UserCreateWithoutGoalsInput, UserUncheckedCreateWithoutGoalsInput>
     connectOrCreate?: UserCreateOrConnectWithoutGoalsInput
     connect?: UserWhereUniqueInput
+  }
+
+  export type BoolFieldUpdateOperationsInput = {
+    set?: boolean
   }
 
   export type UserUpdateOneRequiredWithoutGoalsNestedInput = {
@@ -10748,11 +10690,6 @@ export namespace Prisma {
     not?: NestedEnumBudgetTypeFilter<$PrismaModel> | $Enums.BudgetType
   }
 
-  export type NestedBoolFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolFilter<$PrismaModel> | boolean
-  }
-
   export type NestedEnumBudgetTypeWithAggregatesFilter<$PrismaModel = never> = {
     equals?: $Enums.BudgetType | EnumBudgetTypeFieldRefInput<$PrismaModel>
     in?: $Enums.BudgetType[] | ListEnumBudgetTypeFieldRefInput<$PrismaModel>
@@ -10761,6 +10698,11 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumBudgetTypeFilter<$PrismaModel>
     _max?: NestedEnumBudgetTypeFilter<$PrismaModel>
+  }
+
+  export type NestedBoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
   }
 
   export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
@@ -10836,7 +10778,6 @@ export namespace Prisma {
     type?: $Enums.BudgetType
     periodStart?: Date | string
     periodEnd?: Date | string
-    isActive?: boolean
     date?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -10850,7 +10791,6 @@ export namespace Prisma {
     type?: $Enums.BudgetType
     periodStart?: Date | string
     periodEnd?: Date | string
-    isActive?: boolean
     date?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -10873,7 +10813,6 @@ export namespace Prisma {
     type?: $Enums.BudgetType
     periodStart?: Date | string
     periodEnd?: Date | string
-    isActive?: boolean
     date?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -10887,7 +10826,6 @@ export namespace Prisma {
     type?: $Enums.BudgetType
     periodStart?: Date | string
     periodEnd?: Date | string
-    isActive?: boolean
     date?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -11023,7 +10961,6 @@ export namespace Prisma {
     type?: EnumBudgetTypeFilter<"IncomeGoal"> | $Enums.BudgetType
     periodStart?: DateTimeFilter<"IncomeGoal"> | Date | string
     periodEnd?: DateTimeFilter<"IncomeGoal"> | Date | string
-    isActive?: BoolFilter<"IncomeGoal"> | boolean
     date?: DateTimeFilter<"IncomeGoal"> | Date | string
     createdAt?: DateTimeFilter<"IncomeGoal"> | Date | string
     updatedAt?: DateTimeFilter<"IncomeGoal"> | Date | string
@@ -11057,7 +10994,6 @@ export namespace Prisma {
     type?: EnumBudgetTypeFilter<"ExpenseBudget"> | $Enums.BudgetType
     periodStart?: DateTimeFilter<"ExpenseBudget"> | Date | string
     periodEnd?: DateTimeFilter<"ExpenseBudget"> | Date | string
-    isActive?: BoolFilter<"ExpenseBudget"> | boolean
     date?: DateTimeFilter<"ExpenseBudget"> | Date | string
     createdAt?: DateTimeFilter<"ExpenseBudget"> | Date | string
     updatedAt?: DateTimeFilter<"ExpenseBudget"> | Date | string
@@ -11434,7 +11370,6 @@ export namespace Prisma {
     type?: $Enums.BudgetType
     periodStart?: Date | string
     periodEnd?: Date | string
-    isActive?: boolean
     date?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -11448,7 +11383,6 @@ export namespace Prisma {
     type?: $Enums.BudgetType
     periodStart?: Date | string
     periodEnd?: Date | string
-    isActive?: boolean
     date?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -11531,7 +11465,6 @@ export namespace Prisma {
     type?: EnumBudgetTypeFieldUpdateOperationsInput | $Enums.BudgetType
     periodStart?: DateTimeFieldUpdateOperationsInput | Date | string
     periodEnd?: DateTimeFieldUpdateOperationsInput | Date | string
-    isActive?: BoolFieldUpdateOperationsInput | boolean
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -11545,7 +11478,6 @@ export namespace Prisma {
     type?: EnumBudgetTypeFieldUpdateOperationsInput | $Enums.BudgetType
     periodStart?: DateTimeFieldUpdateOperationsInput | Date | string
     periodEnd?: DateTimeFieldUpdateOperationsInput | Date | string
-    isActive?: BoolFieldUpdateOperationsInput | boolean
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -11559,7 +11491,6 @@ export namespace Prisma {
     type?: EnumBudgetTypeFieldUpdateOperationsInput | $Enums.BudgetType
     periodStart?: DateTimeFieldUpdateOperationsInput | Date | string
     periodEnd?: DateTimeFieldUpdateOperationsInput | Date | string
-    isActive?: BoolFieldUpdateOperationsInput | boolean
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -11572,7 +11503,6 @@ export namespace Prisma {
     type?: EnumBudgetTypeFieldUpdateOperationsInput | $Enums.BudgetType
     periodStart?: DateTimeFieldUpdateOperationsInput | Date | string
     periodEnd?: DateTimeFieldUpdateOperationsInput | Date | string
-    isActive?: BoolFieldUpdateOperationsInput | boolean
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -11586,7 +11516,6 @@ export namespace Prisma {
     type?: EnumBudgetTypeFieldUpdateOperationsInput | $Enums.BudgetType
     periodStart?: DateTimeFieldUpdateOperationsInput | Date | string
     periodEnd?: DateTimeFieldUpdateOperationsInput | Date | string
-    isActive?: BoolFieldUpdateOperationsInput | boolean
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -11600,7 +11529,6 @@ export namespace Prisma {
     type?: EnumBudgetTypeFieldUpdateOperationsInput | $Enums.BudgetType
     periodStart?: DateTimeFieldUpdateOperationsInput | Date | string
     periodEnd?: DateTimeFieldUpdateOperationsInput | Date | string
-    isActive?: BoolFieldUpdateOperationsInput | boolean
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
