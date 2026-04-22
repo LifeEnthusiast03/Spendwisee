@@ -51,8 +51,7 @@ router.post("/auth/login", (req: Request, res: Response, next) => {
           return next(loginError)
         }
         console.log("[login] success, redirecting to dashboard")
-        const reason = encodeURIComponent(info?.message ?? 'Login failed')
-        res.redirect(`http://localhost:5173/login?error=${reason}`)
+        res.redirect(`http://localhost:5173/home`)
       })
     }
   )(req, res, next)
@@ -67,7 +66,7 @@ router.get(
 router.get(
   "/auth/google/callback",
   passport.authenticate("google", {
-    successRedirect: "http://localhost:5173",
+    successRedirect: "http://localhost:5173/home",
     failureRedirect: "http://localhost:5173/login",
   })
 )
@@ -83,7 +82,6 @@ router.get("/auth/user", async (req: Request, res: Response) => {
     if (!userId) {
       return res.status(401).json({ message: "Unauthorized" })
     }
-
     const user = await prisma.user.findUnique({
       where: { id: userId },
       select: {
