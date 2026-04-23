@@ -1,143 +1,154 @@
-import { useAppDispatch, useAppSelector } from '../store/hooks'
-import { logout } from '../store/slices/authSlice'
-import { TrendingUp, TrendingDown, Wallet, Target, ArrowRight, LogOut } from 'lucide-react'
-import { Link, useNavigate } from 'react-router-dom'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { TrendingUp, TrendingDown, Wallet, Target, ArrowRight } from 'lucide-react'
+import { Link } from 'react-router-dom'
+import { useAppSelector } from '../store/hooks'
+import api from '../store/api'
+
+interface Summary {
+  totalIncome: number
+  totalExpense: number
+  recentIncomes: { id: number; amount: number; category: string; note?: string; date: string }[]
+  recentExpenses: { id: number; amount: number; category: string; note?: string; date: string }[]
+}
 
 export default function HomePage() {
-  const dispatch = useAppDispatch()
-  const navigate = useNavigate()
   const { user } = useAppSelector((s) => s.auth)
   const displayName = user?.name?.trim() || user?.email?.split('@')[0] || 'User'
-  const [isLoggingOut, setIsLoggingOut] = useState(false)
 
-  const handleLogout = async () => {
-    setIsLoggingOut(true)
-    await dispatch(logout())
-    navigate('/login')
-  }
+  const [summary, setSummary] = useState<Summary>({
+    totalIncome: 0,
+    totalExpense: 0,
+    recentIncomes: [],
+    recentExpenses: [],
+  })
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const fetchSummary = async () => {
+      try {
+        const [incRes, expRes] = await Promise.all([
+          api.get('/income'),
+          api.get('/expense'),
+        ])
+        const incomes: Summary['recentIncomes'] = incRes.data
+        const expenses: Summary['recentExpenses'] = expRes.data
+        const totalIncome = incomes.reduce((s, i) => s + i.amount, 0)
+        const totalExpense = expenses.reduce((s, e) => s + e.amount, 0)
+        setSummary({
+          totalIncome,
+          totalExpense,
+          recentIncomes: incomes.slice(0, 5),
+          recentExpenses: expenses.slice(0, 5),
+        })
+      } catch {
+        // silently fail
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchSummary()
+  }, [])
+
+  const balance = summary.totalIncome - summary.totalExpense
+
+  const fmt = (n: number) =>
+    new Intl.NumberFormat('en-IN', { maximumFractionDigits: 0 }).format(n)
+
+  const fmtDate = (d: string) =>
+    new Date(d).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })
 
   return (
-    <section className="home-shell">
-      <div className="home-container">
-        <header className="home-header">
-          <div className="home-greeting">
-            <p className="home-kicker">Welcome back</p>
-            <h1>Hi, {displayName} 👋</h1>
-          </div>
-          <div className="home-header-actions">
-            <Link to="/profile" className="home-avatar-btn">
-              <span className="home-avatar">{displayName.charAt(0).toUpperCase()}</span>
-            </Link>
-            <button
-              className="logout-btn"
-              onClick={handleLogout}
-              disabled={isLoggingOut}
-              title="Logout"
-              id="logout-btn"
-            >
-              <LogOut size={18} />
-            </button>
-          </div>
-        </header>
-
-        <div className="home-balance-card">
-          <div className="balance-card-inner">
-            <div className="balance-label">Total Balance</div>
-            <div className="balance-amount">
-              <span className="currency">₹</span>
-              <span className="amount">0</span>
-            </div>
-            <div className="balance-trend">
-              <span className="trend-badge neutral">
-                <TrendingUp size={14} />
-                Start tracking
-              </span>
-            </div>
-          </div>
-          <div className="balance-stats">
-            <div className="balance-stat income-stat">
-              <div className="stat-icon-wrap income-icon">
-                <TrendingUp size={18} />
-              </div>
-              <div className="stat-info">
-                <span className="stat-label">Income</span>
-                <strong className="stat-value income-value">₹0</strong>
-              </div>
-            </div>
-            <div className="balance-stat-divider" />
-            <div className="balance-stat expense-stat">
-              <div className="stat-icon-wrap expense-icon">
-                <TrendingDown size={18} />
-              </div>
-              <div className="stat-info">
-                <span className="stat-label">Expense</span>
-                <strong className="stat-value expense-value">₹0</strong>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="home-quick-actions">
-          <h2 className="section-title">Quick Actions</h2>
-          <div className="quick-action-grid">
-            <Link to="/income-form" className="quick-action-card income-action">
-              <div className="qa-icon">
-                <TrendingUp size={22} />
-              </div>
-              <span>Add Income</span>
-              <ArrowRight size={16} className="qa-arrow" />
-            </Link>
-            <Link to="/expense-form" className="quick-action-card expense-action">
-              <div className="qa-icon">
-                <TrendingDown size={22} />
-              </div>
-              <span>Add Expense</span>
-              <ArrowRight size={16} className="qa-arrow" />
-            </Link>
-            <Link to="/budget" className="quick-action-card budget-action">
-              <div className="qa-icon">
-                <Wallet size={22} />
-              </div>
-              <span>Budgets</span>
-              <ArrowRight size={16} className="qa-arrow" />
-            </Link>
-            <Link to="/goals" className="quick-action-card goals-action">
-              <div className="qa-icon">
-                <Target size={22} />
-              </div>
-              <span>Goals</span>
-              <ArrowRight size={16} className="qa-arrow" />
-            </Link>
-          </div>
-        </div>
-
-        <div className="home-recent">
-          <div className="section-header">
-            <h2 className="section-title">Recent Transactions</h2>
-            <Link to="/analytics" className="view-all-link">
-              View All <ArrowRight size={14} />
-            </Link>
-          </div>
-          <div className="empty-transactions">
-            <div className="empty-icon">
-              <Wallet size={48} />
-            </div>
-            <h3>No transactions yet</h3>
-            <p>Start by adding your first income or expense to see your financial activity here.</p>
-            <div className="empty-actions">
-              <Link to="/income-form" className="empty-action-btn income-btn">
-                <TrendingUp size={16} />
-                Add Income
-              </Link>
-              <Link to="/expense-form" className="empty-action-btn expense-btn">
-                <TrendingDown size={16} />
-                Add Expense
-              </Link>
-            </div>
-          </div>
+    <div className="page-content">
+      {/* Greeting */}
+      <div className="page-header">
+        <div>
+          <p className="page-kicker">Welcome back 👋</p>
+          <h1 className="page-title">Hi, {displayName}</h1>
         </div>
       </div>
-    </section>
+
+      {/* Balance Cards */}
+      <div className="stats-row">
+        <div className="stat-card stat-card--balance">
+          <div className="stat-card-label">Net Balance</div>
+          <div className="stat-card-value">₹{fmt(balance)}</div>
+          <div className="stat-card-sub">{balance >= 0 ? 'You\'re on track 🎯' : 'Overspent this period'}</div>
+        </div>
+        <div className="stat-card stat-card--income">
+          <div className="stat-card-icon"><TrendingUp size={22} /></div>
+          <div className="stat-card-label">Total Income</div>
+          <div className="stat-card-value">₹{fmt(summary.totalIncome)}</div>
+        </div>
+        <div className="stat-card stat-card--expense">
+          <div className="stat-card-icon"><TrendingDown size={22} /></div>
+          <div className="stat-card-label">Total Expenses</div>
+          <div className="stat-card-value">₹{fmt(summary.totalExpense)}</div>
+        </div>
+      </div>
+
+      {/* Quick Actions */}
+      <section className="home-section">
+        <h2 className="section-heading">Quick Actions</h2>
+        <div className="quick-actions-grid">
+          <Link to="/transactions" className="quick-action income-action">
+            <TrendingUp size={20} />
+            <span>Add Income</span>
+          </Link>
+          <Link to="/transactions" className="quick-action expense-action">
+            <TrendingDown size={20} />
+            <span>Add Expense</span>
+          </Link>
+          <Link to="/budgets" className="quick-action budget-action">
+            <Wallet size={20} />
+            <span>Budgets</span>
+          </Link>
+          <Link to="/goals" className="quick-action goals-action">
+            <Target size={20} />
+            <span>Goals</span>
+          </Link>
+        </div>
+      </section>
+
+      {/* Recent Transactions */}
+      <section className="home-section">
+        <div className="section-header-row">
+          <h2 className="section-heading">Recent Transactions</h2>
+          <Link to="/analytics" className="view-all-link">
+            View All <ArrowRight size={14} />
+          </Link>
+        </div>
+
+        {loading ? (
+          <div className="empty-state"><div className="spinner" /></div>
+        ) : summary.recentIncomes.length === 0 && summary.recentExpenses.length === 0 ? (
+          <div className="empty-state">
+            <Wallet size={40} className="empty-icon" />
+            <p>No transactions yet. <Link to="/transactions">Add your first one →</Link></p>
+          </div>
+        ) : (
+          <div className="txn-list">
+            {[
+              ...summary.recentIncomes.map((t) => ({ ...t, type: 'income' as const })),
+              ...summary.recentExpenses.map((t) => ({ ...t, type: 'expense' as const })),
+            ]
+              .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+              .slice(0, 8)
+              .map((t) => (
+                <div key={`${t.type}-${t.id}`} className={`txn-row txn-row--${t.type}`}>
+                  <div className={`txn-dot txn-dot--${t.type}`} />
+                  <div className="txn-info">
+                    <span className="txn-category">{t.category}</span>
+                    {t.note && <span className="txn-note">{t.note}</span>}
+                  </div>
+                  <span className="txn-date">{fmtDate(t.date)}</span>
+                  <span className={`txn-amount txn-amount--${t.type}`}>
+                    {t.type === 'income' ? '+' : '-'}₹{fmt(t.amount)}
+                  </span>
+                </div>
+              ))}
+          </div>
+        )}
+      </section>
+    </div>
   )
 }
