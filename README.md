@@ -1,8 +1,8 @@
-﻿# SpendWise
+# SpendWise
 
-A comprehensive full-stack personal finance management application that helps users track income, expenses, set financial goals, manage budgets, and save toward custom savings goals â€” all with real-time analytics and category-based insights.
+A comprehensive full-stack personal finance management application that helps users track income, expenses, set financial goals, manage budgets, and save toward custom savings goals — all with real-time analytics and category-based insights.
 
-## ðŸ“‹ Table of Contents
+## 📋 Table of Contents
 
 - [Features](#-features)
 - [Tech Stack](#-tech-stack)
@@ -21,83 +21,85 @@ A comprehensive full-stack personal finance management application that helps us
 
 ---
 
-## âœ¨ Features
+## ✨ Features
 
 ### Authentication & Security
-- âœ… Local authentication (register/login with bcrypt password hashing)
-- âœ… Google OAuth 2.0 integration
-- âœ… Session-based authentication (Passport.js + express-session)
-- âœ… Redis-backed session storage for scalability
-- âœ… Secure logout with session destruction and cookie clearing
-- âœ… Protected routes with authentication middleware
+- ✅ Local authentication (register/login with bcrypt password hashing)
+- ✅ Google OAuth 2.0 integration
+- ✅ Session-based authentication (Passport.js + express-session)
+- ✅ Redis-backed session storage for scalability
+- ✅ Secure logout with session destruction and cookie clearing
+- ✅ Protected routes with authentication middleware
 
 ### Financial Tracking
-- ðŸ’° **Income Management**
+- 💰 **Income Management**
   - Add and delete income entries
   - Category-based income tracking (Salary, Freelance, Business, Investment, Gift, Other)
   - Custom date support or auto-timestamping
   - Category-wise income aggregation and totals
 
-- ðŸ’¸ **Expense Management**
+- 💸 **Expense Management**
   - Add and delete expense entries
   - Expense categorization (Food, Transport, Rent, Shopping, Entertainment, Bills, Other)
-  - Balance validation â€” prevents expenses exceeding available income minus goal commitments
+  - Balance validation — prevents expenses exceeding available income minus goal commitments
   - Category-wise expense aggregation and totals
 
 ### Income Goals & Expense Budgets
-- ðŸŽ¯ **Income Goals**
+- 🎯 **Income Goals**
   - Create weekly, monthly, or yearly income targets per category
-  - Automatic fulfillment tracking â€” adding income auto-increments matching active goals
+  - Automatic fulfillment tracking — adding income auto-increments matching active goals
   - Period-based overlap detection to prevent duplicate goals
-  - Active/inactive goal status management
+  - Active status determined by periodStart/periodEnd date range
 
-- ðŸ“Š **Expense Budgets**
+- 📊 **Expense Budgets**
   - Set weekly, monthly, or yearly spending limits per category
-  - Automatic spending tracking â€” adding expenses auto-increments matching active budgets
+  - Automatic spending tracking — adding expenses auto-increments matching active budgets
   - Period-based overlap detection to prevent duplicate budgets
   - Budget utilization tracking
 
 ### Savings Goals
-- ðŸ· **Custom Savings Goals**
-  - Create named savings goals with target amounts and date ranges
+- 🏷️ **Custom Savings Goals**
+  - Create named savings goals with target amounts and start/end date ranges
   - Add/remove money to/from individual goals (balance-checked against income - expenses)
   - Bulk money removal from multiple goals in a single transaction
   - Duplicate name prevention for active goals
   - Goal progress tracking (totalMoney vs. target amount)
 
 ### Analytics & Insights
-- ðŸ“ˆ **Dashboard Analytics**
+- 📈 **Dashboard Analytics**
   - Real-time category-wise income and expense totals
   - Income vs. expense comparison
-  - Goal/budget completion status with pie charts
-  - Spend ratio and transaction volume KPIs
+  - Net savings and balance overview
+  - Monthly income vs expense trend (last 6 months)
 
-- ðŸ“Š **Visual Reports**
-  - Interactive pie charts for goal progress
-  - Budget utilization charts
-  - Category breakdown visualizations Donut charts and trend visualizations
+- 📊 **Visual Reports (Recharts)**
+  - Interactive donut/pie charts for income & expense by category
+  - Monthly bar charts for income vs. expense trend
+  - Horizontal bar charts for category breakdown
+  - Custom tooltips and legends
 
 ### User Interface
-- ðŸ’Ž Premium dark navy/blue-themed dashboard with glassmorphic effects
-- ðŸ“± Responsive multi-page architecture (mobile-optimized)
-- âœ¨ Smooth animations, hover effects, and full sidebar navigation
-- ðŸ§© Redux Toolkit state management (`authSlice`) combined with TanStack React Router
-- ðŸ”„ Real-time data synchronization on authentication
-- ðŸ“ Inter font from Google Fonts for professional typography
+- 💎 Premium dark navy/blue-themed dashboard with glassmorphic effects
+- 📱 Responsive multi-page architecture with collapsible sidebar navigation
+- ✨ Smooth animations, hover effects, and micro-interactions
+- 🧩 Redux Toolkit state management (`authSlice`) for auth, direct API calls for data
+- 🔄 Real-time data synchronization on authentication
+- 📝 Inter font from Google Fonts for professional typography
 
 ---
 
-## ðŸ›  Tech Stack
+## 🛠 Tech Stack
 
 | Layer | Technology |
 |-------|------------|
-| **Frontend** | React 19, TypeScript, Vite 7, React Router v7, Tailwind CSS v4, Redux Toolkit |
+| **Frontend** | React 19, TypeScript, Vite, React Router v6, Vanilla CSS, Redux Toolkit |
 | **Backend** | Node.js, Express.js 4, TypeScript |
 | **Authentication** | Passport.js (Local Strategy + Google OAuth 2.0), express-session |
 | **Database** | PostgreSQL (via Docker) |
 | **Session Store** | Redis Stack (via Docker) |
-| **ORM** | Prisma 7 |
-| **State Management** | Redux Toolkit with async thunks |
+| **ORM** | Prisma |
+| **State Management** | Redux Toolkit (`authSlice`) |
+| **Charts** | Recharts |
 | **HTTP Client** | Axios |
 | **Icons** | Lucide React |
 | **Notifications** | React Hot Toast |
@@ -105,82 +107,79 @@ A comprehensive full-stack personal finance management application that helps us
 
 ---
 
-## ðŸ“ Project Structure
+## 📁 Project Structure
 
 ```
 Spendwisee/
-â”œâ”€â”€ backend/
-â”‚   â”œâ”€â”€ src/
-â”‚   â”‚   â”œâ”€â”€ index.ts                         # Express server entry point
-â”‚   â”‚   â”œâ”€â”€ config/
-â”‚   â”‚   â”‚   â””â”€â”€ passport.ts                  # Passport strategies (Local + Google)
-â”‚   â”‚   â”œâ”€â”€ controllers/
-â”‚   â”‚   â”‚   â”œâ”€â”€ income_controllers.ts        # Income CRUD + Income Goal CRUD
-â”‚   â”‚   â”‚   â”œâ”€â”€ expense_controllers.ts       # Expense CRUD + Expense Budget CRUD
-â”‚   â”‚   â”‚   â””â”€â”€ goal_controllers.ts          # Savings Goal CRUD + money management
-â”‚   â”‚   â”œâ”€â”€ routes/
-â”‚   â”‚   â”‚   â”œâ”€â”€ auth_route.ts                # Auth endpoints (register, login, OAuth, logout)
-â”‚   â”‚   â”‚   â”œâ”€â”€ income_route.ts              # Income & Income Goal routes
-â”‚   â”‚   â”‚   â”œâ”€â”€ expense_route.ts             # Expense & Expense Budget routes
-â”‚   â”‚   â”‚   â””â”€â”€ goal_route.ts                # Savings Goal routes
-â”‚   â”‚   â”œâ”€â”€ middleware/
-â”‚   â”‚   â”‚   â””â”€â”€ auth_middleware.ts            # isAuthenticated guard
-â”‚   â”‚   â”œâ”€â”€ lib/
-â”‚   â”‚   â”‚   â””â”€â”€ prisma.ts                    # Prisma client singleton
-â”‚   â”‚   â”œâ”€â”€ types/
-â”‚   â”‚   â”‚   â””â”€â”€ type.ts                      # TypeScript interfaces & Express augmentation
-â”‚   â”‚   â””â”€â”€ utils/
-â”‚   â”‚       â”œâ”€â”€ catagorywisedata.ts           # Category-wise data aggregation
-â”‚   â”‚       â””â”€â”€ cheakcatgory.ts               # Category validation utilities
-â”‚   â”œâ”€â”€ prisma/
-â”‚   â”‚   â”œâ”€â”€ schema.prisma                    # Database schema
-â”‚   â”‚   â””â”€â”€ migrations/                      # Database migrations
-â”‚   â”œâ”€â”€ generated/
-â”‚   â”‚   â””â”€â”€ prisma/                          # Auto-generated Prisma client
-â”‚   â”œâ”€â”€ prisma.config.ts                     # Prisma configuration
-â”‚   â”œâ”€â”€ docker-compose.yml                   # PostgreSQL + Redis Stack services
-â”‚   â”œâ”€â”€ package.json
-â”‚   â””â”€â”€ tsconfig.json
-â”œâ”€â”€ spendfront/
-â”‚   â”œâ”€â”€ src/
-â”‚   â”‚   â”œâ”€â”€ main.tsx                         # React entry point with Redux Provider
-â”‚   â”‚   â”œâ”€â”€ App.tsx                          # Root component with routing
-â”‚   â”‚   â”œâ”€â”€ App.css                          # Main application styles (Navy/Blue theme)
-â”‚   â”‚   â”œâ”€â”€ index.css                        # Global styles
-â”‚   â”‚   â”œâ”€â”€ components/
-â”‚   â”‚   â”‚   â”œâ”€â”€ ProtectedRoute.tsx           # Auth-guard route wrapper
-â”‚   â”‚   â”‚   â”œâ”€â”€ AppLayout.tsx                # Main layout wrapper
-â”‚   â”‚   â”‚   â””â”€â”€ Sidebar.tsx                  # Collapsible sidebar navigation
-â”‚   â”‚   â”œâ”€â”€ pages/
-â”‚   â”‚   â”‚   â”œâ”€â”€ LoginPage.tsx                # Login (local + Google OAuth)
-â”‚   â”‚   â”‚   â”œâ”€â”€ SignupPage.tsx               # Registration
-â”‚   â”‚   â”‚   â”œâ”€â”€ HomePage.tsx                 # Dashboard overview
-â”‚   â”‚   â”‚   â”œâ”€â”€ AnalyticsPage.tsx            # Analytics & insights (Recharts)
-â”‚   â”‚   â”‚   â”œâ”€â”€ TransactionsPage.tsx         # Combined Income/Expense management
-â”‚   â”‚   â”‚   â”œâ”€â”€ BudgetsPage.tsx              # Income Goals & Expense Budgets
-â”‚   â”‚   â”‚   â”œâ”€â”€ GoalsPage.tsx                # Savings goals tracking
-â”‚   â”‚   â”‚   â””â”€â”€ ProfilePage.tsx              # User profile & account
-â”‚   â”‚   â”œâ”€â”€ store/
-â”‚   â”‚       â”œâ”€â”€ store.ts                     # Redux store configuration
-â”‚   â”‚       â”œâ”€â”€ hooks.ts                     # Typed useAppDispatch & useAppSelector
-â”‚   â”‚       â”œâ”€â”€ api.ts                       # Axios API instance
-â”‚   â”‚       â””â”€â”€ slices/
-â”‚   â”‚           â””â”€â”€ authSlice.ts             # Auth state & thunks
-â”‚   â”œâ”€â”€ public/                              # Static files
-â”‚   â”œâ”€â”€ index.html                           # HTML entry point
-â”‚   â”œâ”€â”€ vite.config.ts
-â”‚   â”œâ”€â”€ vercel.json                          # Vercel SPA routing config
-â”‚   â”œâ”€â”€ tsconfig.json
-â”‚   â”œâ”€â”€ eslint.config.js
-â”‚   â””â”€â”€ package.json
-â”œâ”€â”€ .gitignore
-â”œâ”€â”€ LICENSE
-â””â”€â”€ README.md
+├── backend/
+│   ├── src/
+│   │   ├── index.ts                         # Express server entry point
+│   │   ├── config/
+│   │   │   └── passport.ts                  # Passport strategies (Local + Google)
+│   │   ├── controllers/
+│   │   │   ├── income_controllers.ts        # Income CRUD + Income Goal CRUD
+│   │   │   ├── expense_controllers.ts       # Expense CRUD + Expense Budget CRUD
+│   │   │   └── goal_controllers.ts          # Savings Goal CRUD + money management
+│   │   ├── routes/
+│   │   │   ├── auth_route.ts                # Auth endpoints (register, login, OAuth, logout)
+│   │   │   ├── income_route.ts              # Income & Income Goal routes
+│   │   │   ├── expense_route.ts             # Expense & Expense Budget routes
+│   │   │   └── goal_route.ts                # Savings Goal routes
+│   │   ├── middleware/
+│   │   │   └── auth_middleware.ts            # isAuthenticated guard
+│   │   ├── lib/
+│   │   │   └── prisma.ts                    # Prisma client singleton
+│   │   ├── types/
+│   │   │   └── type.ts                      # TypeScript interfaces & Express augmentation
+│   │   └── utils/
+│   │       ├── catagorywisedata.ts           # Category-wise data aggregation
+│   │       └── cheakcatgory.ts               # Category validation utilities
+│   ├── prisma/
+│   │   ├── schema.prisma                    # Database schema
+│   │   └── migrations/                      # Database migrations
+│   ├── docker-compose.yml                   # PostgreSQL + Redis Stack services
+│   ├── package.json
+│   └── tsconfig.json
+├── spendfront/
+│   ├── src/
+│   │   ├── main.tsx                         # React entry point with Redux Provider
+│   │   ├── App.tsx                          # Root component with routing
+│   │   ├── App.css                          # Main application styles (Navy/Blue theme)
+│   │   ├── index.css                        # Global styles
+│   │   ├── components/
+│   │   │   ├── ProtectedRoute.tsx           # Auth-guard route wrapper
+│   │   │   ├── AppLayout.tsx                # Main layout wrapper (sidebar + content)
+│   │   │   └── Sidebar.tsx                  # Collapsible sidebar navigation
+│   │   ├── pages/
+│   │   │   ├── LoginPage.tsx                # Login (local + Google OAuth)
+│   │   │   ├── SignupPage.tsx               # Registration
+│   │   │   ├── HomePage.tsx                 # Dashboard overview with stats & recent txns
+│   │   │   ├── AnalyticsPage.tsx            # Analytics & insights (Recharts charts)
+│   │   │   ├── TransactionsPage.tsx         # Combined Income/Expense management
+│   │   │   ├── BudgetsPage.tsx              # Income Goals & Expense Budgets
+│   │   │   ├── GoalsPage.tsx                # Savings goals tracking
+│   │   │   └── ProfilePage.tsx              # User profile & account
+│   │   └── store/
+│   │       ├── store.ts                     # Redux store configuration
+│   │       ├── hooks.ts                     # Typed useAppDispatch & useAppSelector
+│   │       ├── api.ts                       # Axios API instance (withCredentials)
+│   │       └── slices/
+│   │           └── authSlice.ts             # Auth state & thunks
+│   ├── public/                              # Static files
+│   ├── index.html                           # HTML entry point
+│   ├── vite.config.ts
+│   ├── vercel.json                          # Vercel SPA routing config (rewrites → index.html)
+│   ├── tsconfig.json
+│   ├── eslint.config.js
+│   └── package.json
+├── .gitignore
+├── LICENSE
+└── README.md
 ```
 
 ---
 
-## ðŸ—„ï¸ Database Schema
+## 🗄️ Database Schema
 
 ### Models
 
@@ -231,6 +230,8 @@ Spendwisee/
 | periodEnd | DateTime | Goal period end |
 | userId | Int (FK) | Associated user |
 
+**Active status** is computed on the frontend: `now >= periodStart && now <= periodEnd`
+
 **Indexes**: `[userId, type]`, `[userId, category]`
 
 #### ExpenseBudget
@@ -245,6 +246,8 @@ Spendwisee/
 | periodEnd | DateTime | Budget period end |
 | userId | Int (FK) | Associated user |
 
+**Active status** is computed on the frontend: `now >= periodStart && now <= periodEnd`
+
 **Indexes**: `[userId, type]`, `[userId, category]`
 
 #### Goal (Savings Goal)
@@ -255,7 +258,7 @@ Spendwisee/
 | amount | Int | Target savings amount |
 | totalMoney | Int | Money saved so far |
 | startdate | DateTime | Goal start date |
-| enddate | DateTime | Goal end date |
+| enddate | DateTime | Goal target end date |
 | isActive | Boolean | Goal active status |
 | userId | Int (FK) | Associated user |
 
@@ -273,7 +276,7 @@ All models include `createdAt` / `updatedAt` timestamps and cascade-delete from 
 
 ---
 
-## ðŸ”Œ API Endpoints
+## 🔌 API Endpoints
 
 Base URL: `http://localhost:3000`
 
@@ -295,7 +298,7 @@ Base URL: `http://localhost:3000`
 | `GET` | `/income` | Get all user income entries |
 | `POST` | `/addincome` | Add new income entry (auto-updates matching active income goals) |
 | `DELETE` | `/income/:incomeid` | Delete income entry (balance-validated against expenses + goal commitments) |
-| `GET` | `/income/total` | Get category-wise income totals |
+| `GET` | `/income/total` | Get category-wise income totals `{ CATEGORY: amount }` |
 | `GET` | `/income/catagory` | Get income filtered by category (query: `?catagory=SALARY`) |
 
 ### Income Goals
@@ -315,7 +318,7 @@ Base URL: `http://localhost:3000`
 | `GET` | `/expense` | Get all user expense entries |
 | `POST` | `/addexpense` | Add new expense entry (balance-validated, auto-updates matching active budgets) |
 | `DELETE` | `/expense/:expenseid` | Delete expense entry |
-| `GET` | `/expense/total` | Get category-wise expense totals |
+| `GET` | `/expense/total` | Get category-wise expense totals `{ CATEGORY: amount }` |
 | `GET` | `/expense/catagory` | Get expenses filtered by category (query: `?catagory=FOOD`) |
 
 ### Expense Budgets
@@ -345,13 +348,13 @@ Base URL: `http://localhost:3000`
 
 ---
 
-## ðŸ–¥ï¸ Frontend Routes
+## 🗺️ Frontend Routes
 
 Base URL: `http://localhost:5173`
 
 | Route | Page | Access |
 |-------|------|--------|
-| `/` | Redirects to `/home` | â€” |
+| `/` | Redirects to `/home` | — |
 | `/login` | Login page | Public |
 | `/signup` | Registration page | Public |
 | `/home` | Dashboard overview | Protected |
@@ -360,13 +363,13 @@ Base URL: `http://localhost:5173`
 | `/budgets` | Income Goals & Expense Budgets | Protected |
 | `/goals` | Savings goals management | Protected |
 | `/profile` | User profile & account | Protected |
-| `*` | Redirects to `/home` | â€” |
+| `*` | Redirects to `/home` | — |
 
 **Sidebar Navigation** includes: Dashboard, Analytics, Transactions, Budgets, Goals, Profile.
 
 ---
 
-## ðŸš€ Installation & Setup
+## 🚀 Installation & Setup
 
 ### Prerequisites
 - **Node.js** v18 or later
@@ -409,7 +412,7 @@ Create `spendfront/.env` if required (see below).
 
 ---
 
-## ðŸ” Environment Variables
+## 🔐 Environment Variables
 
 ### Backend (`backend/.env`)
 ```env
@@ -430,7 +433,7 @@ FRONTEND_URL="http://localhost:5173"
 NODE_ENV="development"
 PORT="3000"
 
-# Redis (optional â€” defaults to redis://localhost:6379)
+# Redis (optional — defaults to redis://localhost:6379)
 REDIS_URL="redis://localhost:6379"
 ```
 
@@ -439,11 +442,11 @@ REDIS_URL="redis://localhost:6379"
 VITE_API_URL="http://localhost:3000"
 ```
 
-> âš ï¸ **Never commit `.env` files.** Use `.env.example` templates instead.
+> ⚠️ **Never commit `.env` files.** Use `.env.example` templates instead.
 
 ---
 
-## â–¶ï¸ Running the Application
+## ▶️ Running the Application
 
 ### Start Backend
 ```bash
@@ -494,7 +497,7 @@ docker ps
 
 ---
 
-## ðŸ”§ Development Workflow
+## 🔧 Development Workflow
 
 ### Available Scripts
 
@@ -522,7 +525,7 @@ npx prisma migrate dev --name migration_name
 # Deploy migrations (production)
 npx prisma migrate deploy
 
-# Reset database (âš ï¸ destroys all data)
+# Reset database (⚠️ destroys all data)
 npx prisma migrate reset
 
 # Generate Prisma client
@@ -535,28 +538,38 @@ npx prisma studio
 ### Adding New Features
 
 1. Define the database schema in `backend/prisma/schema.prisma`
-2. Create a migration â€” `npx prisma migrate dev --name feature_name`
+2. Create a migration — `npx prisma migrate dev --name feature_name`
 3. Add controller logic in `backend/src/controllers/`
 4. Register routes in `backend/src/routes/`
-5. Create a Redux slice in `spendfront/src/store/slices/`
-6. Build pages/components in `spendfront/src/pages/` or `spendfront/src/components/`
-7. Update the Redux store in `spendfront/src/store/store.ts`
+5. Build pages/components in `spendfront/src/pages/` or `spendfront/src/components/`
+6. Update the Redux store in `spendfront/src/store/store.ts`
 
 ---
 
-## ðŸš¢ Deployment
+## 🚢 Deployment
 
-### Docker Deployment
+### Frontend (Vercel)
+
+The `spendfront/vercel.json` is pre-configured for SPA routing:
+
+```json
+{
+  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+}
+```
+
+Simply connect the `spendfront` directory to a Vercel project and deploy.
+
+### Backend (Docker)
 
 1. Build Docker images:
 ```bash
 docker build -t spendwise-backend ./backend
-docker build -t spendwise-frontend ./spendfront
 ```
 
 2. Run with Docker Compose:
 ```bash
-docker compose -f docker-compose.yml up -d
+docker compose up -d
 ```
 
 ### Production Checklist
@@ -574,7 +587,7 @@ docker compose -f docker-compose.yml up -d
 
 ---
 
-## ðŸ” Troubleshooting
+## 🐛 Troubleshooting
 
 ### Database Connection Error
 ```
@@ -589,7 +602,7 @@ Error: connect ECONNREFUSED 127.0.0.1:5432
 ```
 401 Unauthorized or session lost after refresh
 ```
-- Clear browser cookies (DevTools â†’ Application â†’ Cookies â†’ Clear localhost)
+- Clear browser cookies (DevTools → Application → Cookies → Clear localhost)
 - Check browser allows third-party cookies
 - Verify `FRONTEND_URL` in backend `.env` matches actual frontend URL
 - Ensure `credentials: 'include'` is set on API requests
@@ -602,7 +615,7 @@ Error: connect ECONNREFUSED 127.0.0.1:5432
 
 ### Prisma Migration Issues
 ```bash
-# Reset database (âš ï¸ destroys data)
+# Reset database (⚠️ destroys data)
 npx prisma migrate reset
 
 # Or deploy existing migrations
@@ -628,7 +641,7 @@ npm run build
 
 ---
 
-## ðŸ¤ Contributing
+## 🤝 Contributing
 
 Contributions are welcome! Please follow these steps:
 
@@ -642,15 +655,15 @@ Please ensure TypeScript compilation succeeds and follow the existing code struc
 
 ---
 
-## ðŸ“„ License
+## 📄 License
 
-This project is licensed under the MIT License â€” see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
 
-**Copyright Â© 2026 Sougata Saha**
+**Copyright © 2026 Sougata Saha**
 
 ---
 
-## ðŸ’¡ Future Enhancements
+## 🌟 Future Enhancements
 
 - Real-time notifications for budget alerts
 - Export financial reports (PDF/CSV)
@@ -659,16 +672,5 @@ This project is licensed under the MIT License â€” see the [LICENSE](LICENS
 - Bill reminders and scheduling
 - Advanced filtering and search
 - Mobile app (React Native)
-- Data visualization dashboard improvements
+- Date-range filtering on Analytics page
 - API rate limiting for production
-
----
-
-## ðŸ“¬ Support & Contact
-
-For issues, questions, or suggestions:
-- Open an issue on GitHub
-- Check existing issues before creating a new one
-- Include steps to reproduce bugs
-- Provide error logs and environment details
-
