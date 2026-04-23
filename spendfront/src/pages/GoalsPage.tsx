@@ -20,6 +20,7 @@ export default function GoalsPage() {
   // Add goal form
   const [name, setName] = useState('')
   const [amount, setAmount] = useState('')
+  const [startdate, setStartdate] = useState(new Date().toISOString().slice(0, 10))
   const [enddate, setEnddate] = useState('')
   const [submitting, setSubmitting] = useState(false)
 
@@ -44,12 +45,14 @@ export default function GoalsPage() {
 
   const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!name || !amount || !enddate) { toast.error('Fill all fields'); return }
+    if (!name || !amount || !startdate || !enddate) { toast.error('Fill all fields'); return }
+    if (new Date(startdate) >= new Date(enddate)) { toast.error('End date must be after start date'); return }
     setSubmitting(true)
     try {
-      await api.post('/goal', { name, amount: parseFloat(amount), enddate })
+      await api.post('/goal', { name, amount: parseFloat(amount), startdate, enddate })
       toast.success('Goal created!')
       setName(''); setAmount(''); setEnddate('')
+      setStartdate(new Date().toISOString().slice(0, 10))
       fetchGoals()
     } catch (err: any) {
       toast.error(err?.response?.data?.message || 'Failed')
@@ -112,6 +115,10 @@ export default function GoalsPage() {
               <input className="form-input" type="number" placeholder="0" value={amount} onChange={(e) => setAmount(e.target.value)} min={1} required />
             </label>
             <label className="form-label">
+              <span>Start Date</span>
+              <input className="form-input" type="date" value={startdate} onChange={(e) => setStartdate(e.target.value)} required />
+            </label>
+            <label className="form-label">
               <span>Target Date</span>
               <input className="form-input" type="date" value={enddate} onChange={(e) => setEnddate(e.target.value)} required />
             </label>
@@ -161,7 +168,9 @@ export default function GoalsPage() {
                       <span>₹{fmt(g.totalMoney)} / ₹{fmt(g.amount)}</span>
                       <span>{pct.toFixed(0)}%</span>
                     </div>
-                    <div className="budget-period">Target: {fmtDate(g.enddate)}</div>
+                    <div className="budget-period">
+                      {fmtDate(g.startdate)} → {fmtDate(g.enddate)}
+                    </div>
                   </div>
                 )
               })}

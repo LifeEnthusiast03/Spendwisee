@@ -3,6 +3,7 @@ import { prisma } from "../lib/prisma.js";
 import { IncomeCategory } from "../types/type.js";
 import { validIncomeCatagory } from "../utils/cheakcatgory.js";
 import { catagorywisedata } from "../utils/catagorywisedata.js";
+import { log } from "node:console";
 
 type PrismaKnownError = {
   code?: string;
@@ -63,7 +64,8 @@ export const addIncome = async (req: Request, res: Response) => {
         ...(parsedDate ? { date: parsedDate } : {}),
       },
     });
-
+    console.log("new income added now cheak if goal exist");
+    
     // Check for active income goals matching this category and update fulfilledAmount
     const incomeDate = parsedDate ?? new Date();
     const activeGoals = await prisma.incomeGoal.findMany({
@@ -76,6 +78,9 @@ export const addIncome = async (req: Request, res: Response) => {
     });
 
     if (activeGoals.length > 0) {
+      // console.log(activeGoals.length);
+      // console.log("have some goal");
+      
       await Promise.all(
         activeGoals.map((goal) =>
           prisma.incomeGoal.update({
@@ -85,6 +90,9 @@ export const addIncome = async (req: Request, res: Response) => {
         )
       );
     }
+    // else {
+    //   console.log("no active goals found");
+    // }
 
     return res.status(201).json(newincome);
   } catch (err) {
@@ -275,7 +283,8 @@ export const addIncomeGoal = async (req: Request, res: Response) => {
         periodEnd: periodEnd,
       },
     });
-
+    console.log("income goal created succsfully");
+    
     return res.status(201).json(incomeGoal);
   } catch (err) {
     console.error(err);

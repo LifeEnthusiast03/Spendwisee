@@ -169,14 +169,16 @@ export default function BudgetsPage() {
           ) : (
             <div className="budget-list">
               {list.map((g) => {
+                const now = new Date()
+                const isActive = now >= new Date(g.periodStart) && now <= new Date(g.periodEnd)
                 const pct = Math.min((g.fulfilledAmount / g.amount) * 100, 100)
                 return (
                   <div key={g.id} className="budget-item">
                     <div className="budget-item-header">
                       <div>
                         <span className="budget-category">{g.category}</span>
-                        <span className={`budget-type-badge ${g.isActive ? 'badge--active' : 'badge--inactive'}`}>
-                          {g.type} · {g.isActive ? 'Active' : 'Inactive'}
+                        <span className={`budget-type-badge ${isActive ? 'badge--active' : 'badge--inactive'}`}>
+                          {g.type} · {isActive ? 'Active' : 'Inactive'}
                         </span>
                       </div>
                       <button className="delete-btn" onClick={() => handleDelete(g.id)}><Trash2 size={14} /></button>

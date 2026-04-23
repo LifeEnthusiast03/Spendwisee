@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+﻿import { useEffect, useState } from 'react'
 import { TrendingUp, TrendingDown, Wallet } from 'lucide-react'
 import api from '../store/api'
 import {
@@ -39,7 +39,7 @@ const CustomTooltip = ({
         {label && <p className="chart-tooltip-label">{label}</p>}
         {payload.map((p, i) => (
           <p key={i} style={{ color: p.color, margin: 0, fontSize: '0.82rem', fontWeight: 600 }}>
-            {p.name}: ₹{fmt(p.value)}
+            {p.name}: â‚¹{fmt(p.value)}
           </p>
         ))}
       </div>
@@ -64,7 +64,7 @@ export default function AnalyticsPage() {
           api.get('/expense'),
         ])
 
-        // Category data — API returns { CATEGORY: amount } flat object
+        // Category data â€” API returns { CATEGORY: amount } flat object
         const toArr = (obj: Record<string, number>) =>
           Object.entries(obj)
             .map(([category, total]) => ({ category, total }))
@@ -72,7 +72,7 @@ export default function AnalyticsPage() {
         setIncomeData(toArr(incTotalRes.data))
         setExpenseData(toArr(expTotalRes.data))
 
-        // Monthly trend data — last 6 months
+        // Monthly trend data â€” last 6 months
         const incomes: Transaction[] = incRes.data
         const expenses: Transaction[] = expRes.data
 
@@ -125,18 +125,18 @@ export default function AnalyticsPage() {
         <div className="stat-card stat-card--income">
           <div className="stat-card-icon"><TrendingUp size={22} /></div>
           <div className="stat-card-label">Total Income</div>
-          <div className="stat-card-value">₹{fmt(totalIncome)}</div>
+          <div className="stat-card-value">â‚¹{fmt(totalIncome)}</div>
         </div>
         <div className="stat-card stat-card--expense">
           <div className="stat-card-icon"><TrendingDown size={22} /></div>
           <div className="stat-card-label">Total Expense</div>
-          <div className="stat-card-value">₹{fmt(totalExpense)}</div>
+          <div className="stat-card-value">â‚¹{fmt(totalExpense)}</div>
         </div>
         <div className={`stat-card ${net >= 0 ? 'stat-card--balance' : 'stat-card--expense'}`}>
           <div className="stat-card-icon"><Wallet size={22} /></div>
           <div className="stat-card-label">Net Savings</div>
-          <div className="stat-card-value">₹{fmt(net)}</div>
-          <div className="stat-card-sub">{net >= 0 ? 'Positive balance 🎯' : 'Overspent'}</div>
+          <div className="stat-card-value">â‚¹{fmt(net)}</div>
+          <div className="stat-card-sub">{net >= 0 ? 'Positive balance ðŸŽ¯' : 'Overspent'}</div>
         </div>
       </div>
 
@@ -162,7 +162,7 @@ export default function AnalyticsPage() {
                       tick={{ fill: 'rgba(246,239,232,0.5)', fontSize: 11 }}
                       axisLine={false}
                       tickLine={false}
-                      tickFormatter={(v) => `₹${v >= 1000 ? `${(v / 1000).toFixed(0)}k` : v}`}
+                      tickFormatter={(v) => `â‚¹${v >= 1000 ? `${(v / 1000).toFixed(0)}k` : v}`}
                     />
                     <Tooltip content={<CustomTooltip />} cursor={{ fill: 'rgba(255,255,255,0.04)' }} />
                     <Legend
@@ -210,12 +210,12 @@ export default function AnalyticsPage() {
                         ))}
                       </Pie>
                       <Tooltip
-                        formatter={(value: number) => [`₹${fmt(value)}`, 'Amount']}
+                        formatter={(value: number) => [`â‚¹${fmt(value)}`, 'Amount']}
                         contentStyle={{
-                          background: 'rgba(15,23,42,0.95)',
+                          background: 'rgba(5,13,26,0.97)',
                           border: '1px solid rgba(255,255,255,0.1)',
                           borderRadius: '12px',
-                          color: '#f6efe8',
+                          color: '#e8f0fe',
                           fontSize: '0.82rem',
                         }}
                       />
@@ -227,7 +227,7 @@ export default function AnalyticsPage() {
                       <div key={d.category} className="pie-legend-item">
                         <span className="pie-legend-dot" style={{ background: INCOME_COLORS[i % INCOME_COLORS.length] }} />
                         <span className="pie-legend-label">{d.category}</span>
-                        <span className="pie-legend-value">₹{fmt(d.total)}</span>
+                        <span className="pie-legend-value">â‚¹{fmt(d.total)}</span>
                       </div>
                     ))}
                   </div>
@@ -265,12 +265,12 @@ export default function AnalyticsPage() {
                         ))}
                       </Pie>
                       <Tooltip
-                        formatter={(value: number) => [`₹${fmt(value)}`, 'Amount']}
+                        formatter={(value: number) => [`â‚¹${fmt(value)}`, 'Amount']}
                         contentStyle={{
-                          background: 'rgba(15,23,42,0.95)',
+                          background: 'rgba(5,13,26,0.97)',
                           border: '1px solid rgba(255,255,255,0.1)',
                           borderRadius: '12px',
-                          color: '#f6efe8',
+                          color: '#e8f0fe',
                           fontSize: '0.82rem',
                         }}
                       />
@@ -281,7 +281,7 @@ export default function AnalyticsPage() {
                       <div key={d.category} className="pie-legend-item">
                         <span className="pie-legend-dot" style={{ background: EXPENSE_COLORS[i % EXPENSE_COLORS.length] }} />
                         <span className="pie-legend-label">{d.category}</span>
-                        <span className="pie-legend-value">₹{fmt(d.total)}</span>
+                        <span className="pie-legend-value">â‚¹{fmt(d.total)}</span>
                       </div>
                     ))}
                   </div>
@@ -312,7 +312,7 @@ export default function AnalyticsPage() {
                         tick={{ fill: 'rgba(246,239,232,0.45)', fontSize: 11 }}
                         axisLine={false}
                         tickLine={false}
-                        tickFormatter={(v) => `₹${v >= 1000 ? `${(v / 1000).toFixed(0)}k` : v}`}
+                        tickFormatter={(v) => `â‚¹${v >= 1000 ? `${(v / 1000).toFixed(0)}k` : v}`}
                       />
                       <YAxis
                         type="category"
@@ -354,7 +354,7 @@ export default function AnalyticsPage() {
                         tick={{ fill: 'rgba(246,239,232,0.45)', fontSize: 11 }}
                         axisLine={false}
                         tickLine={false}
-                        tickFormatter={(v) => `₹${v >= 1000 ? `${(v / 1000).toFixed(0)}k` : v}`}
+                        tickFormatter={(v) => `â‚¹${v >= 1000 ? `${(v / 1000).toFixed(0)}k` : v}`}
                       />
                       <YAxis
                         type="category"
@@ -381,3 +381,4 @@ export default function AnalyticsPage() {
     </div>
   )
 }
+
