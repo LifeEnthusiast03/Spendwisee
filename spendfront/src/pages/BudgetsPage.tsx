@@ -6,8 +6,8 @@ import {
   setBudgetFormAmount,
   setBudgetFormType,
   resetBudgetForm,
-  type BudgetType,
 } from '../store/slices/budgetSlice'
+import type { BudgetType } from '../types/types'
 import {
   useIncomeGoals,
   useExpenseBudgets,
