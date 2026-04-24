@@ -1,90 +1,70 @@
-import { useState } from 'react'
 import { TrendingUp, TrendingDown, Plus, Trash2 } from 'lucide-react'
-import api from '../store/api'
-import toast from 'react-hot-toast'
-import { useEffect } from 'react'
+import { useAppDispatch, useAppSelector } from '../store/hooks'
+import {
+  setActiveTab,
+  setFormAmount,
+  setFormCategory,
+  setFormNote,
+  setFormDate,
+  resetTransactionForm,
+} from '../store/slices/transactionSlice'
+import {
+  useIncomes,
+  useExpenses,
+  useAddIncome,
+  useAddExpense,
+  useDeleteIncome,
+  useDeleteExpense,
+} from '../hooks/useTransactionQueries'
 
 const INCOME_CATEGORIES = ['SALARY', 'FREELANCE', 'BUSINESS', 'INVESTMENT', 'GIFT', 'OTHER']
 const EXPENSE_CATEGORIES = ['FOOD', 'TRANSPORT', 'RENT', 'SHOPPING', 'ENTERTAINMENT', 'BILLS', 'OTHER']
 
-interface Transaction {
-  id: number
-  amount: number
-  category: string
-  note?: string
-  date: string
-}
-
 export default function TransactionsPage() {
-  const [tab, setTab] = useState<'income' | 'expense'>('income')
+  const dispatch = useAppDispatch()
+  const { activeTab, formAmount, formCategory, formNote, formDate } = useAppSelector(
+    (s) => s.transaction
+  )
 
-  // Form state
-  const [amount, setAmount] = useState('')
-  const [category, setCategory] = useState('OTHER')
-  const [note, setNote] = useState('')
-  const [date, setDate] = useState(new Date().toISOString().slice(0, 10))
-  const [submitting, setSubmitting] = useState(false)
+  // ── React Query – cached fetches ──────────────────────────────────────────
+  const { data: incomes = [], isLoading: loadingIncomes } = useIncomes()
+  const { data: expenses = [], isLoading: loadingExpenses } = useExpenses()
 
-  // List state
-  const [incomes, setIncomes] = useState<Transaction[]>([])
-  const [expenses, setExpenses] = useState<Transaction[]>([])
-  const [loadingList, setLoadingList] = useState(true)
+  // ── Mutations ─────────────────────────────────────────────────────────────
+  const addIncomeMutation = useAddIncome()
+  const addExpenseMutation = useAddExpense()
+  const deleteIncomeMutation = useDeleteIncome()
+  const deleteExpenseMutation = useDeleteExpense()
 
-  const fetchAll = async () => {
-    setLoadingList(true)
-    try {
-      const [incRes, expRes] = await Promise.all([api.get('/income'), api.get('/expense')])
-      setIncomes(incRes.data)
-      setExpenses(expRes.data)
-    } catch {
-      //
-    } finally {
-      setLoadingList(false)
-    }
-  }
-
-  useEffect(() => { fetchAll() }, [])
+  const loadingList = activeTab === 'income' ? loadingIncomes : loadingExpenses
+  const submitting =
+    activeTab === 'income' ? addIncomeMutation.isPending : addExpenseMutation.isPending
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    const parsedAmount = parseFloat(amount)
-    if (!parsedAmount || parsedAmount <= 0) {
-      toast.error('Enter a valid amount')
-      return
+    const parsedAmount = parseFloat(formAmount)
+    if (!parsedAmount || parsedAmount <= 0) return
+
+    const payload = {
+      amount: parsedAmount,
+      catagory: formCategory,
+      note: formNote || null,
+      date: formDate,
     }
-    setSubmitting(true)
-    try {
-      if (tab === 'income') {
-        await api.post('/addincome', { amount: parsedAmount, catagory: category, note, date })
-        toast.success('Income added!')
-      } else {
-        await api.post('/addexpense', { amount: parsedAmount, catagory: category, note, date })
-        toast.success('Expense added!')
-      }
-      setAmount('')
-      setNote('')
-      setCategory('OTHER')
-      setDate(new Date().toISOString().slice(0, 10))
-      fetchAll()
-    } catch {
-      toast.error('Failed to add. Try again.')
-    } finally {
-      setSubmitting(false)
+
+    if (activeTab === 'income') {
+      await addIncomeMutation.mutateAsync(payload)
+    } else {
+      await addExpenseMutation.mutateAsync(payload)
     }
+    dispatch(resetTransactionForm())
   }
 
-  const handleDelete = async (id: number, type: 'income' | 'expense') => {
-    try {
-      if (type === 'income') {
-        await api.delete(`/income/${id}`)
-        setIncomes((prev) => prev.filter((i) => i.id !== id))
-      } else {
-        await api.delete(`/expense/${id}`)
-        setExpenses((prev) => prev.filter((e) => e.id !== id))
-      }
-      toast.success('Deleted!')
-    } catch {
-      toast.error('Failed to delete')
+  const handleDelete = (id: number) => {
+    if (activeTab === 'income') {
+      deleteIncomeMutation.mutate(id)
+    } else {
+      deleteExpenseMutation.mutate(id)
     }
   }
 
@@ -93,8 +73,8 @@ export default function TransactionsPage() {
   const fmtDate = (d: string) =>
     new Date(d).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: '2-digit' })
 
-  const cats = tab === 'income' ? INCOME_CATEGORIES : EXPENSE_CATEGORIES
-  const list = tab === 'income' ? incomes : expenses
+  const cats = activeTab === 'income' ? INCOME_CATEGORIES : EXPENSE_CATEGORIES
+  const list = activeTab === 'income' ? incomes : expenses
 
   return (
     <div className="page-content">
@@ -108,14 +88,14 @@ export default function TransactionsPage() {
       {/* Tab toggle */}
       <div className="tab-toggle">
         <button
-          className={`tab-btn ${tab === 'income' ? 'tab-btn--active-income' : ''}`}
-          onClick={() => { setTab('income'); setCategory('OTHER') }}
+          className={`tab-btn ${activeTab === 'income' ? 'tab-btn--active-income' : ''}`}
+          onClick={() => dispatch(setActiveTab('income'))}
         >
           <TrendingUp size={16} /> Income
         </button>
         <button
-          className={`tab-btn ${tab === 'expense' ? 'tab-btn--active-expense' : ''}`}
-          onClick={() => { setTab('expense'); setCategory('OTHER') }}
+          className={`tab-btn ${activeTab === 'expense' ? 'tab-btn--active-expense' : ''}`}
+          onClick={() => dispatch(setActiveTab('expense'))}
         >
           <TrendingDown size={16} /> Expense
         </button>
@@ -125,8 +105,12 @@ export default function TransactionsPage() {
         {/* Form */}
         <div className="glass-card">
           <h2 className="card-title">
-            {tab === 'income' ? <TrendingUp size={18} className="income-color" /> : <TrendingDown size={18} className="expense-color" />}
-            Add {tab === 'income' ? 'Income' : 'Expense'}
+            {activeTab === 'income' ? (
+              <TrendingUp size={18} className="income-color" />
+            ) : (
+              <TrendingDown size={18} className="expense-color" />
+            )}
+            Add {activeTab === 'income' ? 'Income' : 'Expense'}
           </h2>
           <form className="form-grid" onSubmit={handleSubmit}>
             <label className="form-label">
@@ -135,8 +119,8 @@ export default function TransactionsPage() {
                 className="form-input"
                 type="number"
                 placeholder="0"
-                value={amount}
-                onChange={(e) => setAmount(e.target.value)}
+                value={formAmount}
+                onChange={(e) => dispatch(setFormAmount(e.target.value))}
                 min={0}
                 required
               />
@@ -145,8 +129,8 @@ export default function TransactionsPage() {
               <span>Category</span>
               <select
                 className="form-input form-select"
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
+                value={formCategory}
+                onChange={(e) => dispatch(setFormCategory(e.target.value))}
               >
                 {cats.map((c) => (
                   <option key={c} value={c}>{c}</option>
@@ -159,8 +143,8 @@ export default function TransactionsPage() {
                 className="form-input"
                 type="text"
                 placeholder="Add a note..."
-                value={note}
-                onChange={(e) => setNote(e.target.value)}
+                value={formNote}
+                onChange={(e) => dispatch(setFormNote(e.target.value))}
               />
             </label>
             <label className="form-label">
@@ -168,17 +152,17 @@ export default function TransactionsPage() {
               <input
                 className="form-input"
                 type="date"
-                value={date}
-                onChange={(e) => setDate(e.target.value)}
+                value={formDate}
+                onChange={(e) => dispatch(setFormDate(e.target.value))}
               />
             </label>
             <button
-              className={`submit-btn ${tab === 'income' ? 'submit-btn--income' : 'submit-btn--expense'}`}
+              className={`submit-btn ${activeTab === 'income' ? 'submit-btn--income' : 'submit-btn--expense'}`}
               type="submit"
               disabled={submitting}
             >
               <Plus size={18} />
-              {submitting ? 'Adding...' : `Add ${tab === 'income' ? 'Income' : 'Expense'}`}
+              {submitting ? 'Adding...' : `Add ${activeTab === 'income' ? 'Income' : 'Expense'}`}
             </button>
           </form>
         </div>
@@ -189,24 +173,27 @@ export default function TransactionsPage() {
           {loadingList ? (
             <div className="empty-state"><div className="spinner" /></div>
           ) : list.length === 0 ? (
-            <div className="empty-state"><p>No {tab} records yet.</p></div>
+            <div className="empty-state"><p>No {activeTab} records yet.</p></div>
           ) : (
             <div className="txn-list">
               {list.map((t) => (
-                <div key={t.id} className={`txn-row txn-row--${tab}`}>
-                  <div className={`txn-dot txn-dot--${tab}`} />
+                <div key={t.id} className={`txn-row txn-row--${activeTab}`}>
+                  <div className={`txn-dot txn-dot--${activeTab}`} />
                   <div className="txn-info">
                     <span className="txn-category">{t.category}</span>
                     {t.note && <span className="txn-note">{t.note}</span>}
                   </div>
                   <span className="txn-date">{fmtDate(t.date)}</span>
-                  <span className={`txn-amount txn-amount--${tab}`}>
-                    {tab === 'income' ? '+' : '-'}₹{fmt(t.amount)}
+                  <span className={`txn-amount txn-amount--${activeTab}`}>
+                    {activeTab === 'income' ? '+' : '-'}₹{fmt(t.amount)}
                   </span>
                   <button
                     className="delete-btn"
-                    onClick={() => handleDelete(t.id, tab)}
+                    onClick={() => handleDelete(t.id)}
                     title="Delete"
+                    disabled={
+                      deleteIncomeMutation.isPending || deleteExpenseMutation.isPending
+                    }
                   >
                     <Trash2 size={15} />
                   </button>

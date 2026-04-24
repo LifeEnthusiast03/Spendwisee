@@ -1,92 +1,71 @@
-import { useEffect, useState } from 'react'
 import { Plus, Trash2, Target, PlusCircle, MinusCircle } from 'lucide-react'
-import api from '../store/api'
+import { useAppDispatch, useAppSelector } from '../store/hooks'
+import {
+  setFormName,
+  setFormAmount,
+  setFormStartdate,
+  setFormEnddate,
+  resetGoalForm,
+  openMoneyModal,
+  closeMoneyModal,
+  setMoneyAmount,
+} from '../store/slices/goalSlice'
+import {
+  useGoals,
+  useCreateGoal,
+  useAddMoneyToGoal,
+  useRemoveMoneyFromGoal,
+  useDeleteGoal,
+} from '../hooks/useGoalQueries'
 import toast from 'react-hot-toast'
 
-interface Goal {
-  id: number
-  name: string
-  amount: number
-  totalMoney: number
-  startdate: string
-  enddate: string
-  isActive: boolean
-}
-
 export default function GoalsPage() {
-  const [goals, setGoals] = useState<Goal[]>([])
-  const [loading, setLoading] = useState(true)
+  const dispatch = useAppDispatch()
+  const {
+    formName, formAmount, formStartdate, formEnddate,
+    moneyGoalId, moneyAmount, moneyMode,
+  } = useAppSelector((s) => s.goal)
 
-  // Add goal form
-  const [name, setName] = useState('')
-  const [amount, setAmount] = useState('')
-  const [startdate, setStartdate] = useState(new Date().toISOString().slice(0, 10))
-  const [enddate, setEnddate] = useState('')
-  const [submitting, setSubmitting] = useState(false)
-
-  // Money modal
-  const [moneyGoalId, setMoneyGoalId] = useState<number | null>(null)
-  const [moneyAmt, setMoneyAmt] = useState('')
-  const [moneyMode, setMoneyMode] = useState<'add' | 'remove'>('add')
-
-  const fetchGoals = async () => {
-    setLoading(true)
-    try {
-      const res = await api.get('/goal')
-      setGoals(res.data)
-    } catch {
-      //
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  useEffect(() => { fetchGoals() }, [])
+  // ── React Query ───────────────────────────────────────────────────────────
+  const { data: goals = [], isLoading } = useGoals()
+  const createGoal = useCreateGoal()
+  const addMoney = useAddMoneyToGoal()
+  const removeMoney = useRemoveMoneyFromGoal()
+  const deleteGoal = useDeleteGoal()
 
   const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!name || !amount || !startdate || !enddate) { toast.error('Fill all fields'); return }
-    if (new Date(startdate) >= new Date(enddate)) { toast.error('End date must be after start date'); return }
-    setSubmitting(true)
-    try {
-      await api.post('/goal', { name, amount: parseFloat(amount), startdate, enddate })
-      toast.success('Goal created!')
-      setName(''); setAmount(''); setEnddate('')
-      setStartdate(new Date().toISOString().slice(0, 10))
-      fetchGoals()
-    } catch (err: any) {
-      toast.error(err?.response?.data?.message || 'Failed')
-    } finally {
-      setSubmitting(false)
+    if (!formName || !formAmount || !formStartdate || !formEnddate) {
+      toast.error('Fill all fields')
+      return
     }
-  }
-
-  const handleDelete = async (id: number) => {
-    try {
-      await api.delete(`/goal/${id}`)
-      setGoals((prev) => prev.filter((g) => g.id !== id))
-      toast.success('Goal deleted')
-    } catch { toast.error('Failed to delete') }
+    if (new Date(formStartdate) >= new Date(formEnddate)) {
+      toast.error('End date must be after start date')
+      return
+    }
+    await createGoal.mutateAsync({
+      name: formName,
+      amount: parseFloat(formAmount),
+      startdate: formStartdate,
+      enddate: formEnddate,
+    })
+    dispatch(resetGoalForm())
   }
 
   const handleMoney = async () => {
-    const amt = parseFloat(moneyAmt)
+    const amt = parseFloat(moneyAmount)
     if (!amt || amt <= 0) { toast.error('Enter a valid amount'); return }
-    try {
-      if (moneyMode === 'add') {
-        await api.post(`/goal/${moneyGoalId}/addmoney`, { amount: amt })
-        toast.success('Money added!')
-      } else {
-        await api.post(`/goal/${moneyGoalId}/removemoney`, { amount: amt })
-        toast.success('Money removed!')
-      }
-      setMoneyGoalId(null)
-      setMoneyAmt('')
-      fetchGoals()
-    } catch (err: any) {
-      toast.error(err?.response?.data?.message || 'Failed')
+    if (moneyGoalId === null) return
+
+    if (moneyMode === 'add') {
+      await addMoney.mutateAsync({ goalId: moneyGoalId, amount: amt })
+    } else {
+      await removeMoney.mutateAsync({ goalId: moneyGoalId, amount: amt })
     }
+    dispatch(closeMoneyModal())
   }
+
+  const moneyPending = addMoney.isPending || removeMoney.isPending
 
   const fmt = (n: number) => new Intl.NumberFormat('en-IN').format(n)
   const fmtDate = (d: string) =>
@@ -108,23 +87,54 @@ export default function GoalsPage() {
           <form className="form-grid" onSubmit={handleCreate}>
             <label className="form-label">
               <span>Goal Name</span>
-              <input className="form-input" type="text" placeholder="e.g. New Laptop" value={name} onChange={(e) => setName(e.target.value)} required />
+              <input
+                className="form-input"
+                type="text"
+                placeholder="e.g. New Laptop"
+                value={formName}
+                onChange={(e) => dispatch(setFormName(e.target.value))}
+                required
+              />
             </label>
             <label className="form-label">
               <span>Target Amount (₹)</span>
-              <input className="form-input" type="number" placeholder="0" value={amount} onChange={(e) => setAmount(e.target.value)} min={1} required />
+              <input
+                className="form-input"
+                type="number"
+                placeholder="0"
+                value={formAmount}
+                onChange={(e) => dispatch(setFormAmount(e.target.value))}
+                min={1}
+                required
+              />
             </label>
             <label className="form-label">
               <span>Start Date</span>
-              <input className="form-input" type="date" value={startdate} onChange={(e) => setStartdate(e.target.value)} required />
+              <input
+                className="form-input"
+                type="date"
+                value={formStartdate}
+                onChange={(e) => dispatch(setFormStartdate(e.target.value))}
+                required
+              />
             </label>
             <label className="form-label">
               <span>Target Date</span>
-              <input className="form-input" type="date" value={enddate} onChange={(e) => setEnddate(e.target.value)} required />
+              <input
+                className="form-input"
+                type="date"
+                value={formEnddate}
+                onChange={(e) => dispatch(setFormEnddate(e.target.value))}
+                required
+              />
             </label>
-            <button className="submit-btn submit-btn--goal" type="submit" disabled={submitting}>
+            <button
+              className="submit-btn submit-btn--goal"
+              type="submit"
+              disabled={createGoal.isPending}
+            >
               <Plus size={18} />
-              {submitting ? 'Creating...' : 'Create Goal'}
+              {createGoal.isPending ? 'Creating...' : 'Create Goal'}
             </button>
           </form>
         </div>
@@ -132,7 +142,7 @@ export default function GoalsPage() {
         {/* Goals list */}
         <div className="glass-card">
           <h2 className="card-title">My Goals</h2>
-          {loading ? (
+          {isLoading ? (
             <div className="empty-state"><div className="spinner" /></div>
           ) : goals.length === 0 ? (
             <div className="empty-state"><p>No goals yet. Create one!</p></div>
@@ -150,13 +160,26 @@ export default function GoalsPage() {
                         </span>
                       </div>
                       <div style={{ display: 'flex', gap: '0.4rem' }}>
-                        <button className="icon-btn icon-btn--add" title="Add money" onClick={() => { setMoneyGoalId(g.id); setMoneyMode('add') }}>
+                        <button
+                          className="icon-btn icon-btn--add"
+                          title="Add money"
+                          onClick={() => dispatch(openMoneyModal({ id: g.id, mode: 'add' }))}
+                        >
                           <PlusCircle size={16} />
                         </button>
-                        <button className="icon-btn icon-btn--remove" title="Remove money" onClick={() => { setMoneyGoalId(g.id); setMoneyMode('remove') }}>
+                        <button
+                          className="icon-btn icon-btn--remove"
+                          title="Remove money"
+                          onClick={() => dispatch(openMoneyModal({ id: g.id, mode: 'remove' }))}
+                        >
                           <MinusCircle size={16} />
                         </button>
-                        <button className="delete-btn" title="Delete" onClick={() => handleDelete(g.id)}>
+                        <button
+                          className="delete-btn"
+                          title="Delete"
+                          onClick={() => deleteGoal.mutate(g.id)}
+                          disabled={deleteGoal.isPending}
+                        >
                           <Trash2 size={14} />
                         </button>
                       </div>
@@ -181,21 +204,29 @@ export default function GoalsPage() {
 
       {/* Money modal */}
       {moneyGoalId !== null && (
-        <div className="modal-overlay" onClick={() => setMoneyGoalId(null)}>
+        <div className="modal-overlay" onClick={() => dispatch(closeMoneyModal())}>
           <div className="modal-card" onClick={(e) => e.stopPropagation()}>
             <h3>{moneyMode === 'add' ? 'Add Money' : 'Remove Money'}</h3>
             <input
               className="form-input"
               type="number"
               placeholder="Amount (₹)"
-              value={moneyAmt}
-              onChange={(e) => setMoneyAmt(e.target.value)}
+              value={moneyAmount}
+              onChange={(e) => dispatch(setMoneyAmount(e.target.value))}
               min={1}
               autoFocus
             />
             <div className="modal-actions">
-              <button className="submit-btn submit-btn--goal" onClick={handleMoney}>Confirm</button>
-              <button className="cancel-btn" onClick={() => setMoneyGoalId(null)}>Cancel</button>
+              <button
+                className="submit-btn submit-btn--goal"
+                onClick={handleMoney}
+                disabled={moneyPending}
+              >
+                {moneyPending ? 'Processing...' : 'Confirm'}
+              </button>
+              <button className="cancel-btn" onClick={() => dispatch(closeMoneyModal())}>
+                Cancel
+              </button>
             </div>
           </div>
         </div>

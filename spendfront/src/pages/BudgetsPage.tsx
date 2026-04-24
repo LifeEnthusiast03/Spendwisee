@@ -1,88 +1,63 @@
-import { useEffect, useState } from 'react'
 import { Plus, Trash2, TrendingUp, Wallet } from 'lucide-react'
-import api from '../store/api'
-import toast from 'react-hot-toast'
+import { useAppDispatch, useAppSelector } from '../store/hooks'
+import {
+  setBudgetTab,
+  setBudgetFormCategory,
+  setBudgetFormAmount,
+  setBudgetFormType,
+  resetBudgetForm,
+  type BudgetType,
+} from '../store/slices/budgetSlice'
+import {
+  useIncomeGoals,
+  useExpenseBudgets,
+  useCreateIncomeGoal,
+  useCreateExpenseBudget,
+  useDeleteIncomeGoal,
+  useDeleteExpenseBudget,
+} from '../hooks/useBudgetQueries'
 
 const INCOME_CATS = ['SALARY', 'FREELANCE', 'BUSINESS', 'INVESTMENT', 'GIFT', 'OTHER']
 const EXPENSE_CATS = ['FOOD', 'TRANSPORT', 'RENT', 'SHOPPING', 'ENTERTAINMENT', 'BILLS', 'OTHER']
-const TYPES = ['WEEKLY', 'MONTHLY', 'YEARLY']
-
-interface Goal {
-  id: number
-  category: string
-  amount: number
-  fulfilledAmount: number
-  type: string
-  periodStart: string
-  periodEnd: string
-  isActive: boolean
-}
+const TYPES: BudgetType[] = ['WEEKLY', 'MONTHLY', 'YEARLY']
 
 export default function BudgetsPage() {
-  const [tab, setTab] = useState<'income' | 'expense'>('income')
-  const [incomeGoals, setIncomeGoals] = useState<Goal[]>([])
-  const [expenseBudgets, setExpenseBudgets] = useState<Goal[]>([])
-  const [loading, setLoading] = useState(true)
+  const dispatch = useAppDispatch()
+  const { activeTab, formCategory, formAmount, formType } = useAppSelector((s) => s.budget)
 
-  const [category, setCategory] = useState('OTHER')
-  const [amount, setAmount] = useState('')
-  const [type, setType] = useState('MONTHLY')
-  const [submitting, setSubmitting] = useState(false)
+  // ── React Query – cached fetches ──────────────────────────────────────────
+  const { data: incomeGoals = [], isLoading: loadingIG } = useIncomeGoals()
+  const { data: expenseBudgets = [], isLoading: loadingEB } = useExpenseBudgets()
 
-  const fetchAll = async () => {
-    setLoading(true)
-    try {
-      const [igRes, ebRes] = await Promise.all([
-        api.get('/incomegoal'),
-        api.get('/expensebudget'),
-      ])
-      setIncomeGoals(igRes.data)
-      setExpenseBudgets(ebRes.data)
-    } catch {
-      //
-    } finally {
-      setLoading(false)
-    }
-  }
+  // ── Mutations ─────────────────────────────────────────────────────────────
+  const createIG = useCreateIncomeGoal()
+  const createEB = useCreateExpenseBudget()
+  const deleteIG = useDeleteIncomeGoal()
+  const deleteEB = useDeleteExpenseBudget()
 
-  useEffect(() => { fetchAll() }, [])
+  const loading = activeTab === 'income' ? loadingIG : loadingEB
+  const submitting = activeTab === 'income' ? createIG.isPending : createEB.isPending
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    const parsedAmount = parseFloat(amount)
-    if (!parsedAmount || parsedAmount <= 0) { toast.error('Enter a valid amount'); return }
-    setSubmitting(true)
-    try {
-      if (tab === 'income') {
-        await api.post('/incomegoal', { amount: parsedAmount, type, catagory: category })
-        toast.success('Income goal set!')
-      } else {
-        await api.post('/expensebudget', { amount: parsedAmount, type, catagory: category })
-        toast.success('Expense budget set!')
-      }
-      setAmount('')
-      setCategory('OTHER')
-      setType('MONTHLY')
-      fetchAll()
-    } catch (err: any) {
-      toast.error(err?.response?.data?.message || 'Failed. Try again.')
-    } finally {
-      setSubmitting(false)
+    const parsedAmount = parseFloat(formAmount)
+    if (!parsedAmount || parsedAmount <= 0) return
+
+    const payload = { amount: parsedAmount, type: formType, catagory: formCategory }
+
+    if (activeTab === 'income') {
+      await createIG.mutateAsync(payload)
+    } else {
+      await createEB.mutateAsync(payload)
     }
+    dispatch(resetBudgetForm())
   }
 
-  const handleDelete = async (id: number) => {
-    try {
-      if (tab === 'income') {
-        await api.delete(`/incomegoal/${id}`)
-        setIncomeGoals((prev) => prev.filter((g) => g.id !== id))
-      } else {
-        await api.delete(`/expensebudget/${id}`)
-        setExpenseBudgets((prev) => prev.filter((g) => g.id !== id))
-      }
-      toast.success('Deleted!')
-    } catch {
-      toast.error('Failed to delete')
+  const handleDelete = (id: number) => {
+    if (activeTab === 'income') {
+      deleteIG.mutate(id)
+    } else {
+      deleteEB.mutate(id)
     }
   }
 
@@ -90,8 +65,8 @@ export default function BudgetsPage() {
   const fmtDate = (d: string) =>
     new Date(d).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })
 
-  const cats = tab === 'income' ? INCOME_CATS : EXPENSE_CATS
-  const list = tab === 'income' ? incomeGoals : expenseBudgets
+  const cats = activeTab === 'income' ? INCOME_CATS : EXPENSE_CATS
+  const list = activeTab === 'income' ? incomeGoals : expenseBudgets
 
   return (
     <div className="page-content">
@@ -104,14 +79,14 @@ export default function BudgetsPage() {
 
       <div className="tab-toggle">
         <button
-          className={`tab-btn ${tab === 'income' ? 'tab-btn--active-income' : ''}`}
-          onClick={() => { setTab('income'); setCategory('OTHER') }}
+          className={`tab-btn ${activeTab === 'income' ? 'tab-btn--active-income' : ''}`}
+          onClick={() => dispatch(setBudgetTab('income'))}
         >
           <TrendingUp size={16} /> Income Goals
         </button>
         <button
-          className={`tab-btn ${tab === 'expense' ? 'tab-btn--active-expense' : ''}`}
-          onClick={() => { setTab('expense'); setCategory('OTHER') }}
+          className={`tab-btn ${activeTab === 'expense' ? 'tab-btn--active-expense' : ''}`}
+          onClick={() => dispatch(setBudgetTab('expense'))}
         >
           <Wallet size={16} /> Expense Budgets
         </button>
@@ -121,12 +96,16 @@ export default function BudgetsPage() {
         {/* Form */}
         <div className="glass-card">
           <h2 className="card-title">
-            Set {tab === 'income' ? 'Income Goal' : 'Expense Budget'}
+            Set {activeTab === 'income' ? 'Income Goal' : 'Expense Budget'}
           </h2>
           <form className="form-grid" onSubmit={handleSubmit}>
             <label className="form-label">
               <span>Category</span>
-              <select className="form-input form-select" value={category} onChange={(e) => setCategory(e.target.value)}>
+              <select
+                className="form-input form-select"
+                value={formCategory}
+                onChange={(e) => dispatch(setBudgetFormCategory(e.target.value))}
+              >
                 {cats.map((c) => <option key={c} value={c}>{c}</option>)}
               </select>
             </label>
@@ -136,20 +115,24 @@ export default function BudgetsPage() {
                 className="form-input"
                 type="number"
                 placeholder="0"
-                value={amount}
-                onChange={(e) => setAmount(e.target.value)}
+                value={formAmount}
+                onChange={(e) => dispatch(setBudgetFormAmount(e.target.value))}
                 min={1}
                 required
               />
             </label>
             <label className="form-label">
               <span>Period</span>
-              <select className="form-input form-select" value={type} onChange={(e) => setType(e.target.value)}>
+              <select
+                className="form-input form-select"
+                value={formType}
+                onChange={(e) => dispatch(setBudgetFormType(e.target.value as BudgetType))}
+              >
                 {TYPES.map((t) => <option key={t} value={t}>{t}</option>)}
               </select>
             </label>
             <button
-              className={`submit-btn ${tab === 'income' ? 'submit-btn--income' : 'submit-btn--expense'}`}
+              className={`submit-btn ${activeTab === 'income' ? 'submit-btn--income' : 'submit-btn--expense'}`}
               type="submit"
               disabled={submitting}
             >
@@ -161,11 +144,13 @@ export default function BudgetsPage() {
 
         {/* List */}
         <div className="glass-card">
-          <h2 className="card-title">Active {tab === 'income' ? 'Goals' : 'Budgets'}</h2>
+          <h2 className="card-title">Active {activeTab === 'income' ? 'Goals' : 'Budgets'}</h2>
           {loading ? (
             <div className="empty-state"><div className="spinner" /></div>
           ) : list.length === 0 ? (
-            <div className="empty-state"><p>No {tab === 'income' ? 'goals' : 'budgets'} set yet.</p></div>
+            <div className="empty-state">
+              <p>No {activeTab === 'income' ? 'goals' : 'budgets'} set yet.</p>
+            </div>
           ) : (
             <div className="budget-list">
               {list.map((g) => {
@@ -181,11 +166,17 @@ export default function BudgetsPage() {
                           {g.type} · {isActive ? 'Active' : 'Inactive'}
                         </span>
                       </div>
-                      <button className="delete-btn" onClick={() => handleDelete(g.id)}><Trash2 size={14} /></button>
+                      <button
+                        className="delete-btn"
+                        onClick={() => handleDelete(g.id)}
+                        disabled={deleteIG.isPending || deleteEB.isPending}
+                      >
+                        <Trash2 size={14} />
+                      </button>
                     </div>
                     <div className="budget-progress-track">
                       <div
-                        className={`budget-progress-fill ${tab === 'income' ? 'progress--income' : 'progress--expense'}`}
+                        className={`budget-progress-fill ${activeTab === 'income' ? 'progress--income' : 'progress--expense'}`}
                         style={{ width: `${pct}%` }}
                       />
                     </div>

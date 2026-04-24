@@ -1,55 +1,29 @@
-import { useEffect, useState } from 'react'
 import { TrendingUp, TrendingDown, Wallet, Target, ArrowRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { useAppSelector } from '../store/hooks'
-import api from '../store/api'
-
-interface Summary {
-  totalIncome: number
-  totalExpense: number
-  recentIncomes: { id: number; amount: number; category: string; note?: string; date: string }[]
-  recentExpenses: { id: number; amount: number; category: string; note?: string; date: string }[]
-}
+import { useIncomes, useExpenses } from '../hooks/useTransactionQueries'
 
 export default function HomePage() {
   const { user } = useAppSelector((s) => s.auth)
   const displayName = user?.name?.trim() || user?.email?.split('@')[0] || 'User'
 
-  const [summary, setSummary] = useState<Summary>({
-    totalIncome: 0,
-    totalExpense: 0,
-    recentIncomes: [],
-    recentExpenses: [],
-  })
-  const [loading, setLoading] = useState(true)
+  // ── React Query – cached, shared fetches ─────────────────────────────────
+  const { data: incomes = [], isLoading: loadingInc } = useIncomes()
+  const { data: expenses = [], isLoading: loadingExp } = useExpenses()
 
-  useEffect(() => {
-    const fetchSummary = async () => {
-      try {
-        const [incRes, expRes] = await Promise.all([
-          api.get('/income'),
-          api.get('/expense'),
-        ])
-        const incomes: Summary['recentIncomes'] = incRes.data
-        const expenses: Summary['recentExpenses'] = expRes.data
-        const totalIncome = incomes.reduce((s, i) => s + i.amount, 0)
-        const totalExpense = expenses.reduce((s, e) => s + e.amount, 0)
-        setSummary({
-          totalIncome,
-          totalExpense,
-          recentIncomes: incomes.slice(0, 5),
-          recentExpenses: expenses.slice(0, 5),
-        })
-      } catch {
-        // silently fail
-      } finally {
-        setLoading(false)
-      }
-    }
-    fetchSummary()
-  }, [])
+  const loading = loadingInc || loadingExp
 
-  const balance = summary.totalIncome - summary.totalExpense
+  const totalIncome = incomes.reduce((s, i) => s + i.amount, 0)
+  const totalExpense = expenses.reduce((s, e) => s + e.amount, 0)
+  const balance = totalIncome - totalExpense
+
+  const recentIncomes = [...incomes]
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+    .slice(0, 5)
+
+  const recentExpenses = [...expenses]
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+    .slice(0, 5)
 
   const fmt = (n: number) =>
     new Intl.NumberFormat('en-IN', { maximumFractionDigits: 0 }).format(n)
@@ -72,17 +46,19 @@ export default function HomePage() {
         <div className="stat-card stat-card--balance">
           <div className="stat-card-label">Net Balance</div>
           <div className="stat-card-value">₹{fmt(balance)}</div>
-          <div className="stat-card-sub">{balance >= 0 ? 'You\'re on track 🎯' : 'Overspent this period'}</div>
+          <div className="stat-card-sub">
+            {balance >= 0 ? "You're on track 🎯" : 'Overspent this period'}
+          </div>
         </div>
         <div className="stat-card stat-card--income">
           <div className="stat-card-icon"><TrendingUp size={22} /></div>
           <div className="stat-card-label">Total Income</div>
-          <div className="stat-card-value">₹{fmt(summary.totalIncome)}</div>
+          <div className="stat-card-value">₹{fmt(totalIncome)}</div>
         </div>
         <div className="stat-card stat-card--expense">
           <div className="stat-card-icon"><TrendingDown size={22} /></div>
           <div className="stat-card-label">Total Expenses</div>
-          <div className="stat-card-value">₹{fmt(summary.totalExpense)}</div>
+          <div className="stat-card-value">₹{fmt(totalExpense)}</div>
         </div>
       </div>
 
@@ -120,7 +96,7 @@ export default function HomePage() {
 
         {loading ? (
           <div className="empty-state"><div className="spinner" /></div>
-        ) : summary.recentIncomes.length === 0 && summary.recentExpenses.length === 0 ? (
+        ) : recentIncomes.length === 0 && recentExpenses.length === 0 ? (
           <div className="empty-state">
             <Wallet size={40} className="empty-icon" />
             <p>No transactions yet. <Link to="/transactions">Add your first one →</Link></p>
@@ -128,8 +104,8 @@ export default function HomePage() {
         ) : (
           <div className="txn-list">
             {[
-              ...summary.recentIncomes.map((t) => ({ ...t, type: 'income' as const })),
-              ...summary.recentExpenses.map((t) => ({ ...t, type: 'expense' as const })),
+              ...recentIncomes.map((t) => ({ ...t, type: 'income' as const })),
+              ...recentExpenses.map((t) => ({ ...t, type: 'expense' as const })),
             ]
               .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
               .slice(0, 8)

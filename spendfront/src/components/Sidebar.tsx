@@ -7,8 +7,8 @@ import {
   Wallet,
   User,
   TrendingUp,
-  ChevronLeft,
-  ChevronRight,
+  PanelLeftClose,
+  PanelLeftOpen,
 } from 'lucide-react'
 import { useState } from 'react'
 
@@ -26,11 +26,25 @@ export default function Sidebar() {
 
   return (
     <aside className={`sidebar ${collapsed ? 'sidebar--collapsed' : ''}`}>
+      {/* Brand row — logo + name + collapse toggle */}
       <div className="sidebar-brand">
-        <div className="sidebar-logo">
-          <TrendingUp size={20} />
-        </div>
-        {!collapsed && <span className="sidebar-brand-name">SpendWise</span>}
+        {!collapsed && (
+          <>
+            <div className="sidebar-logo">
+              <TrendingUp size={20} />
+            </div>
+            <span className="sidebar-brand-name">SpendWise</span>
+          </>
+        )}
+
+        {/* Collapse button — centered when collapsed, right-aligned when expanded */}
+        <button
+          className={`sidebar-collapse-btn ${collapsed ? 'sidebar-collapse-btn--centered' : ''}`}
+          onClick={() => setCollapsed((c) => !c)}
+          title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+        >
+          {collapsed ? <PanelLeftOpen size={16} /> : <PanelLeftClose size={16} />}
+        </button>
       </div>
 
       <nav className="sidebar-nav">
@@ -47,14 +61,6 @@ export default function Sidebar() {
           </NavLink>
         ))}
       </nav>
-
-      <button
-        className="sidebar-collapse-btn"
-        onClick={() => setCollapsed((c) => !c)}
-        title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-      >
-        {collapsed ? <ChevronRight size={16} /> : <ChevronLeft size={16} />}
-      </button>
     </aside>
   )
 }
