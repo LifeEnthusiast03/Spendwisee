@@ -1,12 +1,13 @@
 # SpendWise
 
-A comprehensive full-stack personal finance management application that helps users track income, expenses, set financial goals, manage budgets, and save toward custom savings goals — all with real-time analytics and category-based insights.
+A comprehensive full-stack personal finance management application that helps users track income, expenses, set financial goals, manage budgets, and save toward custom savings goals — all with real-time analytics, category-based insights, and a fully cached state layer using Redux Toolkit + TanStack Query.
 
 ## 📋 Table of Contents
 
 - [Features](#-features)
 - [Tech Stack](#-tech-stack)
 - [Project Structure](#-project-structure)
+- [State Management Architecture](#-state-management-architecture)
 - [Database Schema](#-database-schema)
 - [API Endpoints](#-api-endpoints)
 - [Frontend Routes](#-frontend-routes)
@@ -82,9 +83,12 @@ A comprehensive full-stack personal finance management application that helps us
 - 💎 Premium dark navy/blue-themed dashboard with glassmorphic effects
 - 📱 Responsive multi-page architecture with collapsible sidebar navigation
 - ✨ Smooth animations, hover effects, and micro-interactions
-- 🧩 Redux Toolkit state management (`authSlice`) for auth, direct API calls for data
-- 🔄 Real-time data synchronization on authentication
+- 🧩 Full Redux Toolkit state management across all pages (4 slices)
+- ⚡ TanStack Query (React Query) for cached API calls with 5-minute stale time
+- 🗂️ Centralized TypeScript types in `src/types/types.ts`
+- 🔄 Zero duplicate network requests — shared query cache across pages
 - 📝 Inter font from Google Fonts for professional typography
+- 👤 Enhanced Profile page with financial snapshot, savings rate, and activity stats
 
 ---
 
@@ -92,13 +96,14 @@ A comprehensive full-stack personal finance management application that helps us
 
 | Layer | Technology |
 |-------|------------|
-| **Frontend** | React 19, TypeScript, Vite, React Router v6, Vanilla CSS, Redux Toolkit |
+| **Frontend** | React 19, TypeScript, Vite, React Router v7, Vanilla CSS |
 | **Backend** | Node.js, Express.js 4, TypeScript |
 | **Authentication** | Passport.js (Local Strategy + Google OAuth 2.0), express-session |
 | **Database** | PostgreSQL (via Docker) |
 | **Session Store** | Redis Stack (via Docker) |
 | **ORM** | Prisma |
-| **State Management** | Redux Toolkit (`authSlice`) |
+| **State Management** | Redux Toolkit (4 slices: auth, transaction, goal, budget) |
+| **Server State / Caching** | TanStack Query v5 (React Query) |
 | **Charts** | Recharts |
 | **HTTP Client** | Axios |
 | **Icons** | Lucide React |
@@ -126,7 +131,7 @@ Spendwisee/
 │   │   │   ├── expense_route.ts             # Expense & Expense Budget routes
 │   │   │   └── goal_route.ts                # Savings Goal routes
 │   │   ├── middleware/
-│   │   │   └── auth_middleware.ts            # isAuthenticated guard
+│   │   │   └── auth_middleware.ts           # isAuthenticated guard
 │   │   ├── lib/
 │   │   │   └── prisma.ts                    # Prisma client singleton
 │   │   ├── types/
@@ -142,29 +147,40 @@ Spendwisee/
 │   └── tsconfig.json
 ├── spendfront/
 │   ├── src/
-│   │   ├── main.tsx                         # React entry point with Redux Provider
+│   │   ├── main.tsx                         # React entry point (Redux + QueryClient + Router)
 │   │   ├── App.tsx                          # Root component with routing
 │   │   ├── App.css                          # Main application styles (Navy/Blue theme)
 │   │   ├── index.css                        # Global styles
+│   │   ├── types/
+│   │   │   └── types.ts                     # ★ Centralized shared TypeScript types
+│   │   ├── hooks/                           # ★ React Query custom hooks
+│   │   │   ├── useTransactionQueries.ts     # Income & Expense queries + mutations
+│   │   │   ├── useGoalQueries.ts            # Savings Goal queries + mutations
+│   │   │   └── useBudgetQueries.ts          # Income Goal & Expense Budget queries + mutations
+│   │   ├── lib/
+│   │   │   └── queryClient.ts               # TanStack QueryClient (5-min stale time)
 │   │   ├── components/
 │   │   │   ├── ProtectedRoute.tsx           # Auth-guard route wrapper
 │   │   │   ├── AppLayout.tsx                # Main layout wrapper (sidebar + content)
-│   │   │   └── Sidebar.tsx                  # Collapsible sidebar navigation
+│   │   │   └── Sidebar.tsx                  # Collapsible sidebar (toggle in brand header)
 │   │   ├── pages/
 │   │   │   ├── LoginPage.tsx                # Login (local + Google OAuth)
 │   │   │   ├── SignupPage.tsx               # Registration
-│   │   │   ├── HomePage.tsx                 # Dashboard overview with stats & recent txns
-│   │   │   ├── AnalyticsPage.tsx            # Analytics & insights (Recharts charts)
-│   │   │   ├── TransactionsPage.tsx         # Combined Income/Expense management
-│   │   │   ├── BudgetsPage.tsx              # Income Goals & Expense Budgets
-│   │   │   ├── GoalsPage.tsx                # Savings goals tracking
-│   │   │   └── ProfilePage.tsx              # User profile & account
+│   │   │   ├── HomePage.tsx                 # Dashboard — uses cached income/expense data
+│   │   │   ├── AnalyticsPage.tsx            # Analytics & insights — uses cached query data
+│   │   │   ├── TransactionsPage.tsx         # Income/Expense — Redux form state + RQ data
+│   │   │   ├── BudgetsPage.tsx              # Income Goals & Expense Budgets — Redux + RQ
+│   │   │   ├── GoalsPage.tsx                # Savings goals — Redux modal state + RQ data
+│   │   │   └── ProfilePage.tsx              # ★ Enhanced profile with financial snapshot
 │   │   └── store/
-│   │       ├── store.ts                     # Redux store configuration
+│   │       ├── store.ts                     # Redux store (auth + transaction + goal + budget)
 │   │       ├── hooks.ts                     # Typed useAppDispatch & useAppSelector
-│   │       ├── api.ts                       # Axios API instance (withCredentials)
+│   │       ├── api.ts                       # Axios instance (withCredentials)
 │   │       └── slices/
-│   │           └── authSlice.ts             # Auth state & thunks
+│   │           ├── authSlice.ts             # Auth state & thunks (checkAuth, logout)
+│   │           ├── transactionSlice.ts      # ★ TransactionsPage UI state (tab, form fields)
+│   │           ├── goalSlice.ts             # ★ GoalsPage UI state (form fields, money modal)
+│   │           └── budgetSlice.ts           # ★ BudgetsPage UI state (tab, form fields)
 │   ├── public/                              # Static files
 │   ├── index.html                           # HTML entry point
 │   ├── vite.config.ts
@@ -176,6 +192,43 @@ Spendwisee/
 ├── LICENSE
 └── README.md
 ```
+
+---
+
+## 🏗 State Management Architecture
+
+SpendWise uses a **two-layer state management** approach:
+
+### Layer 1 — Redux Toolkit (UI State)
+
+Manages ephemeral, client-side UI state that doesn't need to be fetched from the server.
+
+| Slice | Manages |
+|-------|---------|
+| `authSlice` | Authenticated user object, `isAuthenticated`, loading state |
+| `transactionSlice` | Active tab (income/expense), form field values in TransactionsPage |
+| `goalSlice` | Create-goal form fields, money-modal open/close state |
+| `budgetSlice` | Active tab (income/expense), form field values in BudgetsPage |
+
+### Layer 2 — TanStack Query (Server State + Caching)
+
+Manages all API data with automatic caching, deduplication, and invalidation.
+
+| Hook | Endpoint | Cache Key |
+|------|----------|-----------|
+| `useIncomes()` | `GET /income` | `['incomes']` |
+| `useIncomeTotals()` | `GET /income/total` | `['income-totals']` |
+| `useExpenses()` | `GET /expense` | `['expenses']` |
+| `useExpenseTotals()` | `GET /expense/total` | `['expense-totals']` |
+| `useGoals()` | `GET /goal` | `['goals']` |
+| `useIncomeGoals()` | `GET /incomegoal` | `['income-goals']` |
+| `useExpenseBudgets()` | `GET /expensebudget` | `['expense-budgets']` |
+
+**Key behaviors:**
+- **5-minute cache** — navigating between pages re-uses cached data, no repeat requests
+- **Shared cache** — `HomePage` and `AnalyticsPage` both use `['incomes']`/`['expenses']`, so visiting one page pre-populates the other
+- **Auto-invalidation** — every mutation (`add`/`delete`) calls `queryClient.invalidateQueries()` on affected keys, triggering a background refetch
+- **All types centralized** — `src/types/types.ts` is the single source of truth for `IncomeRecord`, `ExpenseRecord`, `Goal`, `IncomeGoal`, `ExpenseBudget`, `CategoryTotals`, `BudgetType`, `UserProfile`, `CategoryData`
 
 ---
 
@@ -297,7 +350,7 @@ Base URL: `http://localhost:3000`
 |--------|----------|-------------|
 | `GET` | `/income` | Get all user income entries |
 | `POST` | `/addincome` | Add new income entry (auto-updates matching active income goals) |
-| `DELETE` | `/income/:incomeid` | Delete income entry (balance-validated against expenses + goal commitments) |
+| `DELETE` | `/income/:incomeid` | Delete income entry |
 | `GET` | `/income/total` | Get category-wise income totals `{ CATEGORY: amount }` |
 | `GET` | `/income/catagory` | Get income filtered by category (query: `?catagory=SALARY`) |
 
@@ -362,10 +415,11 @@ Base URL: `http://localhost:5173`
 | `/transactions` | Income & Expense unified view | Protected |
 | `/budgets` | Income Goals & Expense Budgets | Protected |
 | `/goals` | Savings goals management | Protected |
-| `/profile` | User profile & account | Protected |
+| `/profile` | Enhanced profile with financial snapshot | Protected |
 | `*` | Redirects to `/home` | — |
 
 **Sidebar Navigation** includes: Dashboard, Analytics, Transactions, Budgets, Goals, Profile.
+The sidebar collapse toggle is located in the brand header row (top-left), next to the SpendWise logo.
 
 ---
 
@@ -541,8 +595,11 @@ npx prisma studio
 2. Create a migration — `npx prisma migrate dev --name feature_name`
 3. Add controller logic in `backend/src/controllers/`
 4. Register routes in `backend/src/routes/`
-5. Build pages/components in `spendfront/src/pages/` or `spendfront/src/components/`
-6. Update the Redux store in `spendfront/src/store/store.ts`
+5. **Add shared types** to `spendfront/src/types/types.ts`
+6. **Create React Query hooks** in `spendfront/src/hooks/`
+7. **Add a Redux slice** for UI state in `spendfront/src/store/slices/` (if needed)
+8. Register the new reducer in `spendfront/src/store/store.ts`
+9. Build pages/components in `spendfront/src/pages/` or `spendfront/src/components/`
 
 ---
 
@@ -558,7 +615,7 @@ The `spendfront/vercel.json` is pre-configured for SPA routing:
 }
 ```
 
-Simply connect the `spendfront` directory to a Vercel project and deploy.
+Simply connect the `spendfront` directory to a Vercel project and set the `VITE_API_URL` environment variable in Vercel's project settings.
 
 ### Backend (Docker)
 
@@ -583,6 +640,7 @@ docker compose up -d
 - [ ] Configure proper database backups
 - [ ] Set up monitoring and logging
 - [ ] Use environment variables for all secrets
+- [ ] Set `VITE_API_URL` to production backend URL in Vercel environment settings
 - [ ] Test authentication flows in staging before going live
 
 ---
@@ -605,8 +663,14 @@ Error: connect ECONNREFUSED 127.0.0.1:5432
 - Clear browser cookies (DevTools → Application → Cookies → Clear localhost)
 - Check browser allows third-party cookies
 - Verify `FRONTEND_URL` in backend `.env` matches actual frontend URL
-- Ensure `credentials: 'include'` is set on API requests
+- Ensure `credentials: 'include'` is set on API requests (handled by `store/api.ts`)
 - Session cookie name is `connect.sid` (maxAge: 24 hours)
+
+### React Query Cache Issues
+- Open DevTools Network tab and check if the same endpoint is being called multiple times
+- The `queryClient` in `src/lib/queryClient.ts` has a 5-minute `staleTime`
+- After a mutation, the cache is automatically invalidated via `queryClient.invalidateQueries()`
+- To force a fresh fetch, you can call `queryClient.resetQueries()` from DevTools console
 
 ### Google OAuth Not Working
 - Verify Google OAuth credentials are valid in Google Cloud Console
@@ -639,6 +703,12 @@ npm install
 npm run build
 ```
 
+### TypeScript Type Errors on Import
+All shared types live in `spendfront/src/types/types.ts`. If you see a `Module has no exported member` error, check that:
+1. The type is defined and **exported** from `types/types.ts`
+2. The importing file uses `import type { ... } from '../types/types'`
+3. No file is re-importing a type from a slice file (slices only export actions/reducers)
+
 ---
 
 ## 🤝 Contributing
@@ -651,7 +721,11 @@ Contributions are welcome! Please follow these steps:
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
-Please ensure TypeScript compilation succeeds and follow the existing code structure.
+Please ensure:
+- TypeScript compilation succeeds (`npx tsc --noEmit`)
+- New types are added to `spendfront/src/types/types.ts`
+- New API calls use React Query hooks in `spendfront/src/hooks/`
+- New UI-only state goes into a Redux slice
 
 ---
 
@@ -670,7 +744,7 @@ This project is licensed under the MIT License — see the [LICENSE](LICENSE) fi
 - Multi-currency support
 - Recurring income/expense automation
 - Bill reminders and scheduling
-- Advanced filtering and search
+- Advanced filtering and search by date range and category
 - Mobile app (React Native)
-- Date-range filtering on Analytics page
 - API rate limiting for production
+- Dark/light theme toggle
