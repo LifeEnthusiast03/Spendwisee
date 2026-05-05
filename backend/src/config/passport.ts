@@ -4,6 +4,7 @@ import {Strategy as LocalStrategy,IVerifyOptions} from "passport-local"
 import bcrypt from "bcrypt"
 import { IUser } from "../types/type.js";
 import {prisma} from "../lib/prisma.js"
+import { sendWelcomeEmail, sendLoginEmail } from "../email/emailService.js"
 
 passport.serializeUser((user:IUser,done)=>{
         done(null, (user as IUser).id)
@@ -35,6 +36,8 @@ passport.use(
           where:{googleId : profile.id}
         })
         if(user){
+          // Returning Google user — send login notification
+          sendLoginEmail(user.name ?? user.email, user.email, "Google")
           return done(null, user)
         }
         const email = profile.emails?.[0].value ?? ""
@@ -45,6 +48,8 @@ passport.use(
             where: { email },
             data: { googleId: profile.id }
           })
+          // Linked existing account with Google — send login notification
+          sendLoginEmail(user.name ?? user.email, user.email, "Google")
           return done(null, user)
         }
 
@@ -55,6 +60,9 @@ passport.use(
             name: profile.displayName,
           }
         })
+        // Brand-new Google user — send welcome + login notification
+        sendWelcomeEmail(newUser.name ?? newUser.email, newUser.email)
+        sendLoginEmail(newUser.name ?? newUser.email, newUser.email, "Google")
         return done(null, newUser)
       }
       catch(err){

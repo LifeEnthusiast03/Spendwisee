@@ -3,7 +3,7 @@ import passport from "passport";
 import bcrypt from "bcrypt"
 import type { IVerifyOptions } from "passport-local";
 import {prisma} from "../lib/prisma.js"
-import { sendWelcomeEmail } from "../email/emailService.js"
+import { sendWelcomeEmail, sendLoginEmail } from "../email/emailService.js"
 
 
 const router = Router()
@@ -54,6 +54,9 @@ router.post("/auth/login", (req: Request, res: Response, next) => {
           console.log("[login] session error:", loginError)
           return next(loginError)
         }
+        // Fire-and-forget: send login notification email
+        const loggedUser = user as { name?: string | null; email: string }
+        sendLoginEmail(loggedUser.name ?? loggedUser.email, loggedUser.email, "Password")
         console.log("[login] success, redirecting to dashboard")
         res.redirect(`http://localhost:5173/home`)
       })
