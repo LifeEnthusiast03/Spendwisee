@@ -31,6 +31,9 @@ A comprehensive full-stack personal finance management application that helps us
 - ✅ Redis-backed session storage for scalability
 - ✅ Secure logout with session destruction and cookie clearing
 - ✅ Protected routes with authentication middleware
+- ✅ Transactional email notifications via Nodemailer + Gmail OAuth2:
+  - 🎉 Welcome email on registration (local) and first-time Google sign-up
+  - 🔒 Login notification email on every successful sign-in (local password & Google OAuth)
 
 ### Financial Tracking
 - 💰 **Income Management**
@@ -102,6 +105,7 @@ A comprehensive full-stack personal finance management application that helps us
 | **Database** | PostgreSQL (via Docker) |
 | **Session Store** | Redis Stack (via Docker) |
 | **ORM** | Prisma |
+| **Email Service** | Nodemailer + Gmail OAuth2 (welcome & login notifications) |
 | **State Management** | Redux Toolkit (4 slices: auth, transaction, goal, budget) |
 | **Server State / Caching** | TanStack Query v5 (React Query) |
 | **Charts** | Recharts |
@@ -130,6 +134,12 @@ Spendwisee/
 │   │   │   ├── income_route.ts              # Income & Income Goal routes
 │   │   │   ├── expense_route.ts             # Expense & Expense Budget routes
 │   │   │   └── goal_route.ts                # Savings Goal routes
+│   │   ├── email/                           # ★ Email notification service
+│   │   │   ├── transporter.ts               # Nodemailer + Gmail OAuth2 transport
+│   │   │   ├── emailService.ts              # sendWelcomeEmail() & sendLoginEmail()
+│   │   │   └── templates/
+│   │   │       ├── welcome.ts               # Welcome email HTML template
+│   │   │       └── login.ts                 # Login notification HTML template
 │   │   ├── middleware/
 │   │   │   └── auth_middleware.ts           # isAuthenticated guard
 │   │   ├── lib/
@@ -489,7 +499,15 @@ PORT="3000"
 
 # Redis (optional — defaults to redis://localhost:6379)
 REDIS_URL="redis://localhost:6379"
+
+# Email Service (Nodemailer + Gmail OAuth2)
+GMAIL_USER="your-gmail-address@gmail.com"
+GMAIL_CLIENT_ID="your-gmail-oauth-client-id"
+GMAIL_CLIENT_SECRET="your-gmail-oauth-client-secret"
+GMAIL_REFRESH_TOKEN="your-gmail-oauth-refresh-token"
 ```
+
+> 💡 **Gmail OAuth2 setup:** Go to Google Cloud Console → Credentials → OAuth 2.0 → generate a refresh token with `https://mail.google.com/` scope. The email service uses this to send transactional emails without storing a plaintext password.
 
 ### Frontend (`spendfront/.env`)
 ```env
@@ -676,6 +694,16 @@ Error: connect ECONNREFUSED 127.0.0.1:5432
 - Verify Google OAuth credentials are valid in Google Cloud Console
 - Ensure redirect URI matches: `http://localhost:3000/auth/google/callback`
 - For production, add the production URL to Google Console
+
+### Email Notifications Not Sending
+```
+Error: Invalid login / authentication failed
+```
+- Verify all four `GMAIL_*` variables are set correctly in `backend/.env`
+- Ensure the Gmail OAuth2 refresh token has the `https://mail.google.com/` scope
+- Confirm the refresh token hasn't expired — regenerate from Google OAuth Playground if needed
+- Email failures are non-blocking; check backend console for `[EmailService]` log lines
+- Login/registration will still succeed even if the email fails
 
 ### Prisma Migration Issues
 ```bash
