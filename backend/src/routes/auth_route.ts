@@ -3,6 +3,7 @@ import passport from "passport";
 import bcrypt from "bcrypt"
 import type { IVerifyOptions } from "passport-local";
 import {prisma} from "../lib/prisma.js"
+import { sendWelcomeEmail } from "../email/emailService.js"
 
 
 const router = Router()
@@ -22,6 +23,9 @@ router.post("/auth/register", async (req: Request, res: Response) => {
     const user = await prisma.user.create({
       data: { email, name, password: hashedPassword }
     })
+
+    // Fire-and-forget: send welcome email without blocking the response
+    sendWelcomeEmail(user.name ?? name, user.email)
 
     res.status(201).json({ message: "Registered successfully" })
 
