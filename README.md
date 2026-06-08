@@ -70,17 +70,36 @@ A comprehensive full-stack personal finance management application that helps us
   - Goal progress tracking (totalMoney vs. target amount)
 
 ### Analytics & Insights
-- 📈 **Dashboard Analytics**
+- 📈 **Professional Financial Dashboard** (Stripe / Linear inspired)
+  - Sticky frosted-glass page header with date-range filter (This Month / Last 3 / Last 6 / All Time)
+  - 4 structured KPI cards — Total Income, Total Expenses, Net Savings, Savings Rate
+    - Each card: label + icon, large tabular-nums value, change-vs-prev-month badge pill, colored bottom accent
+    - Savings Rate card: inline SVG half-arc radial progress indicator (green / amber / red)
   - Real-time category-wise income and expense totals
-  - Income vs. expense comparison
   - Net savings and balance overview
-  - Monthly income vs expense trend (last 6 months)
 
 - 📊 **Visual Reports (Recharts)**
-  - Interactive donut/pie charts for income & expense by category
-  - Monthly bar charts for income vs. expense trend
+  - `ComposedChart` — Income & Expense bars with a Net Savings line overlay (amber) and zero reference line
+  - Interactive donut charts with total amount shown in the center hole (no overlapping slice labels)
+  - 2-column pie legends with color dot, name, amount, and mini percentage bar per category
   - Horizontal bar charts for category breakdown
-  - Custom tooltips and legends
+  - Animated shimmer skeleton loaders while data fetches
+  - Fade + slide-up entrance animation on all chart cards (staggered delays)
+  - Icon + title + subtitle empty states
+
+### AI Chat Assistant
+- 🤖 **SpendWise AI — Floating Chat Widget**
+  - Fixed bottom-right trigger button with animated pulse ring and `AI` badge
+  - 380 × 520 px glassmorphism chat panel with smooth scale + opacity open/close transition
+  - Gradient header with Bot icon, title, subtitle, and minimize button
+  - User bubbles (right, accent blue) and bot bubbles (left, glass card style) with timestamps
+  - Three-dot bounce typing indicator while bot is processing
+  - Welcome message shown automatically on first open
+  - Enter key submits; input disabled while bot is thinking
+  - Auto-scrolls to the latest message on every update
+  - Keyword-matched mock responses for income, expenses, budgets, goals, savings, and greetings
+  - Mobile responsive — full-width panel on screens < 480 px
+  - Appears on every authenticated page via `AppLayout`
 
 ### User Interface
 - 💎 Premium dark navy/blue-themed dashboard with glassmorphic effects
@@ -171,13 +190,15 @@ Spendwisee/
 │   │   │   └── queryClient.ts               # TanStack QueryClient (5-min stale time)
 │   │   ├── components/
 │   │   │   ├── ProtectedRoute.tsx           # Auth-guard route wrapper
-│   │   │   ├── AppLayout.tsx                # Main layout wrapper (sidebar + content)
-│   │   │   └── Sidebar.tsx                  # Collapsible sidebar (toggle in brand header)
+│   │   │   ├── AppLayout.tsx                # Main layout wrapper (sidebar + content + ChatBot)
+│   │   │   ├── Sidebar.tsx                  # Collapsible sidebar (toggle in brand header)
+│   │   │   ├── ChatBot.tsx                  # ★ Floating AI chat widget (mock responses)
+│   │   │   └── ChatBot.css                  # ★ Scoped chatbot styles (.cb-* prefix)
 │   │   ├── pages/
 │   │   │   ├── LoginPage.tsx                # Login (local + Google OAuth)
 │   │   │   ├── SignupPage.tsx               # Registration
 │   │   │   ├── HomePage.tsx                 # Dashboard — uses cached income/expense data
-│   │   │   ├── AnalyticsPage.tsx            # Analytics & insights — uses cached query data
+│   │   │   ├── AnalyticsPage.tsx            # ★ Redesigned financial dashboard — KPI cards, ComposedChart, donut center, skeleton loaders
 │   │   │   ├── TransactionsPage.tsx         # Income/Expense — Redux form state + RQ data
 │   │   │   ├── BudgetsPage.tsx              # Income Goals & Expense Budgets — Redux + RQ
 │   │   │   ├── GoalsPage.tsx                # Savings goals — Redux modal state + RQ data
@@ -767,12 +788,13 @@ This project is licensed under the MIT License — see the [LICENSE](LICENSE) fi
 
 ## 🌟 Future Enhancements
 
-- Real-time notifications for budget alerts
-- Export financial reports (PDF/CSV)
-- Multi-currency support
-- Recurring income/expense automation
-- Bill reminders and scheduling
-- Advanced filtering and search by date range and category
-- Mobile app (React Native)
-- API rate limiting for production
-- Dark/light theme toggle
+- 🔗 **SpendWise AI backend** — connect the chat widget to a real LLM (Gemini / OpenAI) for personalized financial insights
+- 📬 Real-time notifications for budget alerts
+- 📤 Export financial reports (PDF/CSV)
+- 💱 Multi-currency support
+- 🔁 Recurring income/expense automation
+- ⏰ Bill reminders and scheduling
+- 🔍 Advanced filtering and search by date range and category
+- 📱 Mobile app (React Native)
+- 🛡️ API rate limiting for production
+- 🌗 Dark/light theme toggle
