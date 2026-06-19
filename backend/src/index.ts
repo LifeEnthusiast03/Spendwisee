@@ -5,10 +5,13 @@ import session from "express-session";
 import { RedisStore } from "connect-redis";
 import { createClient } from "redis";
 import passport from "./config/passport.js";
+import { prisma } from "./lib/prisma.js";
 import authrouter  from "./routes/auth_route.js";
 import incomerouter  from "./routes/income_route.js"
 import expenserouter  from "./routes/expense_route.js";
 import goalrouter from "./routes/goal_route.js";
+import chatrouter from "./routes/chat_route.js";
+
 const app:Application = express();
 const PORT = 3000;
 const REDIS_URL = process.env.REDIS_URL ?? "redis://localhost:6379";
@@ -51,15 +54,23 @@ app.use(authrouter);
 app.use(incomerouter);
 app.use(expenserouter);
 app.use(goalrouter);
-
+app.use(chatrouter)
 const startServer = async () => {
+  // Check Redis connection
   await redisClient.connect();
+  console.log("✅ Redis connected successfully");
+
+  // Check Database connection
+  await prisma.$connect();
+  console.log("✅ Database connected successfully");
+
   app.listen(PORT, () => {
     console.log(`🚀 Server running on http://localhost:${PORT}`);
   });
 };
 
 startServer().catch((error) => {
-  console.error("Failed to start server:", error);
+  console.error("❌ Failed to start server:", error);
+  prisma.$disconnect();
   process.exit(1);
 });

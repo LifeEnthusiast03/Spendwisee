@@ -1,0 +1,52 @@
+# ─── Stage 1: Builder ────────────────────────────────────────────────────────
+FROM node:20-alpine AS builder
+
+WORKDIR /app
+
+# Install all deps (including devDependencies needed for tsc + prisma generate)
+COPY package*.json ./
+RUN npm ci
+
+# Copy source & config
+COPY tsconfig.json ./
+COPY prisma.config.ts ./
+COPY prisma ./prisma
+COPY src ./src
+
+# Generate Prisma client into ./generated/prisma
+RUN npx prisma generate
+
+# Compile TypeScript → dist/
+RUN npm run build
+
+# ─── Stage 2: Production ─────────────────────────────────────────────────────
+FROM node:20-alpine AS production
+
+WORKDIR /app
+
+ENV NODE_ENV=production
+
+# Install only production dependencies
+COPY package*.json ./
+RUN npm ci --omit=dev
+
+# Copy compiled JS from builder
+COPY --from=builder /app/dist ./dist
+
+# Copy generated Prisma client from builder
+COPY --from=builder /app/generated ./generated
+
+# Copy prisma CLI from builder (needed for migrate deploy at startup)
+COPY --from=builder /app/node_modules/.bin/prisma ./node_modules/.bin/prisma
+COPY --from=builder /app/node_modules/prisma ./node_modules/prisma
+
+# Copy prisma schema + migrations
+COPY prisma ./prisma
+
+# Copy & prepare entrypoint
+COPY entrypoint.sh ./entrypoint.sh
+RUN chmod +x ./entrypoint.sh
+
+EXPOSE 3000
+
+CMD ["./entrypoint.sh"]
