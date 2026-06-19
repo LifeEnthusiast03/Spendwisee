@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { MessageCircle, Minimize2, Send, Bot } from 'lucide-react'
+import api from '../store/api'
 import './ChatBot.css'
 
 /* ─────────────────────────────────────────────────────── */
@@ -15,36 +16,16 @@ interface ChatMessage {
 }
 
 /* ─────────────────────────────────────────────────────── */
-/* Mock bot logic                                           */
+/* Real API call to backend chat route                      */
 /* ─────────────────────────────────────────────────────── */
-function getBotResponse(message: string): Promise<string> {
-  const lower = message.toLowerCase()
-  let reply: string
-
-  if (/income/.test(lower)) {
-    reply =
-      'Your income breakdown is available on the Analytics page. You can track category-wise income using the Income by Category chart.'
-  } else if (/expense/.test(lower)) {
-    reply =
-      'Head over to Analytics to see your Expense Breakdown. Want tips on reducing a specific category?'
-  } else if (/budget/.test(lower)) {
-    reply =
-      "You can set and manage budgets on the Budgets page. I'll soon be able to alert you when you're close to a limit!"
-  } else if (/goal/.test(lower)) {
-    reply =
-      'Goals page lets you track savings targets. Keep adding income to stay on track!'
-  } else if (/balance|savings/.test(lower)) {
-    reply =
-      'Your net savings = Total Income − Total Expenses. Check the Analytics page for a real-time view.'
-  } else if (/hello|hi|hey/.test(lower)) {
-    reply =
-      "Hi there! 👋 I'm your SpendWise assistant. Ask me about your income, expenses, budgets, or goals."
-  } else {
-    reply =
-      "I'm still learning! Once the backend is ready, I'll give you personalized insights. For now, explore the Analytics page for a full overview."
+async function getBotResponse(message: string): Promise<string> {
+  try {
+    const { data } = await api.post<{ result: string }>('/chat', { query: message })
+    return data.result
+  } catch (err: unknown) {
+    console.error('[ChatBot] API error:', err)
+    return "Sorry, I couldn't reach the server. Please try again in a moment. 🙁"
   }
-
-  return new Promise((resolve) => setTimeout(() => resolve(reply), 800))
 }
 
 /* ─────────────────────────────────────────────────────── */
