@@ -8,6 +8,7 @@
     "start": "node dist/index.js"
   },
   "dependencies": {
+    "@openai/agents": "^0.11.8",
     "@prisma/adapter-pg": "^7.4.2",
     "@prisma/client": "^7.5.0",
     "@types/cors": "^2.8.19",
@@ -18,12 +19,13 @@
     "dotenv": "^17.3.1",
     "express": "^4.22.1",
     "express-session": "^1.19.0",
-    "nodemailer": "^8.0.7",
+    "nodemailer": "^9.0.1",
     "passport": "^0.7.0",
     "passport-google-oauth20": "^2.0.0",
     "passport-local": "^1.0.0",
     "pg": "^8.19.0",
-    "redis": "^5.11.0"
+    "redis": "^5.11.0",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@types/bcrypt": "^6.0.0",
@@ -35,7 +37,7 @@
     "@types/passport-local": "^1.0.38",
     "@types/pg": "^8.18.0",
     "nodemon": "^3.1.14",
-    "prisma": "^7.4.2",
+    "prisma": "^6.19.3",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.3"
   }
