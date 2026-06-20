@@ -1,73 +1,218 @@
-# React + TypeScript + Vite
+# SpendWise — Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+> **React 19 · TypeScript · Vite · Tailwind CSS 4 · Redux Toolkit · React Query · Recharts**
 
-Currently, two official plugins are available:
+SpendWise is a personal finance management web application. The frontend delivers a rich, responsive dashboard where users can track income and expenses, manage savings goals and budgets, view detailed analytics, and chat with an AI-powered financial assistant.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+## Table of Contents
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+- [Project Structure](#project-structure)
+- [Pages & Routes](#pages--routes)
+- [State Management](#state-management)
+- [Getting Started](#getting-started)
+- [Environment & Configuration](#environment--configuration)
+- [Build & Deployment](#build--deployment)
+- [Scripts](#scripts)
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Features
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- **Authentication** — Login and registration forms with Google OAuth support; protected routes with automatic session checks
+- **Dashboard (Home)** — At-a-glance overview of income, expenses, balance, and recent activity
+- **Transactions Page** — View, filter, and manage all income and expense records
+- **Analytics Page** — Rich charts (bar, line, pie) for spending patterns, income vs expense breakdowns, category-level analysis, and budget utilisation
+- **Budgets Page** — Create and track expense budgets (weekly/monthly/yearly) with visual progress indicators
+- **Goals Page** — Create and monitor savings goals and income goals with progress bars and deadline tracking
+- **AI Chat Assistant** — Conversational interface backed by the backend's multi-agent AI system; renders structured response cards (success, error, info, list, advice)
+- **Profile Page** — View and update user profile information
+- **Dark-themed, premium UI** — Custom design system with glassmorphism, smooth animations, and a consistent sidebar navigation
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+---
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Tech Stack
+
+| Layer | Technology |
+|---|---|
+| Framework | React 19 |
+| Language | TypeScript ~6 |
+| Bundler | Vite 8 |
+| Styling | Tailwind CSS 4 (`@tailwindcss/vite` plugin) |
+| Global State | Redux Toolkit 2 + `react-redux` |
+| Server State | TanStack React Query 5 |
+| HTTP Client | Axios |
+| Charts | Recharts 3 |
+| Routing | React Router DOM 7 |
+| Icons | Lucide React |
+| Notifications | React Hot Toast |
+| Linting | ESLint 9 + TypeScript ESLint |
+
+---
+
+## Project Structure
+
+```
+spendfront/
+├── public/                          # Static assets
+├── src/
+│   ├── main.tsx                     # App entry: Redux Provider, Router, React Query client
+│   ├── App.tsx                      # Route definitions + auth check on mount
+│   ├── App.css                      # Global styles & design system tokens
+│   ├── index.css                    # Base resets
+│   │
+│   ├── components/
+│   │   ├── AppLayout.tsx            # Sidebar + main content wrapper
+│   │   ├── Sidebar.tsx              # Navigation sidebar with all routes
+│   │   └── ProtectedRoute.tsx       # Auth guard — redirects to /login if unauthenticated
+│   │
+│   ├── pages/
+│   │   ├── HomePage.tsx             # Dashboard overview
+│   │   ├── TransactionsPage.tsx     # Income & expense history
+│   │   ├── AnalyticsPage.tsx        # Charts and financial insights
+│   │   ├── BudgetsPage.tsx          # Expense budget management
+│   │   ├── GoalsPage.tsx            # Savings goals & income goals
+│   │   ├── ChatPage.tsx             # AI financial assistant chat UI
+│   │   ├── ProfilePage.tsx          # User profile management
+│   │   ├── LoginPage.tsx            # Login form
+│   │   └── SignupPage.tsx           # Registration form
+│   │
+│   ├── store/
+│   │   ├── store.ts                 # Redux store configuration
+│   │   ├── hooks.ts                 # Typed useAppDispatch / useAppSelector
+│   │   ├── api.ts                   # Axios instance with base URL + credentials
+│   │   └── slices/
+│   │       ├── authSlice.ts         # Auth state (user, isAuthenticated, loading)
+│   │       ├── transactionSlice.ts  # Income/expense local state
+│   │       ├── budgetSlice.ts       # Budget local state
+│   │       └── goalSlice.ts         # Goal local state
+│   │
+│   ├── hooks/                       # Custom React hooks
+│   ├── lib/                         # Shared utilities / helpers
+│   ├── types/                       # Shared TypeScript types
+│   └── assets/                      # Images and static files
+│
+├── index.html                       # HTML entry with meta tags
+├── vite.config.ts                   # Vite configuration
+├── tailwind.config.ts               # Tailwind CSS configuration
+├── tsconfig.app.json                # TypeScript config for app code
+├── vercel.json                      # Vercel deployment config (SPA rewrites)
+└── package.json
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+---
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Pages & Routes
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+| Path | Page | Auth Required |
+|---|---|---|
+| `/home` | Dashboard overview | ✅ |
+| `/transactions` | Income & expense history | ✅ |
+| `/analytics` | Charts and insights | ✅ |
+| `/budgets` | Budget management | ✅ |
+| `/goals` | Savings & income goals | ✅ |
+| `/chat` | AI assistant chat | ✅ |
+| `/profile` | User profile | ✅ |
+| `/login` | Login form | ❌ |
+| `/signup` | Registration form | ❌ |
+| `/*` | → redirects to `/home` | — |
+
+All protected routes are wrapped in `<ProtectedRoute>` which reads authentication state from Redux and redirects to `/login` if unauthenticated.
+
+---
+
+## State Management
+
+### Redux Toolkit (Global UI State)
+
+| Slice | Responsibility |
+|---|---|
+| `authSlice` | Current user object, `isAuthenticated`, loading state; dispatches `checkAuth()` on app load |
+| `transactionSlice` | Cached income/expense records |
+| `budgetSlice` | Cached budget records |
+| `goalSlice` | Cached savings and income goal records |
+
+### TanStack React Query (Server State)
+
+Used for data fetching, caching, and invalidation of server-side data (e.g., income lists, expense summaries, analytics data). React Query handles loading/error states and background refetching.
+
+### Axios Instance (`store/api.ts`)
+
+Pre-configured with:
+- Base URL pointing to the backend (`http://localhost:3000` in development)
+- `withCredentials: true` to send session cookies automatically
+
+---
+
+## Getting Started
+
+### Prerequisites
+- Node.js 20+
+- The SpendWise backend running on port `3000`
+
+### 1. Install Dependencies
+
+```bash
+cd spendfront
+npm install
 ```
+
+### 2. Start Development Server
+
+```bash
+npm run dev
+```
+
+App runs at **http://localhost:5173**
+
+> Make sure the backend is running at `http://localhost:3000` before using any authenticated features.
+
+---
+
+## Environment & Configuration
+
+The Axios base URL is configured in `src/store/api.ts`. To point at a different backend URL, update that file or use an environment variable pattern with `import.meta.env`.
+
+For production, the `vercel.json` rewrites all routes to `index.html` so React Router handles client-side navigation correctly:
+
+```json
+{
+  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+}
+```
+
+---
+
+## Build & Deployment
+
+### Production Build
+
+```bash
+npm run build
+```
+
+Output is placed in the `dist/` directory — ready to be deployed to any static host (Vercel, Netlify, etc.).
+
+### Preview Production Build Locally
+
+```bash
+npm run preview
+```
+
+### Deploy to Vercel
+
+The `vercel.json` is pre-configured. Simply connect the repository to Vercel and set the root directory to `spendfront/`. Vercel will detect Vite and run the build automatically.
+
+---
+
+## Scripts
+
+| Script | Command | Description |
+|---|---|---|
+| `dev` | `vite` | Start development server with HMR |
+| `build` | `tsc -b && vite build` | Type-check and build for production |
+| `preview` | `vite preview` | Preview the production build locally |
+| `lint` | `eslint .` | Run ESLint across the project |
