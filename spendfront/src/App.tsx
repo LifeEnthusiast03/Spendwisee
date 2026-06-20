@@ -16,6 +16,7 @@ import TransactionsPage from './pages/TransactionsPage'
 import BudgetsPage from './pages/BudgetsPage'
 import GoalsPage from './pages/GoalsPage'
 import ProfilePage from './pages/ProfilePage'
+import ChatPage from './pages/ChatPage'
 
 function App() {
   const dispatch = useAppDispatch()
@@ -39,6 +40,7 @@ function App() {
       <Route path="/budgets" element={withLayout(<BudgetsPage />)} />
       <Route path="/goals" element={withLayout(<GoalsPage />)} />
       <Route path="/profile" element={withLayout(<ProfilePage />)} />
+      <Route path="/chat" element={withLayout(<ChatPage />)} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/signup" element={<SignupPage />} />
       <Route path="*" element={<Navigate replace to="/home" />} />

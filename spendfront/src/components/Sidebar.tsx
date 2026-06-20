@@ -9,6 +9,7 @@ import {
   TrendingUp,
   PanelLeftClose,
   PanelLeftOpen,
+  MessageSquare,
 } from 'lucide-react'
 import { useState } from 'react'
 
@@ -18,6 +19,7 @@ const NAV_ITEMS = [
   { to: '/transactions', icon: ArrowLeftRight, label: 'Transactions' },
   { to: '/budgets', icon: Wallet, label: 'Budgets' },
   { to: '/goals', icon: Target, label: 'Goals' },
+  { to: '/chat', icon: MessageSquare, label: 'AI Chat' },
   { to: '/profile', icon: User, label: 'Profile' },
 ]
 
