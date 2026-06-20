@@ -23,6 +23,47 @@ export type ExpenseCategory =
   | "BILLS"
   | "OTHER"
 
+export type GoalPeriodType = "WEEKLY" | "MONTHLY" | "YEARLY"
+
+export interface IExpenseBudget {
+  id?: number
+  amount: number
+  category: ExpenseCategory
+  type: GoalPeriodType
+  fulfilledAmount?: number
+  periodStart?: Date
+  periodEnd?: Date
+  createdAt?: Date
+  updatedAt?: Date
+  userId: number
+}
+
+export interface IIncomeGoal {
+  id?: number
+  amount: number
+  category: IncomeCategory
+  type: GoalPeriodType
+  fulfilledAmount?: number
+  periodStart?: Date
+  periodEnd?: Date
+  createdAt?: Date
+  updatedAt?: Date
+  userId: number
+}
+
+export interface IGoal {
+  id?: number
+  name: string
+  amount: number
+  totalMoney?: number
+  startdate: Date
+  enddate: Date
+  isActive?: boolean
+  createdAt?: Date
+  updatedAt?: Date
+  userId: number
+}
+
 export interface IIncome {
   id?: number
   amount: number
