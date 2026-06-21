@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { Send, Bot, Sparkles, CheckCircle2, AlertCircle, Info, Lightbulb, List } from 'lucide-react'
+import { Send, Bot, Sparkles, CheckCircle2, AlertCircle, Info, Lightbulb, List, Trash2 } from 'lucide-react'
 import api from '../store/api'
 
 /* ─────────────────────────────────────────────────────── */
@@ -55,6 +55,8 @@ const SUGGESTIONS = [
   'What are my biggest expenses?',
   'Give me saving tips',
 ]
+
+let persistentMessages: ChatMessage[] = [WELCOME]
 
 /* ─────────────────────────────────────────────────────── */
 /* Typing indicator                                         */
@@ -126,9 +128,21 @@ const AgentResponseCard = ({ response }: { response: AgentResponse }) => {
 /* Main page                                               */
 /* ─────────────────────────────────────────────────────── */
 export default function ChatPage() {
-  const [messages, setMessages] = useState<ChatMessage[]>([WELCOME])
+  const [messages, setMessagesState] = useState<ChatMessage[]>(persistentMessages)
   const [input, setInput] = useState('')
   const [thinking, setThinking] = useState(false)
+
+  const setMessages = (action: React.SetStateAction<ChatMessage[]>) => {
+    setMessagesState(prev => {
+      const next = typeof action === 'function' ? action(prev) : action
+      persistentMessages = next
+      return next
+    })
+  }
+
+  const clearChat = () => {
+    setMessages([WELCOME])
+  }
 
   const bottomRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
@@ -193,9 +207,35 @@ export default function ChatPage() {
             <p className="cp-page-subtitle">Your intelligent financial assistant</p>
           </div>
         </div>
-        <div className="cp-status-badge">
-          <span className="cp-status-dot" />
-          Online
+        <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+          {messages.length > 1 && (
+            <button 
+              onClick={clearChat}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px',
+                background: 'transparent',
+                border: 'none',
+                color: '#6b7280',
+                cursor: 'pointer',
+                fontSize: '0.9rem',
+                padding: '6px 10px',
+                borderRadius: '6px',
+                transition: 'all 0.2s ease'
+              }}
+              onMouseOver={(e) => { e.currentTarget.style.color = '#ef4444'; e.currentTarget.style.background = 'rgba(239, 68, 68, 0.1)' }}
+              onMouseOut={(e) => { e.currentTarget.style.color = '#6b7280'; e.currentTarget.style.background = 'transparent' }}
+              title="Clear chat history"
+            >
+              <Trash2 size={16} />
+              Clear
+            </button>
+          )}
+          <div className="cp-status-badge">
+            <span className="cp-status-dot" />
+            Online
+          </div>
         </div>
       </div>
 
