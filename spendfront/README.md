@@ -28,9 +28,9 @@ SpendWise is a personal finance management web application. The frontend deliver
 - **Analytics Page** — Rich charts (bar, line, pie) for spending patterns, income vs expense breakdowns, category-level analysis, and budget utilisation
 - **Budgets Page** — Create and track expense budgets (weekly/monthly/yearly) with visual progress indicators
 - **Goals Page** — Create and monitor savings goals and income goals with progress bars and deadline tracking
-- **AI Chat Assistant** — Conversational interface backed by the backend's multi-agent AI system; renders structured response cards (success, error, info, list, advice)
+- **AI Chat Assistant** — Dedicated `/chat` conversational interface with auto-growing composer, markdown support, and intelligent auto-scrolling; backed by the backend's multi-agent AI system to render structured response cards.
 - **Profile Page** — View and update user profile information
-- **Dark-themed, premium UI** — Custom design system with glassmorphism, smooth animations, and a consistent sidebar navigation
+- **Premium Fintech UI** — Custom dark navy design system featuring split-screen auth layouts, abstract grid motifs, custom SVG geometric logo, interactive focus rings, and glassmorphic panels.
 
 ---
 
@@ -66,7 +66,8 @@ spendfront/
 │   │
 │   ├── components/
 │   │   ├── AppLayout.tsx            # Sidebar + main content wrapper
-│   │   ├── Sidebar.tsx              # Navigation sidebar with all routes
+│   │   ├── Sidebar.tsx              # Navigation sidebar with custom SVG logo
+│   │   ├── Logo.tsx                 # Scalable geometric badge logo component
 │   │   └── ProtectedRoute.tsx       # Auth guard — redirects to /login if unauthenticated
 │   │
 │   ├── pages/
@@ -75,10 +76,10 @@ spendfront/
 │   │   ├── AnalyticsPage.tsx        # Charts and financial insights
 │   │   ├── BudgetsPage.tsx          # Expense budget management
 │   │   ├── GoalsPage.tsx            # Savings goals & income goals
-│   │   ├── ChatPage.tsx             # AI financial assistant chat UI
+│   │   ├── ChatPage.tsx             # Full-page AI financial assistant chat UI
 │   │   ├── ProfilePage.tsx          # User profile management
-│   │   ├── LoginPage.tsx            # Login form
-│   │   └── SignupPage.tsx           # Registration form
+│   │   ├── LoginPage.tsx            # Premium split-screen Login form
+│   │   └── SignupPage.tsx           # Premium split-screen Registration form
 │   │
 │   ├── store/
 │   │   ├── store.ts                 # Redux store configuration

@@ -153,7 +153,7 @@ Named savings goals with `startdate`/`enddate`, `amount` (target) and `totalMone
 
 ## AI Agent System
 
-The assistant uses the **OpenAI Agents SDK** with a **Manager + Specialist** pattern. All agents communicate using a shared structured response format (`AgentResponse`).
+The assistant uses the **OpenAI Agents SDK** with a **Manager + Specialist** pattern and **Input Guardrails** (e.g., preventing math homework queries). All agents communicate using a shared structured response format (`AgentResponse`).
 
 ```
 POST /chat
