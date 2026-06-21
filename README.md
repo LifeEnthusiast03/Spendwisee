@@ -88,28 +88,25 @@ A comprehensive full-stack personal finance management application that helps us
   - Icon + title + subtitle empty states
 
 ### AI Chat Assistant
-- 🤖 **SpendWise AI — Floating Chat Widget**
-  - Fixed bottom-right trigger button with animated pulse ring and `AI` badge
-  - 380 × 520 px glassmorphism chat panel with smooth scale + opacity open/close transition
-  - Gradient header with Bot icon, title, subtitle, and minimize button
-  - User bubbles (right, accent blue) and bot bubbles (left, glass card style) with timestamps
-  - Three-dot bounce typing indicator while bot is processing
-  - Welcome message shown automatically on first open
-  - Enter key submits; input disabled while bot is thinking
-  - Auto-scrolls to the latest message on every update
-  - Keyword-matched mock responses for income, expenses, budgets, goals, savings, and greetings
-  - Mobile responsive — full-width panel on screens < 480 px
-  - Appears on every authenticated page via `AppLayout`
+- 🤖 **SpendWise AI — Full-page Chat Interface**
+  - Dedicated `/chat` route featuring a premium, full-height conversational UI
+  - Fully responsive: 100dvh mobile safe-area layout and centered max-width on desktop
+  - Markdown support for AI responses (bolding, italics, bulleted lists)
+  - Auto-growing `<textarea>` composer with `Enter` (send) and `Shift+Enter` (new line) support
+  - Distinct Agent Response Cards for structured data (`success`, `info`, `error`, `advice`, `list`)
+  - Smooth auto-scroll behavior that intelligently pauses if the user scrolls up
+  - Three-dot bounce typing indicator while the bot is processing
 
 ### User Interface
-- 💎 Premium dark navy/blue-themed dashboard with glassmorphic effects
-- 📱 Responsive multi-page architecture with collapsible sidebar navigation
-- ✨ Smooth animations, hover effects, and micro-interactions
+- 💎 **Premium Fintech Aesthetics**: High-end dark navy theme with glassmorphic effects, split-screen auth layouts, and abstract geometric motifs
+- 📱 **Responsive Architecture**: Multi-page layout with a collapsible sidebar and mobile-first column reordering
+- 🎨 **Custom SVG Logo**: Scalable geometric badge logo integrated seamlessly across the app and browser favicon
+- ✨ Smooth animations, hover effects, interactive focus rings, and dynamic button loading states
 - 🧩 Full Redux Toolkit state management across all pages (4 slices)
 - ⚡ TanStack Query (React Query) for cached API calls with 5-minute stale time
 - 🗂️ Centralized TypeScript types in `src/types/types.ts`
 - 🔄 Zero duplicate network requests — shared query cache across pages
-- 📝 Inter font from Google Fonts for professional typography
+- 📝 Inter & Plus Jakarta Sans fonts for professional, balanced typography
 - 👤 Enhanced Profile page with financial snapshot, savings rate, and activity stats
 
 ---
@@ -190,19 +187,19 @@ Spendwisee/
 │   │   │   └── queryClient.ts               # TanStack QueryClient (5-min stale time)
 │   │   ├── components/
 │   │   │   ├── ProtectedRoute.tsx           # Auth-guard route wrapper
-│   │   │   ├── AppLayout.tsx                # Main layout wrapper (sidebar + content + ChatBot)
-│   │   │   ├── Sidebar.tsx                  # Collapsible sidebar (toggle in brand header)
-│   │   │   ├── ChatBot.tsx                  # ★ Floating AI chat widget (mock responses)
-│   │   │   └── ChatBot.css                  # ★ Scoped chatbot styles (.cb-* prefix)
+│   │   │   ├── AppLayout.tsx                # Main layout wrapper (sidebar + content)
+│   │   │   ├── Sidebar.tsx                  # Collapsible sidebar with SVG logo
+│   │   │   └── Logo.tsx                     # ★ Custom scalable SVG geometric logo component
 │   │   ├── pages/
-│   │   │   ├── LoginPage.tsx                # Login (local + Google OAuth)
-│   │   │   ├── SignupPage.tsx               # Registration
+│   │   │   ├── LoginPage.tsx                # ★ Premium split-screen Login (local + Google OAuth)
+│   │   │   ├── SignupPage.tsx               # ★ Premium split-screen Registration
 │   │   │   ├── HomePage.tsx                 # Dashboard — uses cached income/expense data
-│   │   │   ├── AnalyticsPage.tsx            # ★ Redesigned financial dashboard — KPI cards, ComposedChart, donut center, skeleton loaders
+│   │   │   ├── AnalyticsPage.tsx            # Redesigned financial dashboard — KPI cards, ComposedChart
 │   │   │   ├── TransactionsPage.tsx         # Income/Expense — Redux form state + RQ data
 │   │   │   ├── BudgetsPage.tsx              # Income Goals & Expense Budgets — Redux + RQ
 │   │   │   ├── GoalsPage.tsx                # Savings goals — Redux modal state + RQ data
-│   │   │   └── ProfilePage.tsx              # ★ Enhanced profile with financial snapshot
+│   │   │   ├── ChatPage.tsx                 # ★ Full-page AI Chat interface with Markdown support
+│   │   │   └── ProfilePage.tsx              # Enhanced profile with financial snapshot
 │   │   └── store/
 │   │       ├── store.ts                     # Redux store (auth + transaction + goal + budget)
 │   │       ├── hooks.ts                     # Typed useAppDispatch & useAppSelector
