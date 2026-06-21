@@ -12,6 +12,7 @@ import {
   MessageSquare,
 } from 'lucide-react'
 import { useState } from 'react'
+import Logo from './Logo'
 
 const NAV_ITEMS = [
   { to: '/home', icon: LayoutDashboard, label: 'Dashboard' },
@@ -30,13 +31,10 @@ export default function Sidebar() {
     <aside className={`sidebar ${collapsed ? 'sidebar--collapsed' : ''}`}>
       {/* Brand row — logo + name + collapse toggle */}
       <div className="sidebar-brand">
-        {!collapsed && (
-          <>
-            <div className="sidebar-logo">
-              <TrendingUp size={20} />
-            </div>
-            <span className="sidebar-brand-name">SpendWise</span>
-          </>
+        {!collapsed ? (
+          <Logo variant="full" size={26} theme="dark" />
+        ) : (
+          <Logo variant="icon" size={26} theme="dark" />
         )}
 
         {/* Collapse button — centered when collapsed, right-aligned when expanded */}
