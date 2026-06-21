@@ -6,7 +6,6 @@ import {
   Target,
   Wallet,
   User,
-  TrendingUp,
   PanelLeftClose,
   PanelLeftOpen,
   MessageSquare,
