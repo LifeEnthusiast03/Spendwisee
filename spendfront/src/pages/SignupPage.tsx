@@ -3,7 +3,8 @@ import { Link, useNavigate } from 'react-router-dom'
 import { isAxiosError } from 'axios'
 import toast from 'react-hot-toast'
 import api, { API_BASE } from '../store/api'
-import { Mail, Lock, User, ArrowRight, Eye, EyeOff } from 'lucide-react'
+import { Mail, Lock, User, ArrowRight, Eye, EyeOff, LayoutDashboard, BarChart3, ShieldCheck, AlertCircle, Loader2 } from 'lucide-react'
+import Logo from '../components/Logo'
 
 export default function SignupPage() {
   const navigate = useNavigate()
@@ -18,7 +19,7 @@ export default function SignupPage() {
     window.location.href = `${API_BASE}/auth/google`
   }
 
-  const handleSubmit = async (event: React.SyntheticEvent<HTMLFormElement>) => {
+  const handleSignup = async (event: React.SyntheticEvent<HTMLFormElement>) => {
     event.preventDefault()
     setError('')
     setIsSubmitting(true)
@@ -42,46 +43,37 @@ export default function SignupPage() {
   return (
     <main className="auth-shell">
       <section className="auth-hero">
+        <div className="auth-hero-bg"></div>
         <div className="auth-hero-content">
-          <p className="auth-eyebrow">Spendwise</p>
+          <Logo variant="full" size={28} theme="dark" className="auth-eyebrow" />
           <h1>Start your financial journey with confidence.</h1>
           <p className="auth-copy">
             Create your account to unlock a professional personal finance dashboard. Track income, analyze expenses, and build smarter money habits starting today.
           </p>
-          <div className="auth-stat-grid">
-            <div className="auth-stat">
-              <strong>Simple Setup</strong>
-              <span>Create your account in less than a minute.</span>
-            </div>
-            <div className="auth-stat">
-              <strong>Powerful Analytics</strong>
-              <span>Convert every entry into actionable financial insights.</span>
-            </div>
-          </div>
+
           <div className="auth-features">
             <div className="auth-feature-item">
-              <span className="auth-feature-icon">💰</span>
-              <div>
-                <strong>Complete Control</strong>
-                <span>Add, edit, and delete transactions with full control over your financial records.</span>
+              <span className="auth-feature-icon"><LayoutDashboard size={20} /></span>
+              <div className="auth-feature-text">
+                <strong>Real-time Dashboard</strong>
+                <span>View income, expenses, and balance instantly.</span>
               </div>
             </div>
             <div className="auth-feature-item">
-              <span className="auth-feature-icon">📈</span>
-              <div>
-                <strong>Weekly & Monthly Reports</strong>
-                <span>Track spending trends, average daily expenses, and income patterns at multiple time scales.</span>
+              <span className="auth-feature-icon"><BarChart3 size={20} /></span>
+              <div className="auth-feature-text">
+                <strong>Smart Analytics</strong>
+                <span>Category breakdowns, trends, and weekly insights.</span>
               </div>
             </div>
             <div className="auth-feature-item">
-              <span className="auth-feature-icon">⚡</span>
-              <div>
-                <strong>Quick Insights</strong>
-                <span>Spend-to-income ratio, top expenses, transaction counts, and more at your fingertips.</span>
+              <span className="auth-feature-icon"><ShieldCheck size={20} /></span>
+              <div className="auth-feature-text">
+                <strong>Secure & Private</strong>
+                <span>Your financial data is encrypted and protected.</span>
               </div>
             </div>
           </div>
-          <p className="auth-trust-row">✨ Get started today and take control of your financial story with Spendwise.</p>
         </div>
       </section>
 
@@ -92,27 +84,33 @@ export default function SignupPage() {
         </div>
 
         <div className="auth-panel-head">
-          <h2>Create your account</h2>
-          <p>Sign up with your name, email, and password to get started.</p>
+          <h2>Create account</h2>
+          <p>Join SpendWise and take control of your money.</p>
         </div>
 
         <button className="google-button" onClick={handleGoogleLogin} type="button" id="google-signup-btn">
-          <span className="google-mark">G</span>
-          Continue with Google
+          <span className="google-mark">
+            <svg viewBox="0 0 24 24">
+              <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+              <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+              <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+              <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+            </svg>
+          </span>
+          Sign up with Google
         </button>
 
         <div className="auth-divider"><span>or continue with email</span></div>
 
-        <form className="auth-form" onSubmit={handleSubmit}>
+        <form className="auth-form" onSubmit={handleSignup}>
           <label>
-            <span>Full name</span>
+            <span>Full Name</span>
             <div className="input-wrapper">
               <User size={18} className="input-icon" />
               <input
                 autoComplete="name"
-                name="name"
                 onChange={(e) => setName(e.target.value)}
-                placeholder="Alex Johnson"
+                placeholder="John Doe"
                 required
                 type="text"
                 value={name}
@@ -121,12 +119,11 @@ export default function SignupPage() {
             </div>
           </label>
           <label>
-            <span>Email</span>
+            <span>Email address</span>
             <div className="input-wrapper">
               <Mail size={18} className="input-icon" />
               <input
                 autoComplete="email"
-                name="email"
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@example.com"
                 required
@@ -143,9 +140,8 @@ export default function SignupPage() {
               <input
                 autoComplete="new-password"
                 minLength={6}
-                name="password"
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="Min. 6 characters"
+                placeholder="Create a password"
                 required
                 type={showPassword ? 'text' : 'password'}
                 value={password}
@@ -161,9 +157,23 @@ export default function SignupPage() {
               </button>
             </div>
           </label>
-          {error ? <p className="auth-message error">{error}</p> : null}
+          
+          <div className="auth-error-wrap">
+            {error && (
+              <p className="auth-message error">
+                <AlertCircle size={16} />
+                {error}
+              </p>
+            )}
+          </div>
+
           <button className="submit-button" disabled={isSubmitting} type="submit" id="signup-submit-btn">
-            {isSubmitting ? 'Please wait...' : (
+            {isSubmitting ? (
+              <>
+                <Loader2 size={18} className="animate-spin" />
+                Creating account...
+              </>
+            ) : (
               <>
                 Create account
                 <ArrowRight size={18} />
