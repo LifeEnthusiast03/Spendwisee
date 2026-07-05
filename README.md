@@ -142,14 +142,19 @@ Spendwisee/
 │   │   ├── config/
 │   │   │   └── passport.ts                  # Passport strategies (Local + Google)
 │   │   ├── controllers/
-│   │   │   ├── income_controllers.ts        # Income CRUD + Income Goal CRUD
-│   │   │   ├── expense_controllers.ts       # Expense CRUD + Expense Budget CRUD
+│   │   │   ├── income_controllers.ts        # Income CRUD
+│   │   │   ├── income_goal_controllers.ts   # Income Goal CRUD
+│   │   │   ├── expense_controllers.ts       # Expense CRUD
+│   │   │   ├── expense_budget_controllers.ts# Expense Budget CRUD
 │   │   │   └── goal_controllers.ts          # Savings Goal CRUD + money management
 │   │   ├── routes/
 │   │   │   ├── auth_route.ts                # Auth endpoints (register, login, OAuth, logout)
-│   │   │   ├── income_route.ts              # Income & Income Goal routes
-│   │   │   ├── expense_route.ts             # Expense & Expense Budget routes
-│   │   │   └── goal_route.ts                # Savings Goal routes
+│   │   │   ├── income_route.ts              # Income routes
+│   │   │   ├── income_goal_route.ts         # Income Goal routes
+│   │   │   ├── expense_route.ts             # Expense routes
+│   │   │   ├── expense_budget_route.ts      # Expense Budget routes
+│   │   │   ├── goal_route.ts                # Savings Goal routes
+│   │   │   └── chat_route.ts                # AI chat route
 │   │   ├── email/                           # ★ Email notification service
 │   │   │   ├── transporter.ts               # Nodemailer + Gmail OAuth2 transport
 │   │   │   ├── emailService.ts              # sendWelcomeEmail() & sendLoginEmail()
@@ -446,8 +451,8 @@ Base URL: `http://localhost:5173`
 | `/profile` | Enhanced profile with financial snapshot | Protected |
 | `*` | Redirects to `/home` | — |
 
-**Sidebar Navigation** includes: Dashboard, Analytics, Transactions, Budgets, Goals, Profile.
-The sidebar collapse toggle is located in the brand header row (top-left), next to the SpendWise logo.
+**Sidebar Navigation** includes: Dashboard, Analytics, Transactions, Budgets, Goals, AI Chat, Profile.
+The sidebar collapse toggle is located in the brand header row (top-left). When collapsed, only the expand button is shown — click it to restore the full sidebar.
 
 ---
 

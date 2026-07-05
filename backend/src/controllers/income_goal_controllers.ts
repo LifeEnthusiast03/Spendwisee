@@ -1,0 +1,279 @@
+import { Request, Response } from "express";
+import { prisma } from "../lib/prisma.js";
+import { IncomeCategory } from "../types/type.js";
+import { validIncomeCatagory } from "../utils/cheakcatgory.js";
+
+type PrismaKnownError = {
+  code?: string;
+};
+
+const isPrismaKnownError = (err: unknown): err is PrismaKnownError => {
+  return typeof err === "object" && err !== null && "code" in err;
+};
+
+const validBudgetType = (type: unknown): type is "WEEKLY" | "MONTHLY" | "YEARLY" => {
+  return type === "WEEKLY" || type === "MONTHLY" || type === "YEARLY";
+};
+
+// ============= Income Goal Controllers =============
+
+export const addIncomeGoal = async (req: Request, res: Response) => {
+  try {
+    const { amount, type, catagory } = req.body;
+    const userid = req.user?.id;
+
+    if (!userid) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    if (typeof amount !== "number" || amount <= 0) {
+      return res.status(400).json({ message: "Amount must be a positive number" });
+    }
+
+    if (!validBudgetType(type)) {
+      return res.status(400).json({ message: "Type must be WEEKLY, MONTHLY, or YEARLY" });
+    }
+
+    if (!validIncomeCatagory(catagory)) {
+      return res.status(400).json({ message: "Invalid income category" });
+    }
+
+    // Calculate period dates based on goal type
+    const now = new Date();
+    let periodEnd = new Date(now);
+
+    if (type === "WEEKLY") {
+      periodEnd.setDate(periodEnd.getDate() + 7);
+    } else if (type === "MONTHLY") {
+      periodEnd.setMonth(periodEnd.getMonth() + 1);
+    } else if (type === "YEARLY") {
+      periodEnd.setFullYear(periodEnd.getFullYear() + 1);
+    }
+
+    // Check if an active goal already exists for this category and type with overlapping period
+    const existingGoal = await prisma.incomeGoal.findFirst({
+      where: {
+        userId: userid,
+        category: catagory.toUpperCase() as IncomeCategory,
+        type: type,
+        // Check for overlapping periods
+        periodStart: {
+          lte: periodEnd,
+        },
+        periodEnd: {
+          gte: now,
+        },
+      },
+    });
+
+    if (existingGoal) {
+      return res.status(400).json({
+        message: `An active ${type} income goal for ${catagory.toUpperCase()} category already exists from ${existingGoal.periodStart} to ${existingGoal.periodEnd}`,
+      });
+    }
+
+    const incomeGoal = await prisma.incomeGoal.create({
+      data: {
+        amount,
+        type,
+        category: catagory.toUpperCase() as IncomeCategory,
+        userId: userid,
+        periodStart: now,
+        periodEnd: periodEnd,
+      },
+    });
+    console.log("income goal created succsfully");
+
+    return res.status(201).json(incomeGoal);
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: "Failed to add income goal" });
+  }
+};
+
+export const getIncomeGoals = async (req: Request, res: Response) => {
+  try {
+    const userid = req.user?.id;
+    if (!userid) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    const goals = await prisma.incomeGoal.findMany({
+      where: { userId: userid },
+      orderBy: { type: "asc" },
+    });
+
+    return res.status(200).json(goals);
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: "Failed to fetch income goals" });
+  }
+};
+
+export const getIncomeGoalByCategory = async (req: Request, res: Response) => {
+  try {
+    const userid = req.user?.id;
+    if (!userid) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    const categoryQuery = req.params.category?.toUpperCase();
+    if (!validIncomeCatagory(categoryQuery)) {
+      return res.status(400).json({ message: "Invalid income category" });
+    }
+
+    const goals = await prisma.incomeGoal.findMany({
+      where: {
+        userId: userid,
+        category: categoryQuery as IncomeCategory,
+      },
+      orderBy: { type: "asc" },
+    });
+
+    if (goals.length === 0) {
+      return res.status(404).json({ message: `No income goals found for ${categoryQuery} category` });
+    }
+
+    return res.status(200).json(goals);
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: "Failed to fetch income goals" });
+  }
+};
+
+export const updateIncomeGoal = async (req: Request, res: Response) => {
+  try {
+    const userid = req.user?.id;
+    if (!userid) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    const goalid = Number(req.params.goalid);
+    if (!Number.isInteger(goalid) || goalid <= 0) {
+      return res.status(400).json({ message: "Invalid goal id" });
+    }
+
+    const { amount, type } = req.body;
+
+    // Verify goal ownership
+    const existingGoal = await prisma.incomeGoal.findFirst({
+      where: {
+        id: goalid,
+        userId: userid,
+      },
+    });
+
+    if (!existingGoal) {
+      return res.status(404).json({ message: "Income goal not found" });
+    }
+
+    // Check if goal is active (period-based) - only allow updates if active
+    const now = new Date();
+    if (now < existingGoal.periodStart || now > existingGoal.periodEnd) {
+      return res.status(400).json({ message: "Cannot update an inactive income goal" });
+    }
+
+    // Validate update fields
+    const updateData: {
+      amount?: number;
+      type?: "WEEKLY" | "MONTHLY" | "YEARLY";
+      periodEnd?: Date;
+    } = {};
+
+    if (amount !== undefined) {
+      if (typeof amount !== "number" || amount <= 0) {
+        return res.status(400).json({ message: "Amount must be a positive number" });
+      }
+      updateData.amount = amount;
+    }
+
+    if (type !== undefined) {
+      if (!validBudgetType(type)) {
+        return res.status(400).json({ message: "Type must be WEEKLY, MONTHLY, or YEARLY" });
+      }
+      updateData.type = type;
+
+      // Recalculate periodEnd based on new type, keeping periodStart the same
+      const newPeriodEnd = new Date(existingGoal.periodStart);
+      if (type === "WEEKLY") {
+        newPeriodEnd.setDate(newPeriodEnd.getDate() + 7);
+      } else if (type === "MONTHLY") {
+        newPeriodEnd.setMonth(newPeriodEnd.getMonth() + 1);
+      } else if (type === "YEARLY") {
+        newPeriodEnd.setFullYear(newPeriodEnd.getFullYear() + 1);
+      }
+      updateData.periodEnd = newPeriodEnd;
+    }
+
+    // Check if category + type combination already exists with overlapping periods (only if type is being updated)
+    if (type !== undefined) {
+      const newPeriodEnd = updateData.periodEnd || existingGoal.periodEnd;
+      const conflictingGoal = await prisma.incomeGoal.findFirst({
+        where: {
+          userId: userid,
+          category: existingGoal.category,
+          type: type,
+          NOT: { id: goalid },
+          // Check for overlapping periods
+          periodStart: {
+            lte: newPeriodEnd,
+          },
+          periodEnd: {
+            gte: existingGoal.periodStart,
+          },
+        },
+      });
+
+      if (conflictingGoal) {
+        return res.status(400).json({
+          message: `An active ${type} income goal for ${existingGoal.category} category already exists with overlapping period`,
+        });
+      }
+    }
+
+    const updatedGoal = await prisma.incomeGoal.update({
+      where: { id: goalid },
+      data: updateData,
+    });
+
+    return res.status(200).json(updatedGoal);
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: "Failed to update income goal" });
+  }
+};
+
+export const deleteIncomeGoal = async (req: Request, res: Response) => {
+  try {
+    const userid = req.user?.id;
+    if (!userid) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    const goalid = Number(req.params.goalid);
+    if (!Number.isInteger(goalid) || goalid <= 0) {
+      return res.status(400).json({ message: "Invalid goal id" });
+    }
+
+    const goal = await prisma.incomeGoal.findFirst({
+      where: {
+        id: goalid,
+        userId: userid,
+      },
+      select: { id: true },
+    });
+
+    if (!goal) {
+      return res.status(404).json({ message: "Income goal not found" });
+    }
+
+    await prisma.incomeGoal.delete({
+      where: { id: goalid },
+    });
+
+    return res.status(200).json({ message: "Income goal deleted successfully" });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: "Failed to delete income goal" });
+  }
+};

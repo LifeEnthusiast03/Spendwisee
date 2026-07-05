@@ -11,6 +11,8 @@ import incomerouter  from "./routes/income_route.js"
 import expenserouter  from "./routes/expense_route.js";
 import goalrouter from "./routes/goal_route.js";
 import chatrouter from "./routes/chat_route.js";
+import incomegoalrouter from "./routes/income_goal_route.js";
+import expensebudgetrouter from "./routes/expense_budget_route.js";
 
 const app:Application = express();
 const PORT = 3000;
@@ -52,7 +54,9 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(authrouter);
 app.use(incomerouter);
+app.use(incomegoalrouter);
 app.use(expenserouter);
+app.use(expensebudgetrouter);
 app.use(goalrouter);
 app.use(chatrouter)
 const startServer = async () => {

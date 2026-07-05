@@ -66,7 +66,7 @@ spendfront/
 │   │
 │   ├── components/
 │   │   ├── AppLayout.tsx            # Sidebar + main content wrapper
-│   │   ├── Sidebar.tsx              # Navigation sidebar with custom SVG logo
+│   │   ├── Sidebar.tsx              # Collapsible navigation sidebar — logo hidden when collapsed, expand toggle always visible
 │   │   ├── Logo.tsx                 # Scalable geometric badge logo component
 │   │   └── ProtectedRoute.tsx       # Auth guard — redirects to /login if unauthenticated
 │   │
