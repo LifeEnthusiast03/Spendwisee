@@ -1,11 +1,10 @@
-import { useState } from 'react'
-import { useAppDispatch, useAppSelector } from '../store/hooks'
-import { logout } from '../store/slices/authSlice'
+import { useAppSelector } from '../store/hooks'
 import { useNavigate } from 'react-router-dom'
 import {
-  User, Mail, LogOut,
+  User, Mail,
   TrendingUp, TrendingDown, Wallet,
-  Target, BarChart2, ArrowLeftRight,
+  Target, BarChart2, ArrowLeftRight, Calendar,
+  ChevronRight,
 } from 'lucide-react'
 import { useIncomes, useExpenses } from '../hooks/useTransactionQueries'
 import { useGoals } from '../hooks/useGoalQueries'
@@ -13,9 +12,7 @@ import { useIncomeGoals, useExpenseBudgets } from '../hooks/useBudgetQueries'
 
 export default function ProfilePage() {
   const { user } = useAppSelector((s) => s.auth)
-  const dispatch = useAppDispatch()
   const navigate = useNavigate()
-  const [loggingOut, setLoggingOut] = useState(false)
   const displayName = user?.name?.trim() || user?.email?.split('@')[0] || 'User'
 
   // ── Financial data from React Query cache (zero extra requests if already fetched) ──
@@ -39,167 +36,209 @@ export default function ProfilePage() {
   const fmt = (n: number) =>
     new Intl.NumberFormat('en-IN', { maximumFractionDigits: 0 }).format(n)
 
-  const handleLogout = async () => {
-    setLoggingOut(true)
-    await dispatch(logout())
-    navigate('/login')
-  }
+  const savingsRate = totalIncome > 0
+    ? Math.max(0, (netBalance / totalIncome) * 100)
+    : 0
+
+  // Estimate join date from user object if available, else show "—"
+  const joinDate = (user as { createdAt?: string })?.createdAt
+    ? new Date((user as { createdAt?: string }).createdAt!).toLocaleDateString('en-IN', { month: 'long', year: 'numeric' })
+    : null
+
+  const quickStats = [
+    { icon: ArrowLeftRight, val: totalTxns, label: 'Transactions', color: 'var(--sw-accent)', route: '/transactions', iconBg: 'var(--sw-accent-lo)' },
+    { icon: Target, val: goals.length, label: 'Goals', color: '#60a5fa', route: '/goals', iconBg: 'rgba(96,165,250,0.12)' },
+    { icon: Wallet, val: incomeGoals.length + expenseBudgets.length, label: 'Budgets', color: '#a78bfa', route: '/budgets', iconBg: 'rgba(167,139,250,0.12)' },
+    { icon: BarChart2, val: activeBudgets, label: 'Active Now', color: '#f59e0b', route: '/budgets', iconBg: 'rgba(245,158,11,0.12)' },
+  ]
 
   return (
-    <div className="page-content">
-      <div className="page-header">
+    <div className="pf-page">
+      {/* ── Page header ──────────────────────────────────── */}
+      <div className="pf-header pf-fade-in" style={{ animationDelay: '0ms' }}>
         <div>
           <p className="page-kicker">Account</p>
           <h1 className="page-title">Profile</h1>
         </div>
       </div>
 
-      <div className="profile-layout">
-        {/* ── Left column: identity card ─────────────────────── */}
-        <div className="glass-card profile-card-large">
-          {/* Avatar + name */}
-          <div className="profile-avatar-wrap">
-            <div className="profile-avatar-lg">{displayName.charAt(0).toUpperCase()}</div>
-            <div>
-              <h2 className="profile-name">{displayName}</h2>
-              <p className="profile-email">{user?.email}</p>
+      <div className="pf-layout">
+        {/* ════════════════════════════════════════════════
+            LEFT COLUMN — Identity card
+            ════════════════════════════════════════════════ */}
+        <div className="pf-identity-card pf-fade-in" style={{ animationDelay: '50ms' }}>
+
+          {/* ── Avatar ── */}
+          <div className="pf-avatar-section">
+            <div className="pf-avatar-ring">
+              <div className="pf-avatar">
+                {displayName.charAt(0).toUpperCase()}
+              </div>
+            </div>
+            <div className="pf-identity-meta">
+              <h2 className="pf-name">{displayName}</h2>
+              <p className="pf-email">{user?.email}</p>
+              {joinDate && (
+                <div className="pf-join-date">
+                  <Calendar size={11} />
+                  <span>Member since {joinDate}</span>
+                </div>
+              )}
             </div>
           </div>
 
-          <div className="profile-divider" />
+          <div className="pf-divider" />
 
-          {/* Info rows */}
-          <div className="profile-info-list">
-            <div className="profile-info-row">
-              <div className="profile-info-icon"><User size={16} /></div>
-              <div>
-                <span className="profile-info-label">Full Name</span>
-                <span className="profile-info-value">{user?.name || '—'}</span>
+          {/* ── Info rows ── */}
+          <div className="pf-info-list">
+            <div className="pf-info-row">
+              <div className="pf-info-icon-wrap">
+                <User size={15} />
+              </div>
+              <div className="pf-info-content">
+                <span className="pf-info-label">Full Name</span>
+                <span className="pf-info-value">{user?.name || '—'}</span>
               </div>
             </div>
-            <div className="profile-info-row">
-              <div className="profile-info-icon"><Mail size={16} /></div>
-              <div>
-                <span className="profile-info-label">Email</span>
-                <span className="profile-info-value">{user?.email}</span>
+
+            <div className="pf-info-row">
+              <div className="pf-info-icon-wrap">
+                <Mail size={15} />
+              </div>
+              <div className="pf-info-content">
+                <span className="pf-info-label">Email Address</span>
+                <span className="pf-info-value">{user?.email}</span>
               </div>
             </div>
-            <div className="profile-info-row">
-              <div className="profile-info-icon"><BarChart2 size={16} /></div>
-              <div>
-                <span className="profile-info-label">Total Transactions</span>
-                <span className="profile-info-value">{totalTxns} records</span>
+
+            <div className="pf-info-row">
+              <div className="pf-info-icon-wrap" style={{ background: 'var(--sw-accent-lo)', color: 'var(--sw-accent)' }}>
+                <BarChart2 size={15} />
+              </div>
+              <div className="pf-info-content">
+                <span className="pf-info-label">Total Transactions</span>
+                <span className="pf-info-value">{totalTxns} records</span>
               </div>
             </div>
-            <div className="profile-info-row">
-              <div className="profile-info-icon"><Target size={16} /></div>
-              <div>
-                <span className="profile-info-label">Savings Goals</span>
-                <span className="profile-info-value">
-                  {activeGoals} active · {goals.length} total
-                </span>
+
+            <div className="pf-info-row">
+              <div className="pf-info-icon-wrap" style={{ background: 'rgba(96,165,250,0.12)', color: '#60a5fa' }}>
+                <Target size={15} />
+              </div>
+              <div className="pf-info-content">
+                <span className="pf-info-label">Savings Goals</span>
+                <span className="pf-info-value">{activeGoals} active · {goals.length} total</span>
               </div>
             </div>
-            <div className="profile-info-row">
-              <div className="profile-info-icon"><Wallet size={16} /></div>
-              <div>
-                <span className="profile-info-label">Active Budgets</span>
-                <span className="profile-info-value">{activeBudgets} running</span>
+
+            <div className="pf-info-row">
+              <div className="pf-info-icon-wrap" style={{ background: 'rgba(167,139,250,0.12)', color: '#a78bfa' }}>
+                <Wallet size={15} />
+              </div>
+              <div className="pf-info-content">
+                <span className="pf-info-label">Active Budgets</span>
+                <span className="pf-info-value">{activeBudgets} running</span>
               </div>
             </div>
           </div>
-
-          <div className="profile-divider" />
-
-          <button
-            className="logout-btn-full"
-            onClick={handleLogout}
-            disabled={loggingOut}
-            id="logout-btn"
-          >
-            <LogOut size={18} />
-            {loggingOut ? 'Logging out...' : 'Log Out'}
-          </button>
         </div>
 
-        {/* ── Right column: financial snapshot ───────────────── */}
-        <div className="profile-stats-col">
-          <p className="profile-section-label">Financial Snapshot</p>
+        {/* ════════════════════════════════════════════════
+            RIGHT COLUMN — Financial snapshot
+            ════════════════════════════════════════════════ */}
+        <div className="pf-stats-col">
+          <p className="pf-section-label pf-fade-in" style={{ animationDelay: '100ms' }}>Financial Snapshot</p>
 
-          {/* Net balance hero */}
-          <div className={`profile-balance-card ${netBalance >= 0 ? 'profile-balance-card--positive' : 'profile-balance-card--negative'}`}>
-            <span className="profile-balance-label">Net Balance</span>
-            <span className="profile-balance-value">
+          {/* ── Net Balance hero ── */}
+          <div
+            className={`pf-balance-hero pf-fade-in ${netBalance >= 0 ? 'pf-balance-hero--pos' : 'pf-balance-hero--neg'}`}
+            style={{ animationDelay: '150ms' }}
+          >
+            <div className="pf-balance-top">
+              <span className="pf-balance-label">Net Balance</span>
+              {totalIncome > 0 && (
+                <span className={`pf-trend-badge ${netBalance >= 0 ? 'pf-trend-badge--pos' : 'pf-trend-badge--neg'}`}>
+                  {netBalance >= 0 ? '↑' : '↓'} {savingsRate.toFixed(1)}% savings rate
+                </span>
+              )}
+            </div>
+            <span className="pf-balance-amount">
               {netBalance < 0 ? '-' : ''}₹{fmt(Math.abs(netBalance))}
             </span>
-            <span className="profile-balance-sub">
+            <span className="pf-balance-caption">
               {netBalance >= 0 ? '🎯 You\'re saving well!' : '⚠️ Expenses exceed income'}
             </span>
           </div>
 
-          {/* Income / Expense row */}
-          <div className="profile-fin-row">
-            <div className="profile-fin-card profile-fin-card--income">
-              <div className="profile-fin-icon"><TrendingUp size={18} /></div>
-              <div>
-                <span className="profile-fin-label">Total Income</span>
-                <span className="profile-fin-value">₹{fmt(totalIncome)}</span>
-                <span className="profile-fin-sub">{incomes.length} entries</span>
+          {/* ── Income / Expense side-by-side ── */}
+          <div className="pf-fin-row pf-fade-in" style={{ animationDelay: '200ms' }}>
+            <div className="pf-fin-card pf-fin-card--income">
+              <div className="pf-fin-left-accent" />
+              <div className="pf-fin-icon pf-fin-icon--income">
+                <TrendingUp size={17} />
+              </div>
+              <div className="pf-fin-body">
+                <span className="pf-fin-label">Total Income</span>
+                <span className="pf-fin-amount pf-fin-amount--income">₹{fmt(totalIncome)}</span>
+                <span className="pf-fin-sub">{incomes.length} entries</span>
               </div>
             </div>
-            <div className="profile-fin-card profile-fin-card--expense">
-              <div className="profile-fin-icon"><TrendingDown size={18} /></div>
-              <div>
-                <span className="profile-fin-label">Total Expense</span>
-                <span className="profile-fin-value">₹{fmt(totalExpense)}</span>
-                <span className="profile-fin-sub">{expenses.length} entries</span>
+
+            <div className="pf-fin-card pf-fin-card--expense">
+              <div className="pf-fin-left-accent pf-fin-left-accent--expense" />
+              <div className="pf-fin-icon pf-fin-icon--expense">
+                <TrendingDown size={17} />
+              </div>
+              <div className="pf-fin-body">
+                <span className="pf-fin-label">Total Expense</span>
+                <span className="pf-fin-amount pf-fin-amount--expense">₹{fmt(totalExpense)}</span>
+                <span className="pf-fin-sub">{expenses.length} entries</span>
               </div>
             </div>
           </div>
 
-          {/* Savings rate */}
+          {/* ── Savings Rate bar ── */}
           {totalIncome > 0 && (
-            <div className="glass-card profile-savings-card">
-              <div className="profile-savings-header">
-                <span className="profile-fin-label">Savings Rate</span>
-                <span className="profile-savings-pct">
-                  {Math.max(0, ((netBalance / totalIncome) * 100)).toFixed(1)}%
-                </span>
+            <div className="pf-savings-card pf-fade-in" style={{ animationDelay: '250ms' }}>
+              <div className="pf-savings-header">
+                <span className="pf-savings-title">Savings Rate</span>
+                <span className="pf-savings-pct">{savingsRate.toFixed(1)}%</span>
               </div>
-              <div className="budget-progress-track">
+              <div className="pf-savings-track">
                 <div
-                  className="budget-progress-fill progress--income"
-                  style={{ width: `${Math.min(100, Math.max(0, (netBalance / totalIncome) * 100))}%` }}
+                  className="pf-savings-fill"
+                  style={{ width: `${Math.min(100, savingsRate)}%` }}
                 />
               </div>
-              <span className="profile-savings-hint">
+              {/* Tick labels */}
+              <div className="pf-savings-ticks">
+                <span>0%</span>
+                <span>50%</span>
+                <span>100%</span>
+              </div>
+              <span className="pf-savings-hint">
                 You save ₹{fmt(Math.max(0, netBalance))} out of every ₹{fmt(totalIncome)} earned
               </span>
             </div>
           )}
 
-          {/* Quick stats grid */}
-          <div className="profile-quick-grid">
-            <div className="profile-quick-card">
-              <ArrowLeftRight size={16} className="profile-quick-icon" />
-              <span className="profile-quick-val">{totalTxns}</span>
-              <span className="profile-quick-label">Transactions</span>
-            </div>
-            <div className="profile-quick-card">
-              <Target size={16} className="profile-quick-icon" style={{ color: '#60a5fa' }} />
-              <span className="profile-quick-val">{goals.length}</span>
-              <span className="profile-quick-label">Goals</span>
-            </div>
-            <div className="profile-quick-card">
-              <Wallet size={16} className="profile-quick-icon" style={{ color: '#a78bfa' }} />
-              <span className="profile-quick-val">{incomeGoals.length + expenseBudgets.length}</span>
-              <span className="profile-quick-label">Budgets</span>
-            </div>
-            <div className="profile-quick-card">
-              <BarChart2 size={16} className="profile-quick-icon" style={{ color: '#f59e0b' }} />
-              <span className="profile-quick-val">{activeBudgets}</span>
-              <span className="profile-quick-label">Active Now</span>
-            </div>
+          {/* ── Clickable quick-stat cards ── */}
+          <div className="pf-quick-grid pf-fade-in" style={{ animationDelay: '300ms' }}>
+            {quickStats.map(({ icon: Icon, val, label, color, route, iconBg }) => (
+              <button
+                key={label}
+                className="pf-quick-card"
+                onClick={() => navigate(route)}
+                style={{ '--pf-card-color': color } as React.CSSProperties}
+              >
+                <div className="pf-quick-icon-wrap" style={{ background: iconBg, color }}>
+                  <Icon size={15} />
+                </div>
+                <span className="pf-quick-val">{val}</span>
+                <span className="pf-quick-label">{label}</span>
+                <ChevronRight size={12} className="pf-quick-arrow" />
+              </button>
+            ))}
           </div>
         </div>
       </div>
