@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 import {
   LayoutDashboard,
   BarChart2,
@@ -9,9 +9,12 @@ import {
   PanelLeftClose,
   PanelLeftOpen,
   MessageSquare,
+  LogOut,
 } from 'lucide-react'
 import { useState } from 'react'
 import Logo from './Logo'
+import { useAppDispatch, useAppSelector } from '../store/hooks'
+import { logout } from '../store/slices/authSlice'
 
 const NAV_ITEMS = [
   { to: '/home', icon: LayoutDashboard, label: 'Dashboard' },
@@ -25,16 +28,26 @@ const NAV_ITEMS = [
 
 export default function Sidebar() {
   const [collapsed, setCollapsed] = useState(false)
+  const [loggingOut, setLoggingOut] = useState(false)
+  const dispatch = useAppDispatch()
+  const navigate = useNavigate()
+  const { user } = useAppSelector((s) => s.auth)
+
+  const displayName = user?.name?.trim() || user?.email?.split('@')[0] || 'User'
+  const displayEmail = user?.email || ''
+  const initial = displayName.charAt(0).toUpperCase()
+
+  const handleLogout = async () => {
+    setLoggingOut(true)
+    await dispatch(logout())
+    navigate('/login')
+  }
 
   return (
     <aside className={`sidebar ${collapsed ? 'sidebar--collapsed' : ''}`}>
       {/* Brand row — logo + name + collapse toggle */}
       <div className="sidebar-brand">
-        {!collapsed ? (
-          <Logo variant="full" size={26} theme="dark" />
-        ) : (
-          <Logo variant="icon" size={26} theme="dark" />
-        )}
+        {!collapsed && <Logo variant="full" size={26} theme="dark" />}
 
         {/* Collapse button — centered when collapsed, right-aligned when expanded */}
         <button
@@ -60,6 +73,35 @@ export default function Sidebar() {
           </NavLink>
         ))}
       </nav>
+
+      {/* ── Pinned account/sign-out section ─────────────────── */}
+      <div className={`sidebar-user-section ${collapsed ? 'sidebar-user-section--collapsed' : ''}`}>
+        <div className="sidebar-user-row">
+          {/* Avatar initial */}
+          <div className="sidebar-user-avatar" title={displayName}>
+            {initial}
+          </div>
+
+          {/* Name + email — hidden when collapsed */}
+          {!collapsed && (
+            <div className="sidebar-user-info">
+              <span className="sidebar-user-name">{displayName}</span>
+              <span className="sidebar-user-email">{displayEmail}</span>
+            </div>
+          )}
+
+          {/* Logout icon button */}
+          <button
+            className="sidebar-logout-btn"
+            onClick={handleLogout}
+            disabled={loggingOut}
+            title="Sign out"
+            aria-label="Sign out"
+          >
+            <LogOut size={15} />
+          </button>
+        </div>
+      </div>
     </aside>
   )
 }
