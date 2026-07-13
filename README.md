@@ -6,6 +6,7 @@ A comprehensive full-stack personal finance management application that helps us
 
 - [Features](#-features)
 - [Tech Stack](#-tech-stack)
+- [Architecture Overview](#-architecture-overview)
 - [Project Structure](#-project-structure)
 - [State Management Architecture](#-state-management-architecture)
 - [Database Schema](#-database-schema)
@@ -129,6 +130,202 @@ A comprehensive full-stack personal finance management application that helps us
 | **Icons** | Lucide React |
 | **Notifications** | React Hot Toast |
 | **Containerization** | Docker & Docker Compose |
+
+---
+
+## 🏛 Architecture Overview
+
+The diagram below shows the **complete system architecture** of SpendWise — from the user's browser all the way through the frontend state layers, REST API, authentication, and data persistence.
+
+```mermaid
+flowchart TD
+    subgraph BROWSER["🌐 Browser / Client"]
+        USER(["👤 User"])
+    end
+
+    subgraph FRONTEND["⚛️ Frontend — React 19 + Vite (localhost:5173)"]
+        direction TB
+
+        subgraph PAGES["📄 Pages"]
+            PUB["Public Pages\n/login · /signup"]
+            PROT["Protected Pages\n/home · /analytics · /transactions\n/budgets · /goals · /profile · /chat"]
+        end
+
+        subgraph ROUTING["🔀 Routing"]
+            RR["React Router v7\nProtectedRoute wrapper"]
+        end
+
+        subgraph STATE["🗂 State Management"]
+            direction LR
+            subgraph REDUX["Redux Toolkit"]
+                AS["authSlice\n(user, isAuthenticated)"]
+                TS["transactionSlice\n(tab, form fields)"]
+                GS["goalSlice\n(modal, form fields)"]
+                BS["budgetSlice\n(tab, form fields)"]
+            end
+            subgraph RQ["TanStack Query v5"]
+                RQC["QueryClient\n5-min stale time"]
+                RQH["Custom Hooks\nuseTransactionQueries\nuseGoalQueries\nuseBudgetQueries"]
+            end
+        end
+
+        subgraph HTTP_CLIENT["🌐 HTTP Layer"]
+            AX["Axios Instance\n(withCredentials: true)"]
+        end
+    end
+
+    subgraph BACKEND["🖥 Backend — Express.js + Node.js (localhost:3000)"]
+        direction TB
+
+        subgraph AUTH_LAYER["🔐 Auth Layer"]
+            PP["Passport.js"]
+            LOCAL["Local Strategy\n(bcrypt)"]
+            GOOGLE["Google OAuth 2.0"]
+            SESSION["express-session\n(24h maxAge)"]
+        end
+
+        subgraph MIDDLEWARE["🛡 Middleware"]
+            AUTHMW["isAuthenticated guard"]
+            CORS["CORS (FRONTEND_URL)"]
+        end
+
+        subgraph ROUTES["🛣 Routes"]
+            AR["auth_route\n/auth/*"]
+            IR["income_route\n/income · /addincome"]
+            ER["expense_route\n/expense · /addexpense"]
+            IGR["income_goal_route\n/incomegoal"]
+            EBR["expense_budget_route\n/expensebudget"]
+            GR["goal_route\n/goal"]
+            CR["chat_route\n/chat"]
+        end
+
+        subgraph CONTROLLERS["⚙️ Controllers"]
+            IC["income_controllers\nCRUD + category totals"]
+            EC["expense_controllers\nCRUD + balance validation"]
+            IGC["income_goal_controllers\nCRUD + overlap detection"]
+            EBC["expense_budget_controllers\nCRUD + utilization tracking"]
+            GC["goal_controllers\nCRUD + addMoney / removeMoney"]
+            AI["AI Chat\n(chat_route)"]
+        end
+
+        subgraph UTILS["🔧 Utils"]
+            CWD["catagorywisedata.ts\nCategory aggregation"]
+            CC["cheakcatgory.ts\nCategory validation"]
+        end
+
+        subgraph EMAIL_SVC["📧 Email Service"]
+            TRANS["Nodemailer\n+ Gmail OAuth2"]
+            WELC["Welcome Email\n(on register)"]
+            LOGIN_EMAIL["Login Notification\n(on every sign-in)"]
+        end
+    end
+
+    subgraph DATA["🗄 Data Layer"]
+        direction LR
+        subgraph POSTGRES["🐘 PostgreSQL (Docker :5432)"]
+            PRISMA["Prisma ORM\n(schema + migrations)"]
+            subgraph MODELS["DB Models"]
+                UM["User"]
+                INC["Income"]
+                EXP["Expense"]
+                INGG["IncomeGoal"]
+                EXPB["ExpenseBudget"]
+                GOAL["Goal (Savings)"]
+            end
+        end
+        subgraph REDIS["⚡ Redis Stack (Docker :6379)"]
+            SESS["Session Store\n(connect-redis)"]
+        end
+    end
+
+    %% User interaction flow
+    USER -->|"navigates to"| PUB
+    USER -->|"after login"| PROT
+    PUB --> RR
+    PROT --> RR
+    RR --> STATE
+    STATE --> HTTP_CLIENT
+    HTTP_CLIENT -->|"HTTP + cookie"| BACKEND
+
+    %% Auth flow
+    AR --> PP
+    PP --> LOCAL
+    PP --> GOOGLE
+    PP --> SESSION
+    SESSION -->|"stores session ID"| SESS
+    GOOGLE -->|"OAuth callback"| AR
+
+    %% Request pipeline
+    HTTP_CLIENT --> MIDDLEWARE
+    MIDDLEWARE --> AUTHMW
+    AUTHMW -->|"authenticated"| ROUTES
+    AUTHMW -->|"401 rejected"| HTTP_CLIENT
+
+    %% Route → Controller wiring
+    IR --> IC
+    ER --> EC
+    IGR --> IGC
+    EBR --> EBC
+    GR --> GC
+    CR --> AI
+
+    %% Controller → Prisma → DB
+    IC --> PRISMA
+    EC --> PRISMA
+    IGC --> PRISMA
+    EBC --> PRISMA
+    GC --> PRISMA
+    IC --> CWD
+    EC --> CWD
+    EC --> CC
+    IC --> CC
+    PRISMA --> MODELS
+
+    %% Auto-update side-effects
+    IC -->|"auto-increments matching\nactive IncomeGoal"| IGC
+    EC -->|"auto-increments matching\nactive ExpenseBudget"| EBC
+
+    %% Email triggers
+    PP -->|"on register / first Google sign-up"| WELC
+    PP -->|"on every login"| LOGIN_EMAIL
+    WELC --> TRANS
+    LOGIN_EMAIL --> TRANS
+    TRANS -->|"Gmail OAuth2"| USER
+
+    %% TanStack Query cache invalidation loop
+    RQH -->|"mutation → invalidateQueries"| RQC
+    RQC -->|"refetch"| HTTP_CLIENT
+
+    %% Redux dispatch loop
+    AS -->|"checkAuth / logout thunks"| AX
+    AX --> AR
+
+    %% Styling
+    classDef frontend fill:#1e3a5f,stroke:#4a9eff,color:#e0f0ff
+    classDef backend fill:#1a3a2a,stroke:#4aff8a,color:#e0ffe8
+    classDef data fill:#3a1a3a,stroke:#cc55ff,color:#f0e0ff
+    classDef browser fill:#2a2a1a,stroke:#ffcc44,color:#fffae0
+    class PAGES,ROUTING,STATE,HTTP_CLIENT,REDUX,RQ,AS,TS,GS,BS,RQC,RQH,AX,PUB,PROT,RR frontend
+    class AUTH_LAYER,MIDDLEWARE,ROUTES,CONTROLLERS,UTILS,EMAIL_SVC,PP,LOCAL,GOOGLE,SESSION,AUTHMW,CORS,AR,IR,ER,IGR,EBR,GR,CR,IC,EC,IGC,EBC,GC,AI,CWD,CC,TRANS,WELC,LOGIN_EMAIL backend
+    class DATA,POSTGRES,REDIS,PRISMA,MODELS,UM,INC,EXP,INGG,EXPB,GOAL,SESS data
+    class BROWSER,USER browser
+```
+
+### Architecture Summary
+
+| Layer | Role |
+|-------|------|
+| **Browser** | User interaction entry point |
+| **React Router v7** | Guards protected routes via `ProtectedRoute` |
+| **Redux Toolkit** | UI & ephemeral client state (forms, tabs, modals, auth) |
+| **TanStack Query v5** | Server state caching, auto-invalidation on mutations |
+| **Axios** | HTTP client with `withCredentials` for session cookies |
+| **Passport.js** | Local (bcrypt) + Google OAuth 2.0 authentication |
+| **express-session + Redis** | Server-side session persistence |
+| **Express Controllers** | Business logic, balance validation, auto-goal tracking |
+| **Prisma ORM** | Type-safe database access + migrations |
+| **PostgreSQL** | Primary relational data store |
+| **Nodemailer + Gmail OAuth2** | Transactional welcome & login notification emails |
 
 ---
 
