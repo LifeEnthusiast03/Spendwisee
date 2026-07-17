@@ -66,22 +66,31 @@ app.use(expensebudgetrouter);
 app.use(goalrouter);
 app.use(chatrouter)
 app.use(exportrouter)
-const startServer = async () => {
-  // Check Redis connection
-  await redisClient.connect();
-  console.log("✅ Redis connected successfully");
+if (process.env.NODE_ENV !== "production") {
+  const startServer = async () => {
+    // Check Redis connection
+    await redisClient.connect();
+    console.log("✅ Redis connected successfully");
 
-  // Check Database connection
-  await prisma.$connect();
-  console.log("✅ Database connected successfully");
+    // Check Database connection
+    await prisma.$connect();
+    console.log("✅ Database connected successfully");
 
-  app.listen(PORT, () => {
-    console.log(`🚀 Server running on http://localhost:${PORT}`);
+    app.listen(PORT, () => {
+      console.log(`🚀 Server running on http://localhost:${PORT}`);
+    });
+  };
+
+  startServer().catch((error) => {
+    console.error("❌ Failed to start server:", error);
+    prisma.$disconnect();
+    process.exit(1);
   });
-};
+} else {
+  // In Vercel serverless, we don't start our own server.
+  // Connect to Redis in the background (Prisma auto-connects).
+  redisClient.connect().catch(console.error);
+}
 
-startServer().catch((error) => {
-  console.error("❌ Failed to start server:", error);
-  prisma.$disconnect();
-  process.exit(1);
-});
+// Vercel requires the app to be exported!
+export default app;
