@@ -43,22 +43,23 @@ ENV NODE_ENV=production
 COPY package.json package-lock.json ./
 RUN (npm ci --omit=dev --prefer-offline || npm ci --omit=dev --prefer-offline || npm ci --omit=dev) && npm cache clean --force
 
-# ── Copy compiled app from builder ────────────────────────────────────────────
-COPY --from=builder /app/dist ./dist
-
-# ── Copy generated Prisma client from builder ─────────────────────────────────
-COPY --from=builder /app/generated ./generated
-
-# ── Copy Prisma schema + migrations (needed for migrate deploy at startup) ────
-COPY prisma ./prisma
-
-# ── Copy Prisma CLI binaries from builder (needed to run migrate deploy) ──────
+# ── Copy Prisma CLI + dotenv from builder (needed for prisma generate & migrate) ─
 COPY --from=builder /app/node_modules/.bin/prisma ./node_modules/.bin/prisma
 COPY --from=builder /app/node_modules/prisma ./node_modules/prisma
-
-# ── Copy prisma.config.ts + dotenv (needed by prisma migrate deploy in Prisma 7) ──
-COPY --from=builder /app/prisma.config.ts ./prisma.config.ts
 COPY --from=builder /app/node_modules/dotenv ./node_modules/dotenv
+
+# ── Copy Prisma config + schema ────────────────────────────────────────────────
+COPY prisma.config.ts ./
+COPY prisma ./prisma
+
+# ── Generate Prisma client natively in the runner environment ──────────────────
+# Generating here (not copying from builder) avoids ESM/CJS mismatches.
+# DATABASE_URL is only used by prisma.config.ts during codegen, not at runtime.
+ENV DATABASE_URL="postgresql://build:build@localhost:5432/build"
+RUN npx prisma generate
+
+# ── Copy compiled app from builder ────────────────────────────────────────────
+COPY --from=builder /app/dist ./dist
 
 # ── Entrypoint: run migrations then start the server ─────────────────────────
 COPY entrypoint.sh ./entrypoint.sh
