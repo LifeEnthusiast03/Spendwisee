@@ -47,6 +47,11 @@ app.use(
       maxAge: 1000 * 60 * 60 * 24, // 1 day
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
+      // SameSite must be 'none' in production because the frontend and
+      // backend are on different domains (cross-site). Browsers block
+      // cross-site cookies unless SameSite=None; Secure is set.
+      // On localhost both origins are the same so 'lax' works fine.
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
     },
   })
 )
