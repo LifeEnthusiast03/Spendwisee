@@ -1,39 +1,15 @@
 services:
-  postgres:
-    image: postgres:latest
-    container_name: postgres_db
-    restart: unless-stopped
-    environment:
-      POSTGRES_USER: ${POSTGRES_USER:-postgres}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
-      POSTGRES_DB: ${POSTGRES_DB:-spendwise}
-    ports:
-      - "5432:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-spendwise}"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-
-  redis-stack:
-    image: redis/redis-stack:latest
-    container_name: redis_stack
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: spendwise_backend
     restart: unless-stopped
     ports:
-      - "6379:6379"
-      - "8001:8001"
-    volumes:
-      - redis_data:/data
-    healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+      - "3000:3000"
+    env_file:
+      - .env
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
 
-volumes:
-  postgres_data:
-    driver: local
-  redis_data:
-    driver: local
