@@ -1,213 +1,65 @@
 import { Request, Response } from "express";
-import { prisma } from "../lib/prisma.js";
-import { ExpenseCategory } from "../types/type.js";
-import { validExpenseCatagory } from "../utils/cheakcatgory.js";
-import { catagorywisedata } from "../utils/catagorywisedata.js";
-
-type PrismaKnownError = {
-  code?: string;
-};
-
-const isPrismaKnownError = (err: unknown): err is PrismaKnownError => {
-  return typeof err === "object" && err !== null && "code" in err;
-};
+import { expenseService } from "../services/expense_service.js";
+import { handleControllerError } from "../utils/errors.js";
 
 export const getExpense = async (req: Request, res: Response) => {
   try {
-    const userid = req.user?.id;
-    if (!userid) {
-      return res.status(401).json({ message: "Unauthorized" });
-    }
-
-    const expenses = await prisma.expense.findMany({
-      where: { userId: userid },
-      orderBy: { date: "desc" },
-    });
-
-    return res.status(200).json(expenses);
+    const userId = req.user?.id;
+    const result = await expenseService.getExpense(userId!);
+    return res.status(200).json(result);
   } catch (err) {
-    return res.status(500).json({ message: "Failed to fetch expense" });
+    return handleControllerError(res, err, "Failed to fetch expense");
   }
 };
 
 export const addExpense = async (req: Request, res: Response) => {
   try {
     const { amount, catagory, note, date, adddate } = req.body;
-    const userid = req.user?.id;
-
-    if (typeof amount !== "number" || amount < 0) {
-      return res.status(400).json({ message: "Amount must be a non-negative number" });
-    }
-
-    if (!userid) {
-      return res.status(401).json({ message: "Unauthorized" });
-    }
-
-    if (!validExpenseCatagory(catagory)) {
-      return res.status(400).json({ message: "Invalid expense category" });
-    }
-
+    const userId = req.user?.id;
     const requestedDate = date ?? adddate;
-    let parsedDate: Date | undefined;
-    if (requestedDate !== undefined && requestedDate !== null && requestedDate !== "") {
-      parsedDate = requestedDate instanceof Date ? requestedDate : new Date(requestedDate);
-      if (Number.isNaN(parsedDate.getTime())) {
-        return res.status(400).json({ message: "Invalid date format" });
-      }
-    }
-
-    // Check if user has enough income to cover this expense (accounting for goal commitments)
-    const [totalIncomeResult, totalExpenseResult, totalGoalFulfilledResult] = await Promise.all([
-      prisma.income.aggregate({
-        where: { userId: userid },
-        _sum: { amount: true },
-      }),
-      prisma.expense.aggregate({
-        where: { userId: userid },
-        _sum: { amount: true },
-      }),
-      prisma.goal.aggregate({
-        where: { userId: userid },
-        _sum: { totalMoney: true },
-      }),
-    ]);
-
-    const totalIncome = totalIncomeResult._sum.amount ?? 0;
-    const totalExpense = totalExpenseResult._sum.amount ?? 0;
-    const totalGoalFulfilled = totalGoalFulfilledResult._sum.totalMoney ?? 0;
-    const availableBalance = totalIncome - totalExpense - totalGoalFulfilled;
-
-    if (amount > availableBalance) {
-      return res.status(400).json({
-        message: `Insufficient income. Your available balance is ${availableBalance} (total income: ${totalIncome} - total expenses: ${totalExpense} - goal commitments: ${totalGoalFulfilled}), but the expense amount is ${amount}`,
-      });
-    }
-
-    const newexpense = await prisma.expense.create({
-      data: {
-        amount,
-        category: catagory.toUpperCase(),
-        note,
-        userId: userid,
-        ...(parsedDate ? { date: parsedDate } : {}),
-      },
-    });
-
-    // Check for active expense budgets matching this category and update fulfilledAmount
-    const expenseDate = parsedDate ?? new Date();
-    const activeBudgets = await prisma.expenseBudget.findMany({
-      where: {
-        userId: userid,
-        category: catagory.toUpperCase() as ExpenseCategory,
-        periodStart: { lte: expenseDate },
-        periodEnd: { gte: expenseDate },
-      },
-    });
-
-    if (activeBudgets.length > 0) {
-      await Promise.all(
-        activeBudgets.map((budget) =>
-          prisma.expenseBudget.update({
-            where: { id: budget.id },
-            data: { fulfilledAmount: { increment: amount } },
-          })
-        )
-      );
-    }
-
-    return res.status(201).json(newexpense);
+    const result = await expenseService.addExpense(
+      userId!,
+      amount,
+      catagory,
+      note,
+      requestedDate
+    );
+    return res.status(201).json(result);
   } catch (err) {
-    return res.status(500).json({ message: "Failed to add expense" });
+    return handleControllerError(res, err, "Failed to add expense");
   }
 };
 
 export const getTotalExpense = async (req: Request, res: Response) => {
   try {
-    const userid = req.user?.id;
-    if (!userid) {
-      return res.status(401).json({ message: "Unauthorized" });
-    }
-
-    const expenses = await prisma.expense.findMany({
-      where: { userId: userid },
-    });
-    const data = catagorywisedata(expenses);
-
-    return res.status(200).json(data);
+    const userId = req.user?.id;
+    const result = await expenseService.getTotalExpense(userId!);
+    return res.status(200).json(result);
   } catch (err) {
-    return res.status(500).json({ message: "Failed to fetch expense" });
+    return handleControllerError(res, err, "Failed to fetch expense");
   }
 };
 
 export const getcatagoryExpense = async (req: Request, res: Response) => {
   try {
-    const userid = req.user?.id;
-    if (!userid) {
-      return res.status(401).json({ message: "Unauthorized" });
-    }
-
-    const categoryQuery = req.query.catagory;
-    if (typeof categoryQuery !== "string") {
-      return res.status(400).json({ message: "Category query is required" });
-    }
-
-    const normalizedCategory = categoryQuery.trim().toUpperCase();
-    if (!validExpenseCatagory(normalizedCategory)) {
-      return res.status(400).json({ message: "Invalid expense category" });
-    }
-    const expenseCategory = normalizedCategory as ExpenseCategory;
-
-    const expenses = await prisma.expense.findMany({
-      where: {
-        userId: userid,
-        category: expenseCategory,
-      },
-    });
-    const data = catagorywisedata(expenses);
-
-    return res.status(200).json(data);
+    const userId = req.user?.id;
+    const result = await expenseService.getCategoryExpense(
+      userId!,
+      req.query.catagory
+    );
+    return res.status(200).json(result);
   } catch (err) {
-    return res.status(500).json({ message: "Failed to fetch expense" });
+    return handleControllerError(res, err, "Failed to fetch expense");
   }
 };
 
 export const deleteExpense = async (req: Request, res: Response) => {
   try {
-    const userid = req.user?.id;
-    if (!userid) {
-      return res.status(401).json({ message: "Unauthorized" });
-    }
-
-    const expenseid = Number(req.params.expenseid);
-    if (!Number.isInteger(expenseid) || expenseid <= 0) {
-      return res.status(400).json({ message: "Invalid expense id" });
-    }
-
-    const expense = await prisma.expense.findFirst({
-      where: {
-        id: expenseid,
-        userId: userid,
-      },
-      select: { id: true },
-    });
-
-    if (!expense) {
-      return res.status(404).json({ message: "Expense not found" });
-    }
-
-    await prisma.expense.delete({
-      where: {
-        id: expenseid,
-      },
-    });
-
-    return res.status(200).json({ message: "Expense deleted successfully" });
+    const userId = req.user?.id;
+    const expenseId = Number(req.params.expenseid);
+    const result = await expenseService.deleteExpense(userId!, expenseId);
+    return res.status(200).json(result);
   } catch (err) {
-    if (isPrismaKnownError(err) && err.code === "P2025") {
-      return res.status(404).json({ message: "Expense not found" });
-    }
-
-    return res.status(500).json({ message: "Failed to delete expense" });
+    return handleControllerError(res, err, "Failed to delete expense");
   }
 };
-
