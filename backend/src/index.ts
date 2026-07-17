@@ -13,10 +13,11 @@ import goalrouter from "./routes/goal_route.js";
 import chatrouter from "./routes/chat_route.js";
 import incomegoalrouter from "./routes/income_goal_route.js";
 import expensebudgetrouter from "./routes/expense_budget_route.js";
+import exportrouter from "./routes/export_route.js";
 
 const app:Application = express();
 const PORT = 3000;
-const REDIS_URL = process.env.REDIS_URL ?? "redis://localhost:6379";
+const REDIS_URL = process.env.REDIS_URL
 const redisClient = createClient({ url: REDIS_URL });
 
 redisClient.on("error", (error) => {
@@ -59,6 +60,7 @@ app.use(expenserouter);
 app.use(expensebudgetrouter);
 app.use(goalrouter);
 app.use(chatrouter)
+app.use(exportrouter)
 const startServer = async () => {
   // Check Redis connection
   await redisClient.connect();
