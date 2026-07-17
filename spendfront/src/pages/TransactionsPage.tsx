@@ -1,4 +1,5 @@
-import { TrendingUp, TrendingDown, Plus, Trash2 } from 'lucide-react'
+import { TrendingUp, TrendingDown, Plus, Trash2, FileSpreadsheet, Loader2 } from 'lucide-react'
+import { useExportTransactions } from '../hooks/useExportTransactions'
 import { useAppDispatch, useAppSelector } from '../store/hooks'
 import {
   setActiveTab,
@@ -35,6 +36,9 @@ export default function TransactionsPage() {
   const addExpenseMutation = useAddExpense()
   const deleteIncomeMutation = useDeleteIncome()
   const deleteExpenseMutation = useDeleteExpense()
+
+  // ── Export ──────────────────────────────────────────────────────────────
+  const { exportTransactions, isExporting } = useExportTransactions()
 
   const loadingList = activeTab === 'income' ? loadingIncomes : loadingExpenses
   const submitting =
@@ -83,6 +87,18 @@ export default function TransactionsPage() {
           <p className="page-kicker">Manage</p>
           <h1 className="page-title">Transactions</h1>
         </div>
+        <button
+          id="txn-export-btn"
+          className="an-export-btn"
+          onClick={() => exportTransactions('all_time')}
+          disabled={isExporting}
+          title="Export all transactions to Excel"
+        >
+          {isExporting
+            ? <Loader2 size={15} className="an-export-spinner" />
+            : <FileSpreadsheet size={15} />}
+          {isExporting ? 'Exporting…' : 'Export All'}
+        </button>
       </div>
 
       {/* Tab toggle */}

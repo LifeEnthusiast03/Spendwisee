@@ -1,5 +1,7 @@
 import React, { useState, useMemo } from 'react'
-import { TrendingUp, TrendingDown, Wallet, PiggyBank, BarChart2, BarChart3 } from 'lucide-react'
+import { TrendingUp, TrendingDown, Wallet, PiggyBank, BarChart2, BarChart3, FileSpreadsheet, Loader2 } from 'lucide-react'
+import { useExportTransactions } from '../hooks/useExportTransactions'
+import type { ExportRange } from '../types/types'
 import {
   useIncomes,
   useExpenses,
@@ -43,6 +45,14 @@ const DATE_RANGE_MONTHS: Record<DateRange, number | null> = {
   last3: 3,
   last6: 6,
   allTime: null,
+}
+
+/** Maps the frontend DateRange key to the backend ExportRange query param */
+const DATE_RANGE_TO_EXPORT: Record<DateRange, ExportRange> = {
+  thisMonth: 'this_month',
+  last3: 'last_3',
+  last6: 'last_6',
+  allTime: 'all_time',
 }
 
 /* ─────────────────────────────────────────────────────── */
@@ -190,6 +200,9 @@ export default function AnalyticsPage() {
   // ── Date range filter ─────────────────────────────────
   const [dateRange, setDateRange] = useState<DateRange>('last6')
 
+  // ── Export ────────────────────────────────────────────────────────────────
+  const { exportTransactions, isExporting } = useExportTransactions()
+
   // ── Derive category arrays ────────────────────────────
   const toArr = (obj: Record<string, number>): CategoryData[] =>
     Object.entries(obj)
@@ -260,18 +273,33 @@ export default function AnalyticsPage() {
           <h1 className="an-title">Analytics</h1>
         </div>
 
-        {/* Date range filter */}
-        <div className="an-date-filter" role="group" aria-label="Date range filter">
-          {(Object.keys(DATE_RANGE_LABELS) as DateRange[]).map((key) => (
-            <button
-              key={key}
-              id={`an-filter-${key}`}
-              className={`an-filter-btn ${dateRange === key ? 'an-filter-btn--active' : ''}`}
-              onClick={() => setDateRange(key)}
-            >
-              {DATE_RANGE_LABELS[key]}
-            </button>
-          ))}
+        {/* Date range filter + Export button */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
+          <div className="an-date-filter" role="group" aria-label="Date range filter">
+            {(Object.keys(DATE_RANGE_LABELS) as DateRange[]).map((key) => (
+              <button
+                key={key}
+                id={`an-filter-${key}`}
+                className={`an-filter-btn ${dateRange === key ? 'an-filter-btn--active' : ''}`}
+                onClick={() => setDateRange(key)}
+              >
+                {DATE_RANGE_LABELS[key]}
+              </button>
+            ))}
+          </div>
+
+          <button
+            id="an-export-btn"
+            className="an-export-btn"
+            onClick={() => exportTransactions(DATE_RANGE_TO_EXPORT[dateRange])}
+            disabled={isExporting}
+            title="Export transactions to Excel"
+          >
+            {isExporting
+              ? <Loader2 size={15} className="an-export-spinner" />
+              : <FileSpreadsheet size={15} />}
+            {isExporting ? 'Exporting…' : 'Export to Excel'}
+          </button>
         </div>
       </div>
 

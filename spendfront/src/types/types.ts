@@ -92,3 +92,26 @@ export interface CategoryData {
   category: string
   total: number
 }
+
+// ── Export ────────────────────────────────────────────────────────────────────
+
+/** Range values accepted by GET /export/transactions?range= */
+export type ExportRange = 'this_month' | 'last_3' | 'last_6' | 'all_time'
+
+// ── AI Chat ───────────────────────────────────────────────────────────────────
+
+export interface AgentResponse {
+  type: 'success' | 'error' | 'info' | 'advice' | 'list'
+  title: string
+  summary: string
+  details?: { label: string; value: string }[]
+  items?: string[]
+  tips?: string[]
+}
+
+/** Discriminated union of SSE event payloads emitted by POST /chat/stream */
+export type SseEvent =
+  | { type: 'delta'; text: string }
+  | { type: 'status'; text: string }
+  | { type: 'done'; response: AgentResponse }
+  | { type: 'error'; message: string }
